@@ -1,0 +1,996 @@
+{
+  "replay": [
+    {
+      "after_ms": 400,
+      "event": {
+        "type": "run.started",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:00.000Z",
+        "agent": "intake",
+        "message": "Run started for renton-a: 3 files, case id NEW-001",
+        "data": {
+          "case_id": "NEW-001",
+          "label": "renton-a",
+          "file_count": 3
+        }
+      }
+    },
+    {
+      "after_ms": 500,
+      "event": {
+        "type": "intake.file",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:00.400Z",
+        "agent": "intake",
+        "message": "record.txt sorted as text, 1.9 KB",
+        "data": {
+          "name": "record.txt",
+          "kind": "text",
+          "size": 1944
+        }
+      }
+    },
+    {
+      "after_ms": 450,
+      "event": {
+        "type": "intake.file",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:00.800Z",
+        "agent": "intake",
+        "message": "still-01.jpg sorted as image, 146 KB",
+        "data": {
+          "name": "still-01.jpg",
+          "kind": "image",
+          "size": 149504
+        }
+      }
+    },
+    {
+      "after_ms": 450,
+      "event": {
+        "type": "intake.file",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:01.200Z",
+        "agent": "intake",
+        "message": "still-02.jpg sorted as image, 138 KB",
+        "data": {
+          "name": "still-02.jpg",
+          "kind": "image",
+          "size": 141312
+        }
+      }
+    },
+    {
+      "after_ms": 2600,
+      "event": {
+        "type": "observe.photo",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:04.100Z",
+        "agent": "photo_observer",
+        "message": "still-01.jpg: dark SUV with open door in a parking lot at night, masked person at its rear, on-image time 05:42",
+        "data": {
+          "file": "still-01.jpg",
+          "observations": [
+            {
+              "type": "vehicle",
+              "description": "Dark SUV, door open, parked close to the building front",
+              "confidence": 0.82
+            },
+            {
+              "type": "footage",
+              "description": "Exterior camera still, night, on-image date 2023-09-07 05:42:28",
+              "confidence": 0.9
+            },
+            {
+              "type": "clothing",
+              "description": "One masked person bending at the rear of the vehicle",
+              "confidence": 0.74
+            }
+          ]
+        }
+      }
+    },
+    {
+      "after_ms": 2200,
+      "event": {
+        "type": "observe.photo",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:06.300Z",
+        "agent": "photo_observer",
+        "message": "still-02.jpg: same dark SUV, blurred person near the building, on-image time 05:41",
+        "data": {
+          "file": "still-02.jpg",
+          "observations": [
+            {
+              "type": "vehicle",
+              "description": "Same dark SUV with the door open, one minute earlier",
+              "confidence": 0.8
+            },
+            {
+              "type": "footage",
+              "description": "Exterior camera still, on-image date 2023-09-07 05:41:15",
+              "confidence": 0.9
+            },
+            {
+              "type": "entry_damage",
+              "description": "Possible glass on the ground by the entrance, low certainty",
+              "confidence": 0.41
+            }
+          ]
+        }
+      }
+    },
+    {
+      "after_ms": 2400,
+      "event": {
+        "type": "extract.text",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:08.700Z",
+        "agent": "record_extractor",
+        "message": "record.txt: 2023-09-07, Renton WA, business, stolen black Jeep backed through the glass front, items not reported",
+        "data": {
+          "file": "record.txt",
+          "record": {
+            "date": "2023-09-07",
+            "time": null,
+            "location": "Renton, WA",
+            "scene_type": "business",
+            "entry_method": "vehicle backed through glass storefront",
+            "items_taken": null,
+            "vehicle": "stolen black Jeep",
+            "evidence": [
+              {
+                "type": "vehicle",
+                "description": "Stolen black Jeep backed through the glass front of the nail business"
+              },
+              {
+                "type": "footage",
+                "description": "Surveillance video compared with witness accounts"
+              },
+              {
+                "type": "witness",
+                "description": "Witness accounts compared by police with video"
+              }
+            ],
+            "unknowns": [
+              "time",
+              "block",
+              "items taken at this business",
+              "plate, fingerprint or DNA evidence"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "after_ms": 900,
+      "event": {
+        "type": "build.nodes",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:09.600Z",
+        "agent": "builder",
+        "message": "Built case NEW-001 with 4 observed edges: location, time window, method, vehicle",
+        "data": {
+          "nodes": [
+            {
+              "id": "NEW-001",
+              "type": "case",
+              "label": "NEW-001",
+              "status": "new",
+              "props": {
+                "series_id": null,
+                "date": "2023-09-07",
+                "date_precision": "day",
+                "time": null,
+                "scene_type": "business",
+                "location": "Renton, WA",
+                "items_taken": null,
+                "unknowns": [
+                  "time",
+                  "block",
+                  "items taken at this business",
+                  "plate, fingerprint or DNA evidence"
+                ],
+                "notes": "Dropped in as renton-a. Nail business. Two police stills attached, both dated 2023-09-07 on image.",
+                "evidence": [
+                  {
+                    "type": "vehicle",
+                    "description": "Stolen black Jeep backed through the glass front of the nail business"
+                  },
+                  {
+                    "type": "footage",
+                    "description": "Surveillance video compared with witness accounts"
+                  },
+                  {
+                    "type": "witness",
+                    "description": "Witness accounts compared by police with video"
+                  }
+                ],
+                "media": [
+                  {
+                    "path": "still-01.jpg",
+                    "kind": "surveillance_still",
+                    "url": "../data/cases/renton-crash-and-grab-2023/photos/still-01.jpg"
+                  },
+                  {
+                    "path": "still-02.jpg",
+                    "kind": "surveillance_still",
+                    "url": "../data/cases/renton-crash-and-grab-2023/photos/still-02.jpg"
+                  }
+                ]
+              },
+              "sources": [
+                "record.txt",
+                "still-01.jpg",
+                "still-02.jpg"
+              ]
+            }
+          ],
+          "edges": [
+            {
+              "id": "e-new-001-loc",
+              "source": "NEW-001",
+              "target": "loc-renton--wa",
+              "rel": "AT_LOCATION",
+              "kind": "observed",
+              "confidence": 1.0,
+              "provenance": "record.txt"
+            },
+            {
+              "id": "e-new-001-tw",
+              "source": "NEW-001",
+              "target": "tw-2023-W36",
+              "rel": "IN_WINDOW",
+              "kind": "observed",
+              "confidence": 1.0,
+              "provenance": "record.txt"
+            },
+            {
+              "id": "e-new-001-method",
+              "source": "NEW-001",
+              "target": "m-vehicle-ramming",
+              "rel": "USED_METHOD",
+              "kind": "observed",
+              "confidence": 0.95,
+              "provenance": "record.txt"
+            },
+            {
+              "id": "e-new-001-vehicle",
+              "source": "NEW-001",
+              "target": "v-stolen-black-jeep",
+              "rel": "VEHICLE_SEEN",
+              "kind": "observed",
+              "confidence": 0.9,
+              "provenance": "still-01.jpg"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "after_ms": 1500,
+      "event": {
+        "type": "link.candidates",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:11.100Z",
+        "agent": "linker",
+        "message": "5 candidates scored. Top: RCG-06 10, RCG-07 10, RCG-08 10, RCG-03 9, SCR-02 4",
+        "data": {
+          "candidates": [
+            {
+              "case_id": "rcg-06",
+              "score": 10,
+              "matched": [
+                "method 3",
+                "vehicle 3",
+                "same city 1",
+                "within 14 days 2",
+                "scene type 1"
+              ]
+            },
+            {
+              "case_id": "rcg-07",
+              "score": 10,
+              "matched": [
+                "method 3",
+                "vehicle 3",
+                "same city 1",
+                "within 14 days 2",
+                "scene type 1"
+              ]
+            },
+            {
+              "case_id": "rcg-08",
+              "score": 10,
+              "matched": [
+                "method 3",
+                "vehicle 3",
+                "same city 1",
+                "within 14 days 2",
+                "scene type 1"
+              ]
+            },
+            {
+              "case_id": "rcg-03",
+              "score": 9,
+              "matched": [
+                "method 3",
+                "vehicle 3",
+                "same city 1",
+                "within 120 days 1",
+                "scene type 1"
+              ]
+            },
+            {
+              "case_id": "scr-02",
+              "score": 4,
+              "matched": [
+                "method 3",
+                "scene type 1"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "after_ms": 1400,
+      "event": {
+        "type": "link.tool_call",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:12.500Z",
+        "agent": "linker",
+        "message": "cluster_candidates(NEW-001, window_days=120, same_city=true)",
+        "data": {
+          "tool": "cluster_candidates",
+          "args": {
+            "case_id": "NEW-001",
+            "window_days": 120,
+            "same_city": true
+          },
+          "summary": "5 candidates, scores are hints not conclusions"
+        }
+      }
+    },
+    {
+      "after_ms": 1600,
+      "event": {
+        "type": "link.tool_call",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:14.100Z",
+        "agent": "linker",
+        "message": "get_case(rcg-06): Renton taqueria, 2023-09-10, stolen black Jeep backed through the glass front",
+        "data": {
+          "tool": "get_case",
+          "args": {
+            "case_id": "rcg-06"
+          },
+          "summary": "Same method and vehicle, three days after NEW-001, already in the Renton series"
+        }
+      }
+    },
+    {
+      "after_ms": 1500,
+      "event": {
+        "type": "link.tool_call",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:15.600Z",
+        "agent": "linker",
+        "message": "shared_attributes(NEW-001, rcg-06): vehicle ramming, stolen black Jeep, Renton WA, 2023-W36 adjacent to 2023-W37",
+        "data": {
+          "tool": "shared_attributes",
+          "args": {
+            "a": "NEW-001",
+            "b": "rcg-06"
+          },
+          "summary": "4 shared attributes; SCR-02 shares only the method and is 7 months later in a different city"
+        }
+      }
+    },
+    {
+      "after_ms": 2000,
+      "event": {
+        "type": "link.hypothesis",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:17.600Z",
+        "agent": "linker",
+        "message": "H-0001: NEW-001 belongs with RCG-03, RCG-06, RCG-07 and RCG-08, confidence 0.86",
+        "data": {
+          "hypothesis": {
+            "id": "H-0001",
+            "type": "hypothesis",
+            "label": "H-0001",
+            "status": "proposed",
+            "props": {
+              "run_id": "run-mock-renton-a",
+              "case_ids": [
+                "NEW-001",
+                "rcg-03",
+                "rcg-06",
+                "rcg-07",
+                "rcg-08"
+              ],
+              "confidence": 0.86,
+              "rationale": "NEW-001 shares the vehicle ramming method and the stolen black Jeep with four Renton cases in the same five week span. The two stills are time stamped 2023-09-07, the same date as the record. SCR-02 is excluded: it shares only the method, happened seven months later, and is in Seattle.",
+              "critic_verdict": null,
+              "decision": null,
+              "fallback": false
+            },
+            "sources": [
+              "run-mock-renton-a/linker.json"
+            ]
+          },
+          "edges": [
+            {
+              "id": "e-h1-new",
+              "source": "H-0001",
+              "target": "NEW-001",
+              "rel": "PROPOSES_LINK",
+              "kind": "hypothesis",
+              "confidence": 0.86,
+              "provenance": "run-mock-renton-a/linker.json"
+            },
+            {
+              "id": "e-h1-rcg03",
+              "source": "H-0001",
+              "target": "rcg-03",
+              "rel": "PROPOSES_LINK",
+              "kind": "hypothesis",
+              "confidence": 0.78,
+              "provenance": "run-mock-renton-a/linker.json"
+            },
+            {
+              "id": "e-h1-rcg06",
+              "source": "H-0001",
+              "target": "rcg-06",
+              "rel": "PROPOSES_LINK",
+              "kind": "hypothesis",
+              "confidence": 0.88,
+              "provenance": "run-mock-renton-a/linker.json"
+            },
+            {
+              "id": "e-h1-rcg07",
+              "source": "H-0001",
+              "target": "rcg-07",
+              "rel": "PROPOSES_LINK",
+              "kind": "hypothesis",
+              "confidence": 0.86,
+              "provenance": "run-mock-renton-a/linker.json"
+            },
+            {
+              "id": "e-h1-rcg08",
+              "source": "H-0001",
+              "target": "rcg-08",
+              "rel": "PROPOSES_LINK",
+              "kind": "hypothesis",
+              "confidence": 0.84,
+              "provenance": "run-mock-renton-a/linker.json"
+            },
+            {
+              "id": "e-h1-method",
+              "source": "H-0001",
+              "target": "m-vehicle-ramming",
+              "rel": "SUPPORTED_BY",
+              "kind": "hypothesis",
+              "confidence": 0.95,
+              "provenance": "record.txt"
+            },
+            {
+              "id": "e-h1-vehicle",
+              "source": "H-0001",
+              "target": "v-stolen-black-jeep",
+              "rel": "SUPPORTED_BY",
+              "kind": "hypothesis",
+              "confidence": 0.9,
+              "provenance": "still-01.jpg"
+            },
+            {
+              "id": "e-h1-loc",
+              "source": "H-0001",
+              "target": "loc-renton--wa",
+              "rel": "SUPPORTED_BY",
+              "kind": "hypothesis",
+              "confidence": 1.0,
+              "provenance": "record.txt"
+            },
+            {
+              "id": "e-h1-tw",
+              "source": "H-0001",
+              "target": "tw-2023-W36",
+              "rel": "SUPPORTED_BY",
+              "kind": "hypothesis",
+              "confidence": 1.0,
+              "provenance": "record.txt"
+            }
+          ],
+          "rationale": "NEW-001 shares the vehicle ramming method and the stolen black Jeep with four Renton cases in the same five week span. The two stills are time stamped 2023-09-07, the same date as the record. SCR-02 is excluded: it shares only the method, happened seven months later, and is in Seattle.",
+          "confidence": 0.86
+        }
+      }
+    },
+    {
+      "after_ms": 2600,
+      "event": {
+        "type": "critic.verdict",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:20.200Z",
+        "agent": "critic",
+        "message": "H-0001 holds. Same vehicle, same method, same city, three days apart. Would change on a plate mismatch or a second Jeep in the area",
+        "data": {
+          "hypothesis_id": "H-0001",
+          "verdict": "holds",
+          "reasons": [
+            "Method and vehicle match is specific: a stolen black Jeep reversed into a storefront is not a common pattern",
+            "Time and place are tight: Renton, within three days of RCG-06 and eight of RCG-08",
+            "The still timestamps agree with the record date",
+            "The decoy SCR-02 was considered and set aside for a stated reason"
+          ],
+          "would_change_mind": [
+            "A plate read showing a different Jeep from the one in RCG-06",
+            "A second black Jeep ramming series active in Renton that month",
+            "Evidence the stills belong to RCG-05 rather than this case"
+          ]
+        }
+      }
+    },
+    {
+      "after_ms": 1200,
+      "event": {
+        "type": "run.finished",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:21.400Z",
+        "agent": "intake",
+        "message": "Run finished in 21.4 s with 1 hypothesis waiting for review",
+        "data": {
+          "case_id": "NEW-001",
+          "seconds": 21.4,
+          "hypotheses": 1
+        }
+      }
+    }
+  ],
+  "after_decision": {
+    "accept": {
+      "type": "decision.recorded",
+      "run_id": "run-mock-renton-a",
+      "ts": "2026-11-05T19:02:40.000Z",
+      "agent": "detective",
+      "message": "H-0001 accepted. NEW-001 joined Renton crash and grab, 2023",
+      "data": {
+        "hypothesis_id": "H-0001",
+        "decision": "accept",
+        "reason": "Same vehicle and method, three days from RCG-06",
+        "nodes": [
+          {
+            "id": "H-0001",
+            "type": "hypothesis",
+            "label": "H-0001",
+            "status": "confirmed",
+            "props": {
+              "decision": "accept"
+            }
+          },
+          {
+            "id": "NEW-001",
+            "type": "case",
+            "label": "NEW-001",
+            "status": "existing",
+            "props": {
+              "series_id": "renton-crash-and-grab-2023"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "id": "e-new-001-series",
+            "source": "NEW-001",
+            "target": "renton-crash-and-grab-2023",
+            "rel": "PART_OF_SERIES",
+            "kind": "confirmed",
+            "confidence": 1.0,
+            "provenance": "decision H-0001"
+          }
+        ]
+      }
+    },
+    "reject": {
+      "type": "decision.recorded",
+      "run_id": "run-mock-renton-a",
+      "ts": "2026-11-05T19:02:40.000Z",
+      "agent": "detective",
+      "message": "H-0001 rejected. Hypothesis kept for audit, hidden from the board",
+      "data": {
+        "hypothesis_id": "H-0001",
+        "decision": "reject",
+        "reason": "Not enough to tie the stills to this incident rather than RCG-05",
+        "nodes": [
+          {
+            "id": "H-0001",
+            "type": "hypothesis",
+            "label": "H-0001",
+            "status": "rejected",
+            "props": {
+              "decision": "reject"
+            }
+          },
+          {
+            "id": "NEW-001",
+            "type": "case",
+            "label": "NEW-001",
+            "status": "existing",
+            "props": {}
+          }
+        ],
+        "edges": []
+      }
+    },
+    "more": {
+      "type": "decision.recorded",
+      "run_id": "run-mock-renton-a",
+      "ts": "2026-11-05T19:02:40.000Z",
+      "agent": "detective",
+      "message": "H-0001 needs more evidence. Left open",
+      "data": {
+        "hypothesis_id": "H-0001",
+        "decision": "more",
+        "reason": "Ask Renton PD which 7 Sep incident the stills belong to",
+        "nodes": [
+          {
+            "id": "H-0001",
+            "type": "hypothesis",
+            "label": "H-0001",
+            "status": "proposed",
+            "props": {
+              "decision": "more"
+            }
+          }
+        ],
+        "edges": []
+      }
+    }
+  },
+  "after_accept": [
+    {
+      "after_ms": 2200,
+      "event": {
+        "type": "gap.next_steps",
+        "run_id": "run-mock-renton-a",
+        "ts": "2026-11-05T19:02:42.200Z",
+        "agent": "gap_finder",
+        "message": "Cluster gaps: no plate read, no per incident items, stills not tied to one 7 Sep incident",
+        "data": {
+          "hypothesis_id": "H-0001",
+          "missing": [
+            "Plate or VIN for the black Jeep across the five cases",
+            "Items taken per incident; sources only give a series total",
+            "Which of the two 7 Sep incidents each police still shows"
+          ],
+          "next_steps": [
+            "Ask Renton PD for the Jeep recovery report and plate",
+            "Request the nail business and teriyaki business loss statements",
+            "Pull the 05:40 to 05:52 camera window from both 7 Sep scenes"
+          ]
+        }
+      }
+    }
+  ],
+  "replays": {
+    "decoy-cannabis": [
+      {
+        "after_ms": 400,
+        "event": {
+          "type": "run.started",
+          "run_id": "run-mock-decoy-cannabis",
+          "ts": "2026-11-05T19:10:00.000Z",
+          "agent": "intake",
+          "message": "Run started for decoy-cannabis: 1 files, case id NEW-001",
+          "data": {
+            "case_id": "NEW-001",
+            "label": "decoy-cannabis",
+            "file_count": 1
+          }
+        }
+      },
+      {
+        "after_ms": 500,
+        "event": {
+          "type": "intake.file",
+          "run_id": "run-mock-decoy-cannabis",
+          "ts": "2026-11-05T19:10:00.400Z",
+          "agent": "intake",
+          "message": "report.txt sorted as text, 1.6 KB",
+          "data": {
+            "name": "report.txt",
+            "kind": "text",
+            "size": 1640
+          }
+        }
+      },
+      {
+        "after_ms": 2400,
+        "event": {
+          "type": "extract.text",
+          "run_id": "run-mock-decoy-cannabis",
+          "ts": "2026-11-05T19:10:03.000Z",
+          "agent": "record_extractor",
+          "message": "report.txt: 2024-07-31, Belltown, Seattle WA, business, stolen car driven into the storefront",
+          "data": {
+            "file": "report.txt",
+            "record": {
+              "date": "2024-07-31",
+              "time": "02:30",
+              "location": "Seattle, WA",
+              "neighborhood": "Belltown",
+              "scene_type": "business",
+              "entry_method": "stolen car driven into the storefront",
+              "items_taken": [],
+              "vehicle": "stolen car",
+              "evidence": [
+                {
+                  "type": "vehicle",
+                  "description": "Stolen car driven into the storefront, towed for evidence"
+                },
+                {
+                  "type": "footage",
+                  "description": "Camera footage not reported"
+                }
+              ],
+              "unknowns": [
+                "items taken",
+                "identity of the original group",
+                "block"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "after_ms": 900,
+        "event": {
+          "type": "build.nodes",
+          "run_id": "run-mock-decoy-cannabis",
+          "ts": "2026-11-05T19:10:03.900Z",
+          "agent": "builder",
+          "message": "Built case NEW-001 with 4 observed edges: location, time window, method, vehicle",
+          "data": {
+            "nodes": [
+              {
+                "id": "NEW-001",
+                "type": "case",
+                "label": "NEW-001",
+                "status": "new",
+                "props": {
+                  "series_id": null,
+                  "date": "2024-07-31",
+                  "date_precision": "day",
+                  "time": "02:30",
+                  "scene_type": "business",
+                  "location": "Seattle, WA",
+                  "items_taken": null,
+                  "unknowns": [
+                    "items taken",
+                    "identity of the original group",
+                    "block"
+                  ],
+                  "notes": "Dropped in as decoy-cannabis. Cannabis shop, storefront rammed by a stolen car.",
+                  "evidence": [
+                    {
+                      "type": "vehicle",
+                      "description": "Stolen car driven into the storefront, towed for evidence"
+                    },
+                    {
+                      "type": "footage",
+                      "description": "Camera footage not reported"
+                    }
+                  ],
+                  "media": [
+                    {
+                      "path": "report.txt",
+                      "kind": "text"
+                    }
+                  ]
+                },
+                "sources": [
+                  "report.txt"
+                ]
+              }
+            ],
+            "edges": [
+              {
+                "id": "e-d-loc",
+                "source": "NEW-001",
+                "target": "loc-belltown--seattle--wa",
+                "rel": "AT_LOCATION",
+                "kind": "observed",
+                "confidence": 1.0,
+                "provenance": "report.txt"
+              },
+              {
+                "id": "e-d-tw",
+                "source": "NEW-001",
+                "target": "tw-2024-W31",
+                "rel": "IN_WINDOW",
+                "kind": "observed",
+                "confidence": 1.0,
+                "provenance": "report.txt"
+              },
+              {
+                "id": "e-d-method",
+                "source": "NEW-001",
+                "target": "m-vehicle-ramming",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 1.0,
+                "provenance": "report.txt"
+              },
+              {
+                "id": "e-d-vehicle",
+                "source": "NEW-001",
+                "target": "v-stolen-car",
+                "rel": "VEHICLE_SEEN",
+                "kind": "observed",
+                "confidence": 1.0,
+                "provenance": "report.txt"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 1500,
+        "event": {
+          "type": "link.candidates",
+          "run_id": "run-mock-decoy-cannabis",
+          "ts": "2026-11-05T19:10:05.400Z",
+          "agent": "linker",
+          "message": "3 candidates scored. Top: SCR-02 4, SCR-01 3, SCR-04 2",
+          "data": {
+            "candidates": [
+              {
+                "case_id": "scr-02",
+                "score": 4,
+                "matched": [
+                  {
+                    "kind": "method",
+                    "label": "vehicle ramming"
+                  },
+                  {
+                    "kind": "city",
+                    "label": "Seattle"
+                  }
+                ]
+              },
+              {
+                "case_id": "scr-01",
+                "score": 3,
+                "matched": [
+                  {
+                    "kind": "city",
+                    "label": "Seattle"
+                  },
+                  {
+                    "kind": "scene_type",
+                    "label": "business"
+                  }
+                ]
+              },
+              {
+                "case_id": "scr-04",
+                "score": 2,
+                "matched": [
+                  {
+                    "kind": "city",
+                    "label": "Seattle"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 1800,
+        "event": {
+          "type": "link.hypothesis",
+          "run_id": "run-mock-decoy-cannabis",
+          "ts": "2026-11-05T19:10:07.200Z",
+          "agent": "linker",
+          "message": "Automatic proposal from candidate score 4. Matched attributes: method: vehicle ramming.",
+          "data": {
+            "hypothesis": {
+              "id": "H-0001",
+              "type": "hypothesis",
+              "label": "H-0001",
+              "status": "proposed",
+              "props": {
+                "run_id": "run-mock-decoy-cannabis",
+                "case_ids": [
+                  "NEW-001",
+                  "scr-02"
+                ],
+                "confidence": 0.5,
+                "rationale": "NEW-001 shares only the vehicle ramming method with SCR-02. The cases are about four months apart in different Seattle neighborhoods, and no vehicle, item or location attribute is shared.",
+                "critic_verdict": null,
+                "decision": null,
+                "fallback": true
+              },
+              "sources": [
+                "run-mock-decoy-cannabis/linker.json"
+              ]
+            },
+            "edges": [
+              {
+                "id": "e-hd-new",
+                "source": "H-0001",
+                "target": "NEW-001",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.5,
+                "provenance": "run-mock-decoy-cannabis/linker.json"
+              },
+              {
+                "id": "e-hd-scr02",
+                "source": "H-0001",
+                "target": "scr-02",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.5,
+                "provenance": "run-mock-decoy-cannabis/linker.json"
+              },
+              {
+                "id": "e-hd-method",
+                "source": "H-0001",
+                "target": "m-vehicle-ramming",
+                "rel": "SUPPORTED_BY",
+                "kind": "hypothesis",
+                "confidence": 0.5,
+                "provenance": "report.txt"
+              }
+            ],
+            "rationale": "NEW-001 shares only the vehicle ramming method with SCR-02. The cases are about four months apart in different Seattle neighborhoods, and no vehicle, item or location attribute is shared.",
+            "confidence": 0.5,
+            "fallback": true
+          }
+        }
+      },
+      {
+        "after_ms": 2400,
+        "event": {
+          "type": "critic.verdict",
+          "run_id": "run-mock-decoy-cannabis",
+          "ts": "2026-11-05T19:10:09.600Z",
+          "agent": "critic",
+          "message": "H-0001 weak. Only the method is shared, and the method is common across unrelated cannabis shop break-ins",
+          "data": {
+            "hypothesis_id": "H-0001",
+            "verdict": "weak",
+            "reasons": [
+              "Only one attribute is shared and ramming is a common method",
+              "Different neighborhoods, four months apart",
+              "No vehicle, item or footage tie the cases together"
+            ],
+            "would_change_mind": [
+              "A matching plate or vehicle make across both cases",
+              "Footage showing the same group"
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 1000,
+        "event": {
+          "type": "run.finished",
+          "run_id": "run-mock-decoy-cannabis",
+          "ts": "2026-11-05T19:10:10.600Z",
+          "agent": "intake",
+          "message": "Run finished in 10.6s with 1 hypothesis",
+          "data": {
+            "case_id": "NEW-001",
+            "seconds": 10.6,
+            "hypotheses": 1
+          }
+        }
+      }
+    ]
+  }
+}

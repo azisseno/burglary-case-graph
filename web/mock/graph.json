@@ -1,0 +1,2047 @@
+{
+ "nodes": [
+  {
+   "id": "renton-crash-and-grab-2023",
+   "type": "series",
+   "label": "Renton crash and grab, 2023",
+   "status": "existing",
+   "props": {
+    "series_id": "renton-crash-and-grab-2023",
+    "full_label": "Stolen car crash and grab burglaries of small businesses, Renton and Kent, 2023",
+    "area": "Renton and Kent, WA",
+    "period": {
+     "start": "2023-08-08",
+     "end": "2023-09-15"
+    },
+    "ground_truth_status": "linked_by_police",
+    "outcome": "Suspect arrested 22 Sep 2023 in Renton. King County prosecutors filed two felony cases on 27 Sep 2023 with bail of 100,000 dollars and arraignment set for 11 Oct 2023. Later outcome not found."
+   },
+   "sources": [
+    "https://www.rentonreporter.com/2023/10/02/renton-police-catch-prolific-smash-and-grab-burglary-suspect/",
+    "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/",
+    "https://www.fox13seattle.com/news/renton-police-arrest-prolific-offender-accused-of-stealing-cars-for-crash-and-grab-burglary-schemes.amp",
+    "https://www.kiro7.com/news/local/renton-police-arrest-prolific-smash-and-grab-burglary-suspect/ZTHFJLTLC5HINJ3N6BMM3S36XY/"
+   ]
+  },
+  {
+   "id": "rcg-01",
+   "type": "case",
+   "label": "RCG-01",
+   "status": "existing",
+   "props": {
+    "series_id": "renton-crash-and-grab-2023",
+    "date": null,
+    "date_precision": "unknown",
+    "time": null,
+    "scene_type": "business",
+    "location": "Kent, WA",
+    "items_taken": null,
+    "unknowns": [
+     "burglary date",
+     "time",
+     "entry method",
+     "items taken",
+     "how the U-Haul relates to the Jeep used in the August and September incidents"
+    ],
+    "notes": "Pho restaurant in Kent. The burglary date is not reported; the paperwork was found before 31 Mar 2023, so the burglary came earlier. The article calls this business a burglary victim. Renton detectives cite burglary cases since Oct 2022 across the wider series. Numbered first because the burglary predates the August incidents.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "document_found",
+      "description": "Stacks of paperwork from this business found in a stolen U-Haul when Kent police were dispatched on 31 Mar 2023 to a report of a stolen parked U-Haul"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-01/record.json",
+    "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/"
+   ]
+  },
+  {
+   "id": "loc-kent--wa",
+   "type": "location",
+   "label": "Kent, WA",
+   "status": "existing",
+   "props": {
+    "city": "Kent",
+    "state": "WA",
+    "neighborhood": null
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-01/record.json"
+   ]
+  },
+  {
+   "id": "m-paperwork-recovered",
+   "type": "method",
+   "label": "paperwork recovered",
+   "status": "existing",
+   "props": {
+    "canonical": "paperwork_recovered",
+    "synonyms_seen": []
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-01/record.json"
+   ]
+  },
+  {
+   "id": "rcg-02",
+   "type": "case",
+   "label": "RCG-02",
+   "status": "existing",
+   "props": {
+    "series_id": "renton-crash-and-grab-2023",
+    "date": null,
+    "date_precision": "unknown",
+    "time": null,
+    "scene_type": "business",
+    "location": "Renton, WA",
+    "items_taken": null,
+    "unknowns": [
+     "burglary date",
+     "time",
+     "entry method",
+     "items taken",
+     "how the U-Haul relates to the Jeep used in the August and September incidents"
+    ],
+    "notes": "Cafe in Renton. The burglary date is not reported; the paperwork was found before 31 Mar 2023, so the burglary came earlier. The article calls this business a burglary victim. Renton detectives cite burglary cases since Oct 2022 across the wider series. Numbered first because the burglary predates the August incidents.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "document_found",
+      "description": "Stacks of paperwork from this business found in a stolen U-Haul when Kent police were dispatched on 31 Mar 2023 to a report of a stolen parked U-Haul"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-02/record.json",
+    "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/"
+   ]
+  },
+  {
+   "id": "loc-renton--wa",
+   "type": "location",
+   "label": "Renton, WA",
+   "status": "existing",
+   "props": {
+    "city": "Renton",
+    "state": "WA",
+    "neighborhood": null
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-02/record.json"
+   ]
+  },
+  {
+   "id": "rcg-03",
+   "type": "case",
+   "label": "RCG-03",
+   "status": "existing",
+   "props": {
+    "series_id": "renton-crash-and-grab-2023",
+    "date": "2023-08-08",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "Renton, WA",
+    "items_taken": null,
+    "unknowns": [
+     "time",
+     "block",
+     "items taken at this business",
+     "plate, fingerprint or DNA evidence"
+    ],
+    "notes": "Seafood restaurant. The month and day come from the 10 Oct 2023 Renton Reporter; the year 2023 is inferred from the article date. Per incident times and items are not reported; the sources give cash, jewelry and small valuables only as a total for the series. Which charge covers which incident is not reported. ",
+    "media": [],
+    "evidence": [
+     {
+      "type": "vehicle",
+      "description": "Stolen black Jeep backed through the glass front of the seafood restaurant"
+     },
+     {
+      "type": "footage",
+      "description": "Surveillance video; police compared it with witness accounts to connect the cases"
+     },
+     {
+      "type": "witness",
+      "description": "Witness accounts compared by police with video to connect the cases"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-03/record.json",
+    "https://www.rentonreporter.com/2023/10/02/renton-police-catch-prolific-smash-and-grab-burglary-suspect/",
+    "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/"
+   ]
+  },
+  {
+   "id": "tw-2023-W32",
+   "type": "time_window",
+   "label": "2023-W32",
+   "status": "existing",
+   "props": {
+    "start": "2023-08-07",
+    "end": "2023-08-13"
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-03/record.json"
+   ]
+  },
+  {
+   "id": "m-vehicle-ramming",
+   "type": "method",
+   "label": "vehicle ramming",
+   "status": "existing",
+   "props": {
+    "canonical": "vehicle_ramming",
+    "synonyms_seen": []
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-03/record.json"
+   ]
+  },
+  {
+   "id": "v-stolen-black-jeep",
+   "type": "vehicle",
+   "label": "stolen black Jeep",
+   "status": "existing",
+   "props": {
+    "canonical": "stolen_black_jeep"
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-03/record.json"
+   ]
+  },
+  {
+   "id": "rcg-06",
+   "type": "case",
+   "label": "RCG-06",
+   "status": "existing",
+   "props": {
+    "series_id": "renton-crash-and-grab-2023",
+    "date": "2023-09-10",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "Renton, WA",
+    "items_taken": null,
+    "unknowns": [
+     "time",
+     "block",
+     "items taken at this business",
+     "plate, fingerprint or DNA evidence"
+    ],
+    "notes": "Taqueria. The month and day come from the 10 Oct 2023 Renton Reporter; the year 2023 is inferred from the article date. Per incident times and items are not reported; the sources give cash, jewelry and small valuables only as a total for the series. Which charge covers which incident is not reported. ",
+    "media": [],
+    "evidence": [
+     {
+      "type": "vehicle",
+      "description": "Stolen black Jeep backed through the glass front of the taqueria"
+     },
+     {
+      "type": "footage",
+      "description": "Surveillance video; police compared it with witness accounts to connect the cases"
+     },
+     {
+      "type": "witness",
+      "description": "Witness accounts compared by police with video to connect the cases"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-06/record.json",
+    "https://www.rentonreporter.com/2023/10/02/renton-police-catch-prolific-smash-and-grab-burglary-suspect/",
+    "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/"
+   ]
+  },
+  {
+   "id": "tw-2023-W36",
+   "type": "time_window",
+   "label": "2023-W36",
+   "status": "existing",
+   "props": {
+    "start": "2023-09-04",
+    "end": "2023-09-10"
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-06/record.json"
+   ]
+  },
+  {
+   "id": "rcg-07",
+   "type": "case",
+   "label": "RCG-07",
+   "status": "existing",
+   "props": {
+    "series_id": "renton-crash-and-grab-2023",
+    "date": "2023-09-13",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "Renton, WA",
+    "items_taken": null,
+    "unknowns": [
+     "time",
+     "block",
+     "items taken at this business",
+     "plate, fingerprint or DNA evidence"
+    ],
+    "notes": "Teriyaki restaurant; the business type is inferred from the business name in the article. The month and day come from the 10 Oct 2023 Renton Reporter; the year 2023 is inferred from the article date. Per incident times and items are not reported; the sources give cash, jewelry and small valuables only as a total for the series. Which charge covers which incident is not reported. ",
+    "media": [],
+    "evidence": [
+     {
+      "type": "vehicle",
+      "description": "Stolen black Jeep backed through the glass front of the teriyaki restaurant"
+     },
+     {
+      "type": "footage",
+      "description": "Surveillance video; police compared it with witness accounts to connect the cases"
+     },
+     {
+      "type": "witness",
+      "description": "Witness accounts compared by police with video to connect the cases"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-07/record.json",
+    "https://www.rentonreporter.com/2023/10/02/renton-police-catch-prolific-smash-and-grab-burglary-suspect/",
+    "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/"
+   ]
+  },
+  {
+   "id": "tw-2023-W37",
+   "type": "time_window",
+   "label": "2023-W37",
+   "status": "existing",
+   "props": {
+    "start": "2023-09-11",
+    "end": "2023-09-17"
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-07/record.json"
+   ]
+  },
+  {
+   "id": "rcg-08",
+   "type": "case",
+   "label": "RCG-08",
+   "status": "existing",
+   "props": {
+    "series_id": "renton-crash-and-grab-2023",
+    "date": "2023-09-15",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "Renton, WA",
+    "items_taken": null,
+    "unknowns": [
+     "time",
+     "block",
+     "items taken at this business",
+     "plate, fingerprint or DNA evidence"
+    ],
+    "notes": "Business type not reported. The month and day come from the 10 Oct 2023 Renton Reporter; the year 2023 is inferred from the article date. Per incident times and items are not reported; the sources give cash, jewelry and small valuables only as a total for the series. Which charge covers which incident is not reported. ",
+    "media": [],
+    "evidence": [
+     {
+      "type": "vehicle",
+      "description": "Stolen black Jeep backed through the glass front of the business"
+     },
+     {
+      "type": "footage",
+      "description": "Surveillance video; police compared it with witness accounts to connect the cases"
+     },
+     {
+      "type": "witness",
+      "description": "Witness accounts compared by police with video to connect the cases"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/renton-crash-and-grab-2023/rcg-08/record.json",
+    "https://www.rentonreporter.com/2023/10/02/renton-police-catch-prolific-smash-and-grab-burglary-suspect/",
+    "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/"
+   ]
+  },
+  {
+   "id": "seattle-cannabis-rammings-2025",
+   "type": "series",
+   "label": "Seattle cannabis rammings, 2024-25",
+   "status": "existing",
+   "props": {
+    "series_id": "seattle-cannabis-rammings-2025",
+    "full_label": "Cannabis shop stolen vehicle rammings not linked by police, Seattle, 2024 to 2025",
+    "area": "Central District, Belltown, West Seattle, WA",
+    "period": {
+     "start": "2024-04-05",
+     "end": "2025-08-08"
+    },
+    "ground_truth_status": "not_linked",
+    "outcome": "Four men booked for commercial burglary in the Belltown incident. Nothing else reported."
+   },
+   "sources": [
+    "https://www.fox13seattle.com/news/seattle-central-district-pot-shop",
+    "https://mynorthwest.com/local/four-arrested-belltown-pot-shop-smash-and-grab-burglars-initial-burglars-loose/3971948",
+    "https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825"
+   ]
+  },
+  {
+   "id": "scr-01",
+   "type": "case",
+   "label": "SCR-01",
+   "status": "existing",
+   "props": {
+    "series_id": "seattle-cannabis-rammings-2025",
+    "date": "2024-04-05",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "Central District, Seattle, WA",
+    "items_taken": [],
+    "unknowns": [
+     "time",
+     "entry method",
+     "number of people",
+     "vehicle use",
+     "footage availability"
+    ],
+    "notes": "Cannabis shop, attempt only. The owner said it was similar to scr-02. FOX 13 asked police whether the two were related and the article gives no answer. No police statement links this incident to any other incident in the set.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "witness",
+      "description": "The owner described an unsuccessful break-in attempt on 5 Apr, called the Seattle Police Department and hired extra security"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-01/record.json",
+    "https://www.fox13seattle.com/news/seattle-central-district-pot-shop"
+   ]
+  },
+  {
+   "id": "loc-central-district--seattle--wa",
+   "type": "location",
+   "label": "Central District, Seattle, WA",
+   "status": "existing",
+   "props": {
+    "city": "Seattle",
+    "state": "WA",
+    "neighborhood": "Central District"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-01/record.json"
+   ]
+  },
+  {
+   "id": "tw-2024-W14",
+   "type": "time_window",
+   "label": "2024-W14",
+   "status": "existing",
+   "props": {
+    "start": "2024-04-01",
+    "end": "2024-04-07"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-01/record.json"
+   ]
+  },
+  {
+   "id": "scr-02",
+   "type": "case",
+   "label": "SCR-02",
+   "status": "existing",
+   "props": {
+    "series_id": "seattle-cannabis-rammings-2025",
+    "date": "2024-04-09",
+    "date_precision": "day",
+    "time": "03:30",
+    "scene_type": "business",
+    "location": "Central District, Seattle, WA",
+    "items_taken": [
+     "products worth thousands of dollars",
+     "cash"
+    ],
+    "unknowns": [
+     "whether the two getaway cars were stolen",
+     "exact time",
+     "block"
+    ],
+    "notes": "Reported as just before 3:30 a.m.; 03:30 is the upper bound. FOX 13 was working with police to learn whether the two getaway cars were also stolen and gives no result. The owner said scr-01 was similar. The article gives no police answer on whether the two are related. No police statement links this incident to any other incident in the set.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "vehicle",
+      "description": "A stolen Hyundai Sonata was rammed into the front doors, wedged between the doors and bike stands near the sidewalk"
+     },
+     {
+      "type": "footage",
+      "description": "Business security footage shows a large group outside, repeated attempts to break the doors, entry into the store and the group fleeing in two cars"
+     },
+     {
+      "type": "theft",
+      "description": "Thousands of dollars of products and cash taken by a group of more than 10 people, a mix of young adults and children"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json",
+    "https://www.fox13seattle.com/news/seattle-central-district-pot-shop"
+   ]
+  },
+  {
+   "id": "tw-2024-W15",
+   "type": "time_window",
+   "label": "2024-W15",
+   "status": "existing",
+   "props": {
+    "start": "2024-04-08",
+    "end": "2024-04-14"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+   ]
+  },
+  {
+   "id": "v-stolen-hyundai-sonata",
+   "type": "vehicle",
+   "label": "stolen Hyundai Sonata",
+   "status": "existing",
+   "props": {
+    "canonical": "stolen_hyundai_sonata"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+   ]
+  },
+  {
+   "id": "i-cannabis-products",
+   "type": "item",
+   "label": "cannabis products",
+   "status": "existing",
+   "props": {
+    "category": "stock"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+   ]
+  },
+  {
+   "id": "i-cash",
+   "type": "item",
+   "label": "cash",
+   "status": "existing",
+   "props": {
+    "category": "currency"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+   ]
+  },
+  {
+   "id": "scr-03",
+   "type": "case",
+   "label": "SCR-03",
+   "status": "existing",
+   "props": {
+    "series_id": "seattle-cannabis-rammings-2025",
+    "date": "2024-07-31",
+    "date_precision": "day",
+    "time": "02:30",
+    "scene_type": "business",
+    "location": "Belltown, Seattle, WA",
+    "items_taken": null,
+    "unknowns": [
+     "items taken",
+     "identity of the original group of five",
+     "block"
+    ],
+    "notes": "Cannabis shop. The four men arrested were described as opportunists who entered after the original group left; the original five were not reported identified. The MyNorthwest page was read by the research team but returned no content to a later check, so these details were not re-verified. No police statement links this incident to any other incident in the set.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "vehicle",
+      "description": "A stolen car was driven into the storefront and towed for evidence"
+     },
+     {
+      "type": "other",
+      "description": "Police believe five people originally smashed in; four men who entered after that group left were arrested and booked for commercial burglary"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-03/record.json",
+    "https://mynorthwest.com/local/four-arrested-belltown-pot-shop-smash-and-grab-burglars-initial-burglars-loose/3971948"
+   ]
+  },
+  {
+   "id": "loc-belltown--seattle--wa",
+   "type": "location",
+   "label": "Belltown, Seattle, WA",
+   "status": "existing",
+   "props": {
+    "city": "Seattle",
+    "state": "WA",
+    "neighborhood": "Belltown"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-03/record.json"
+   ]
+  },
+  {
+   "id": "tw-2024-W31",
+   "type": "time_window",
+   "label": "2024-W31",
+   "status": "existing",
+   "props": {
+    "start": "2024-07-29",
+    "end": "2024-08-04"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-03/record.json"
+   ]
+  },
+  {
+   "id": "v-stolen-car",
+   "type": "vehicle",
+   "label": "stolen car",
+   "status": "existing",
+   "props": {
+    "canonical": "stolen_car"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-03/record.json"
+   ]
+  },
+  {
+   "id": "scr-04",
+   "type": "case",
+   "label": "SCR-04",
+   "status": "existing",
+   "props": {
+    "series_id": "seattle-cannabis-rammings-2025",
+    "date": null,
+    "date_precision": "unknown",
+    "time": "04:29",
+    "scene_type": "business",
+    "location": "West Seattle, Seattle, WA",
+    "items_taken": [],
+    "unknowns": [
+     "exact date",
+     "number of people",
+     "footage availability",
+     "whether the Kia was stolen"
+    ],
+    "notes": "Cannabis shop, attempt. The source gives only a weekday, the Thursday before the article of 8 Aug 2025, so the date is left empty. The article says no information has been provided on a connection between the two West Seattle incidents. The MyNorthwest page was read by the research team but returned HTTP 403 to a later check, so it was not re-verified. No police statement links this incident to any other incident in the set.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "vehicle",
+      "description": "A black Kia SUV rammed the doors; nothing was taken"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-04/record.json",
+    "https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825"
+   ]
+  },
+  {
+   "id": "loc-west-seattle--seattle--wa",
+   "type": "location",
+   "label": "West Seattle, Seattle, WA",
+   "status": "existing",
+   "props": {
+    "city": "Seattle",
+    "state": "WA",
+    "neighborhood": "West Seattle"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-04/record.json"
+   ]
+  },
+  {
+   "id": "v-black-kia-suv",
+   "type": "vehicle",
+   "label": "black Kia SUV",
+   "status": "existing",
+   "props": {
+    "canonical": "black_kia_suv"
+   },
+   "sources": [
+    "data/cases/seattle-cannabis-rammings-2025/scr-04/record.json"
+   ]
+  },
+  {
+   "id": "new-orleans-suv-series-2023",
+   "type": "series",
+   "label": "New Orleans SUV series, 2023",
+   "status": "existing",
+   "props": {
+    "series_id": "new-orleans-suv-series-2023",
+    "full_label": "Business burglaries tied to one SUV, New Orleans, 2023",
+    "area": "New Orleans, LA",
+    "period": {
+     "start": "2023-07-22",
+     "end": "2023-07-27"
+    },
+    "ground_truth_status": "linked_by_police",
+    "outcome": "One arrest on 2023-07-31; NOPD said the investigation was ongoing"
+   },
+   "sources": [
+    "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+   ]
+  },
+  {
+   "id": "nos-01",
+   "type": "case",
+   "label": "NOS-01",
+   "status": "existing",
+   "props": {
+    "series_id": "new-orleans-suv-series-2023",
+    "date": "2023-07-22",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "1600 block of South Gayoso Street, New Orleans, LA",
+    "items_taken": [],
+    "unknowns": [
+     "time of day",
+     "forced-entry tool"
+    ],
+    "notes": "Attempted simple burglary of a business per NOPD. Nothing taken is recorded because it was an attempt.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "forced_entry",
+      "description": "Perpetrators forced entry; NOPD classes it as an attempted burglary"
+     },
+     {
+      "type": "vehicle",
+      "description": "White Nissan Xterra SUV, which NOPD says connects this incident to the others"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-01/record.json",
+    "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+   ]
+  },
+  {
+   "id": "loc-new-orleans--la",
+   "type": "location",
+   "label": "New Orleans, LA",
+   "status": "existing",
+   "props": {
+    "city": "New Orleans",
+    "state": "LA",
+    "neighborhood": null
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-01/record.json"
+   ]
+  },
+  {
+   "id": "tw-2023-W29",
+   "type": "time_window",
+   "label": "2023-W29",
+   "status": "existing",
+   "props": {
+    "start": "2023-07-17",
+    "end": "2023-07-23"
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-01/record.json"
+   ]
+  },
+  {
+   "id": "m-forced-entry",
+   "type": "method",
+   "label": "forced entry",
+   "status": "existing",
+   "props": {
+    "canonical": "forced_entry",
+    "synonyms_seen": []
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-01/record.json"
+   ]
+  },
+  {
+   "id": "v-white-nissan-xterra",
+   "type": "vehicle",
+   "label": "white Nissan Xterra",
+   "status": "existing",
+   "props": {
+    "canonical": "white_nissan_xterra"
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-01/record.json"
+   ]
+  },
+  {
+   "id": "nos-02",
+   "type": "case",
+   "label": "NOS-02",
+   "status": "existing",
+   "props": {
+    "series_id": "new-orleans-suv-series-2023",
+    "date": "2023-07-26",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "300 block of North Carrollton Avenue, New Orleans, LA",
+    "items_taken": [],
+    "unknowns": [
+     "time of day",
+     "forced-entry tool"
+    ],
+    "notes": "Attempted simple burglary of a business per NOPD. Nothing taken is recorded because it was an attempt.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "forced_entry",
+      "description": "Perpetrators forced entry; NOPD classes it as an attempted burglary"
+     },
+     {
+      "type": "vehicle",
+      "description": "White Nissan Xterra SUV, which NOPD says connects this incident to the others"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-02/record.json",
+    "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+   ]
+  },
+  {
+   "id": "tw-2023-W30",
+   "type": "time_window",
+   "label": "2023-W30",
+   "status": "existing",
+   "props": {
+    "start": "2023-07-24",
+    "end": "2023-07-30"
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-02/record.json"
+   ]
+  },
+  {
+   "id": "nos-03",
+   "type": "case",
+   "label": "NOS-03",
+   "status": "existing",
+   "props": {
+    "series_id": "new-orleans-suv-series-2023",
+    "date": "2023-07-26",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "12000 block of South I-10 Service Road, New Orleans, LA",
+    "items_taken": null,
+    "unknowns": [
+     "time of day",
+     "forced-entry tool",
+     "items taken"
+    ],
+    "notes": "Simple burglary of a business per NOPD. Items taken are not reported.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "forced_entry",
+      "description": "Perpetrators forced entry; NOPD classes it as an burglary"
+     },
+     {
+      "type": "vehicle",
+      "description": "White Nissan Xterra SUV, which NOPD says connects this incident to the others"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-03/record.json",
+    "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+   ]
+  },
+  {
+   "id": "nos-04",
+   "type": "case",
+   "label": "NOS-04",
+   "status": "existing",
+   "props": {
+    "series_id": "new-orleans-suv-series-2023",
+    "date": "2023-07-26",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "300 block of Arabella Street, New Orleans, LA",
+    "items_taken": null,
+    "unknowns": [
+     "time of day",
+     "forced-entry tool",
+     "items taken"
+    ],
+    "notes": "Simple burglary of a business per NOPD. Items taken are not reported.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "forced_entry",
+      "description": "Perpetrators forced entry; NOPD classes it as an burglary"
+     },
+     {
+      "type": "vehicle",
+      "description": "White Nissan Xterra SUV, which NOPD says connects this incident to the others"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-04/record.json",
+    "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+   ]
+  },
+  {
+   "id": "nos-05",
+   "type": "case",
+   "label": "NOS-05",
+   "status": "existing",
+   "props": {
+    "series_id": "new-orleans-suv-series-2023",
+    "date": "2023-07-26",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "8100 block of Oak Street, New Orleans, LA",
+    "items_taken": null,
+    "unknowns": [
+     "time of day",
+     "forced-entry tool",
+     "items taken"
+    ],
+    "notes": "Simple burglary of a business per NOPD. Items taken are not reported.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "forced_entry",
+      "description": "Perpetrators forced entry; NOPD classes it as an burglary"
+     },
+     {
+      "type": "vehicle",
+      "description": "White Nissan Xterra SUV, which NOPD says connects this incident to the others"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-05/record.json",
+    "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+   ]
+  },
+  {
+   "id": "nos-06",
+   "type": "case",
+   "label": "NOS-06",
+   "status": "existing",
+   "props": {
+    "series_id": "new-orleans-suv-series-2023",
+    "date": "2023-07-27",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "3600 block of Prytania Street, New Orleans, LA",
+    "items_taken": null,
+    "unknowns": [
+     "time of day",
+     "forced-entry tool",
+     "items taken"
+    ],
+    "notes": "Simple burglary of a business per NOPD. Items taken are not reported.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "forced_entry",
+      "description": "Perpetrators forced entry; NOPD classes it as an burglary"
+     },
+     {
+      "type": "vehicle",
+      "description": "White Nissan Xterra SUV, which NOPD says connects this incident to the others"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/new-orleans-suv-series-2023/nos-06/record.json",
+    "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+   ]
+  },
+  {
+   "id": "eastside-smash-grab-2018",
+   "type": "series",
+   "label": "Eastside smash and grab, 2018",
+   "status": "existing",
+   "props": {
+    "series_id": "eastside-smash-grab-2018",
+    "full_label": "Small business smash and grab spree, Eastside and Snohomish County, 2018",
+    "area": "Kirkland, Sammamish, Redmond, Bothell, Issaquah, Lynnwood, Mill Creek, Everett, Monroe, WA",
+    "period": {
+     "start": "2018-06",
+     "end": "2018-10-05"
+    },
+    "ground_truth_status": "partly_linked",
+    "outcome": "One defendant was arrested 5 Oct 2018 and charged that week with four burglary counts, one attempted burglary, trafficking in stolen property and methamphetamine possession, with bail of 225,000 dollars. The second defendant was arrested 8 Sep 2018 on 19 felony counts. Later outcome not found."
+   },
+   "sources": [
+    "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+   ]
+  },
+  {
+   "id": "esg-01",
+   "type": "case",
+   "label": "ESG-01",
+   "status": "existing",
+   "props": {
+    "series_id": "eastside-smash-grab-2018",
+    "date": "2018-06-01",
+    "date_precision": "month",
+    "time": null,
+    "scene_type": "business",
+    "location": "Kirkland, WA",
+    "items_taken": null,
+    "unknowns": [
+     "day",
+     "exact time",
+     "items taken",
+     "block"
+    ],
+    "notes": "Only the month is given, as early June, and the time is described as night. Three businesses on one row of storefronts were struck: an insurance agent, an Indian restaurant and a cafe. The fingerprint match is to a Seattle man, and police in King County knew his name as early as 6 Jul. The Herald article does not say which of the two defendants committed each incident.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "entry_damage",
+      "description": "Glass smashed at the storefronts"
+     },
+     {
+      "type": "fingerprint",
+      "description": "A fingerprint on an office drawer came back as an apparent match to the Seattle man"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-01/record.json",
+    "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+   ]
+  },
+  {
+   "id": "loc-kirkland--wa",
+   "type": "location",
+   "label": "Kirkland, WA",
+   "status": "existing",
+   "props": {
+    "city": "Kirkland",
+    "state": "WA",
+    "neighborhood": null
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-01/record.json"
+   ]
+  },
+  {
+   "id": "m-glass-smash",
+   "type": "method",
+   "label": "glass smash",
+   "status": "existing",
+   "props": {
+    "canonical": "glass_smash",
+    "synonyms_seen": []
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-01/record.json"
+   ]
+  },
+  {
+   "id": "esg-02",
+   "type": "case",
+   "label": "ESG-02",
+   "status": "existing",
+   "props": {
+    "series_id": "eastside-smash-grab-2018",
+    "date": "2018-07-01",
+    "date_precision": "month",
+    "time": null,
+    "scene_type": "business",
+    "location": "Kirkland, WA",
+    "items_taken": null,
+    "unknowns": [
+     "day",
+     "time",
+     "entry method",
+     "items taken",
+     "block"
+    ],
+    "notes": "Only the month is given, as early July. Vietnamese restaurant. The thief cut himself while breaking in. DNA swabs from blood on a table leg later matched the Seattle man, per charges filed in October. The Herald article does not say which of the two defendants committed each incident.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "dna",
+      "description": "Blood on a table leg; DNA swabs later matched the Seattle man"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-02/record.json",
+    "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+   ]
+  },
+  {
+   "id": "esg-03",
+   "type": "case",
+   "label": "ESG-03",
+   "status": "existing",
+   "props": {
+    "series_id": "eastside-smash-grab-2018",
+    "date": "2018-07-14",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "Near Silver Lake, WA",
+    "items_taken": null,
+    "unknowns": [
+     "time of break-in",
+     "which business was hit",
+     "items taken",
+     "block",
+     "city"
+    ],
+    "notes": "A business near Silver Lake. The man was caught moments after the break-in, early on 14 Jul, sitting in a stolen van at a nearby gas station. A baggie in his backpack tested positive for methamphetamine. Snohomish County prosecutors charged him with three counts of burglary after this arrest. The Herald article does not say which of the two defendants committed each incident.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "tool",
+      "description": "Window punching tool on the front seat of the van"
+     },
+     {
+      "type": "vehicle",
+      "description": "Suspect was sitting in a stolen van at a nearby gas station moments after the break-in"
+     },
+     {
+      "type": "other",
+      "description": "Broken glass found in the suspect's shoe"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-03/record.json",
+    "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+   ]
+  },
+  {
+   "id": "loc-near-silver-lake--wa",
+   "type": "location",
+   "label": "Near Silver Lake, WA",
+   "status": "existing",
+   "props": {
+    "city": "Near Silver Lake",
+    "state": "WA",
+    "neighborhood": null
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-03/record.json"
+   ]
+  },
+  {
+   "id": "tw-2018-W28",
+   "type": "time_window",
+   "label": "2018-W28",
+   "status": "existing",
+   "props": {
+    "start": "2018-07-09",
+    "end": "2018-07-15"
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-03/record.json"
+   ]
+  },
+  {
+   "id": "v-stolen-van",
+   "type": "vehicle",
+   "label": "stolen van",
+   "status": "existing",
+   "props": {
+    "canonical": "stolen_van"
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-03/record.json"
+   ]
+  },
+  {
+   "id": "esg-07",
+   "type": "case",
+   "label": "ESG-07",
+   "status": "existing",
+   "props": {
+    "series_id": "eastside-smash-grab-2018",
+    "date": "2018-08-19",
+    "date_precision": "day",
+    "time": null,
+    "scene_type": "business",
+    "location": "Issaquah, WA",
+    "items_taken": null,
+    "unknowns": [
+     "time",
+     "entry method",
+     "items taken",
+     "block"
+    ],
+    "notes": "A storage facility and a sewing and vacuum business, kept together as one record. The suspect was arrested three blocks away. The Herald article does not say which of the two defendants committed each incident.",
+    "media": [],
+    "evidence": [
+     {
+      "type": "other",
+      "description": "Suspect arrested three blocks away with pieces of broken glass in the bottom of his cuffed pants"
+     }
+    ]
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-07/record.json",
+    "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+   ]
+  },
+  {
+   "id": "loc-issaquah--wa",
+   "type": "location",
+   "label": "Issaquah, WA",
+   "status": "existing",
+   "props": {
+    "city": "Issaquah",
+    "state": "WA",
+    "neighborhood": null
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-07/record.json"
+   ]
+  },
+  {
+   "id": "tw-2018-W33",
+   "type": "time_window",
+   "label": "2018-W33",
+   "status": "existing",
+   "props": {
+    "start": "2018-08-13",
+    "end": "2018-08-19"
+   },
+   "sources": [
+    "data/cases/eastside-smash-grab-2018/esg-07/record.json"
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "id": "e-001",
+   "source": "rcg-01",
+   "target": "renton-crash-and-grab-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/series.json"
+  },
+  {
+   "id": "e-002",
+   "source": "rcg-01",
+   "target": "loc-kent--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-01/record.json"
+  },
+  {
+   "id": "e-003",
+   "source": "rcg-01",
+   "target": "m-paperwork-recovered",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-01/record.json"
+  },
+  {
+   "id": "e-004",
+   "source": "rcg-02",
+   "target": "renton-crash-and-grab-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/series.json"
+  },
+  {
+   "id": "e-005",
+   "source": "rcg-02",
+   "target": "loc-renton--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-02/record.json"
+  },
+  {
+   "id": "e-006",
+   "source": "rcg-02",
+   "target": "m-paperwork-recovered",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-02/record.json"
+  },
+  {
+   "id": "e-007",
+   "source": "rcg-03",
+   "target": "renton-crash-and-grab-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/series.json"
+  },
+  {
+   "id": "e-008",
+   "source": "rcg-03",
+   "target": "loc-renton--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-03/record.json"
+  },
+  {
+   "id": "e-009",
+   "source": "rcg-03",
+   "target": "tw-2023-W32",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-03/record.json"
+  },
+  {
+   "id": "e-010",
+   "source": "rcg-03",
+   "target": "m-vehicle-ramming",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-03/record.json"
+  },
+  {
+   "id": "e-011",
+   "source": "rcg-03",
+   "target": "v-stolen-black-jeep",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-03/record.json"
+  },
+  {
+   "id": "e-012",
+   "source": "rcg-06",
+   "target": "renton-crash-and-grab-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/series.json"
+  },
+  {
+   "id": "e-013",
+   "source": "rcg-06",
+   "target": "loc-renton--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-06/record.json"
+  },
+  {
+   "id": "e-014",
+   "source": "rcg-06",
+   "target": "tw-2023-W36",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-06/record.json"
+  },
+  {
+   "id": "e-015",
+   "source": "rcg-06",
+   "target": "m-vehicle-ramming",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-06/record.json"
+  },
+  {
+   "id": "e-016",
+   "source": "rcg-06",
+   "target": "v-stolen-black-jeep",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-06/record.json"
+  },
+  {
+   "id": "e-017",
+   "source": "rcg-07",
+   "target": "renton-crash-and-grab-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/series.json"
+  },
+  {
+   "id": "e-018",
+   "source": "rcg-07",
+   "target": "loc-renton--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-07/record.json"
+  },
+  {
+   "id": "e-019",
+   "source": "rcg-07",
+   "target": "tw-2023-W37",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-07/record.json"
+  },
+  {
+   "id": "e-020",
+   "source": "rcg-07",
+   "target": "m-vehicle-ramming",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-07/record.json"
+  },
+  {
+   "id": "e-021",
+   "source": "rcg-07",
+   "target": "v-stolen-black-jeep",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-07/record.json"
+  },
+  {
+   "id": "e-022",
+   "source": "rcg-08",
+   "target": "renton-crash-and-grab-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/series.json"
+  },
+  {
+   "id": "e-023",
+   "source": "rcg-08",
+   "target": "loc-renton--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-08/record.json"
+  },
+  {
+   "id": "e-024",
+   "source": "rcg-08",
+   "target": "tw-2023-W37",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-08/record.json"
+  },
+  {
+   "id": "e-025",
+   "source": "rcg-08",
+   "target": "m-vehicle-ramming",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-08/record.json"
+  },
+  {
+   "id": "e-026",
+   "source": "rcg-08",
+   "target": "v-stolen-black-jeep",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/renton-crash-and-grab-2023/rcg-08/record.json"
+  },
+  {
+   "id": "e-027",
+   "source": "scr-01",
+   "target": "seattle-cannabis-rammings-2025",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/series.json"
+  },
+  {
+   "id": "e-028",
+   "source": "scr-01",
+   "target": "loc-central-district--seattle--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-01/record.json"
+  },
+  {
+   "id": "e-029",
+   "source": "scr-01",
+   "target": "tw-2024-W14",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-01/record.json"
+  },
+  {
+   "id": "e-030",
+   "source": "scr-02",
+   "target": "seattle-cannabis-rammings-2025",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/series.json"
+  },
+  {
+   "id": "e-031",
+   "source": "scr-02",
+   "target": "loc-central-district--seattle--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+  },
+  {
+   "id": "e-032",
+   "source": "scr-02",
+   "target": "tw-2024-W15",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+  },
+  {
+   "id": "e-033",
+   "source": "scr-02",
+   "target": "m-vehicle-ramming",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+  },
+  {
+   "id": "e-034",
+   "source": "scr-02",
+   "target": "v-stolen-hyundai-sonata",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+  },
+  {
+   "id": "e-035",
+   "source": "scr-02",
+   "target": "i-cannabis-products",
+   "rel": "ITEM_TAKEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+  },
+  {
+   "id": "e-036",
+   "source": "scr-02",
+   "target": "i-cash",
+   "rel": "ITEM_TAKEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-02/record.json"
+  },
+  {
+   "id": "e-037",
+   "source": "scr-03",
+   "target": "seattle-cannabis-rammings-2025",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/series.json"
+  },
+  {
+   "id": "e-038",
+   "source": "scr-03",
+   "target": "loc-belltown--seattle--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-03/record.json"
+  },
+  {
+   "id": "e-039",
+   "source": "scr-03",
+   "target": "tw-2024-W31",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-03/record.json"
+  },
+  {
+   "id": "e-040",
+   "source": "scr-03",
+   "target": "m-vehicle-ramming",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-03/record.json"
+  },
+  {
+   "id": "e-041",
+   "source": "scr-03",
+   "target": "v-stolen-car",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-03/record.json"
+  },
+  {
+   "id": "e-042",
+   "source": "scr-04",
+   "target": "seattle-cannabis-rammings-2025",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/series.json"
+  },
+  {
+   "id": "e-043",
+   "source": "scr-04",
+   "target": "loc-west-seattle--seattle--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-04/record.json"
+  },
+  {
+   "id": "e-044",
+   "source": "scr-04",
+   "target": "m-vehicle-ramming",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-04/record.json"
+  },
+  {
+   "id": "e-045",
+   "source": "scr-04",
+   "target": "v-black-kia-suv",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/seattle-cannabis-rammings-2025/scr-04/record.json"
+  },
+  {
+   "id": "e-046",
+   "source": "nos-01",
+   "target": "new-orleans-suv-series-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/series.json"
+  },
+  {
+   "id": "e-047",
+   "source": "nos-01",
+   "target": "loc-new-orleans--la",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-01/record.json"
+  },
+  {
+   "id": "e-048",
+   "source": "nos-01",
+   "target": "tw-2023-W29",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-01/record.json"
+  },
+  {
+   "id": "e-049",
+   "source": "nos-01",
+   "target": "m-forced-entry",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-01/record.json"
+  },
+  {
+   "id": "e-050",
+   "source": "nos-01",
+   "target": "v-white-nissan-xterra",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-01/record.json"
+  },
+  {
+   "id": "e-051",
+   "source": "nos-02",
+   "target": "new-orleans-suv-series-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/series.json"
+  },
+  {
+   "id": "e-052",
+   "source": "nos-02",
+   "target": "loc-new-orleans--la",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-02/record.json"
+  },
+  {
+   "id": "e-053",
+   "source": "nos-02",
+   "target": "tw-2023-W30",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-02/record.json"
+  },
+  {
+   "id": "e-054",
+   "source": "nos-02",
+   "target": "m-forced-entry",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-02/record.json"
+  },
+  {
+   "id": "e-055",
+   "source": "nos-02",
+   "target": "v-white-nissan-xterra",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-02/record.json"
+  },
+  {
+   "id": "e-056",
+   "source": "nos-03",
+   "target": "new-orleans-suv-series-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/series.json"
+  },
+  {
+   "id": "e-057",
+   "source": "nos-03",
+   "target": "loc-new-orleans--la",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-03/record.json"
+  },
+  {
+   "id": "e-058",
+   "source": "nos-03",
+   "target": "tw-2023-W30",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-03/record.json"
+  },
+  {
+   "id": "e-059",
+   "source": "nos-03",
+   "target": "m-forced-entry",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-03/record.json"
+  },
+  {
+   "id": "e-060",
+   "source": "nos-03",
+   "target": "v-white-nissan-xterra",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-03/record.json"
+  },
+  {
+   "id": "e-061",
+   "source": "nos-04",
+   "target": "new-orleans-suv-series-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/series.json"
+  },
+  {
+   "id": "e-062",
+   "source": "nos-04",
+   "target": "loc-new-orleans--la",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-04/record.json"
+  },
+  {
+   "id": "e-063",
+   "source": "nos-04",
+   "target": "tw-2023-W30",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-04/record.json"
+  },
+  {
+   "id": "e-064",
+   "source": "nos-04",
+   "target": "m-forced-entry",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-04/record.json"
+  },
+  {
+   "id": "e-065",
+   "source": "nos-04",
+   "target": "v-white-nissan-xterra",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-04/record.json"
+  },
+  {
+   "id": "e-066",
+   "source": "nos-05",
+   "target": "new-orleans-suv-series-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/series.json"
+  },
+  {
+   "id": "e-067",
+   "source": "nos-05",
+   "target": "loc-new-orleans--la",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-05/record.json"
+  },
+  {
+   "id": "e-068",
+   "source": "nos-05",
+   "target": "tw-2023-W30",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-05/record.json"
+  },
+  {
+   "id": "e-069",
+   "source": "nos-05",
+   "target": "m-forced-entry",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-05/record.json"
+  },
+  {
+   "id": "e-070",
+   "source": "nos-05",
+   "target": "v-white-nissan-xterra",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-05/record.json"
+  },
+  {
+   "id": "e-071",
+   "source": "nos-06",
+   "target": "new-orleans-suv-series-2023",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/series.json"
+  },
+  {
+   "id": "e-072",
+   "source": "nos-06",
+   "target": "loc-new-orleans--la",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-06/record.json"
+  },
+  {
+   "id": "e-073",
+   "source": "nos-06",
+   "target": "tw-2023-W30",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-06/record.json"
+  },
+  {
+   "id": "e-074",
+   "source": "nos-06",
+   "target": "m-forced-entry",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-06/record.json"
+  },
+  {
+   "id": "e-075",
+   "source": "nos-06",
+   "target": "v-white-nissan-xterra",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/new-orleans-suv-series-2023/nos-06/record.json"
+  },
+  {
+   "id": "e-076",
+   "source": "esg-01",
+   "target": "eastside-smash-grab-2018",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/series.json"
+  },
+  {
+   "id": "e-077",
+   "source": "esg-01",
+   "target": "loc-kirkland--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-01/record.json"
+  },
+  {
+   "id": "e-078",
+   "source": "esg-01",
+   "target": "m-glass-smash",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-01/record.json"
+  },
+  {
+   "id": "e-079",
+   "source": "esg-02",
+   "target": "eastside-smash-grab-2018",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/series.json"
+  },
+  {
+   "id": "e-080",
+   "source": "esg-02",
+   "target": "loc-kirkland--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-02/record.json"
+  },
+  {
+   "id": "e-081",
+   "source": "esg-03",
+   "target": "eastside-smash-grab-2018",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/series.json"
+  },
+  {
+   "id": "e-082",
+   "source": "esg-03",
+   "target": "loc-near-silver-lake--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-03/record.json"
+  },
+  {
+   "id": "e-083",
+   "source": "esg-03",
+   "target": "tw-2018-W28",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-03/record.json"
+  },
+  {
+   "id": "e-084",
+   "source": "esg-03",
+   "target": "m-glass-smash",
+   "rel": "USED_METHOD",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-03/record.json"
+  },
+  {
+   "id": "e-085",
+   "source": "esg-03",
+   "target": "v-stolen-van",
+   "rel": "VEHICLE_SEEN",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-03/record.json"
+  },
+  {
+   "id": "e-086",
+   "source": "esg-07",
+   "target": "eastside-smash-grab-2018",
+   "rel": "PART_OF_SERIES",
+   "kind": "confirmed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/series.json"
+  },
+  {
+   "id": "e-087",
+   "source": "esg-07",
+   "target": "loc-issaquah--wa",
+   "rel": "AT_LOCATION",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-07/record.json"
+  },
+  {
+   "id": "e-088",
+   "source": "esg-07",
+   "target": "tw-2018-W33",
+   "rel": "IN_WINDOW",
+   "kind": "observed",
+   "confidence": 1.0,
+   "provenance": "data/cases/eastside-smash-grab-2018/esg-07/record.json"
+  }
+ ],
+ "stats": {
+  "nodes": 55,
+  "edges": 88,
+  "by_type": {
+   "series": 4,
+   "case": 20,
+   "location": 9,
+   "method": 4,
+   "time_window": 10,
+   "vehicle": 6,
+   "item": 2
+  },
+  "held_out": [
+   "rcg-04",
+   "rcg-05",
+   "scr-05"
+  ]
+ }
+}
