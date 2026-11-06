@@ -957,7 +957,7 @@ function renderHypotheses() {
     const current = existing.get(id);
     existing.delete(id);
     if (current?.dataset.sig === sig) return;
-    if (current) patchCard(current, build(), sig);
+    if (current) patchCard(current, build, sig);
     else fresh.push(stamp(build(), sig));
   });
   existing.forEach((card) => card.remove());
@@ -970,10 +970,11 @@ function stamp(card, sig) {
   return card;
 }
 
-function patchCard(current, card, sig) {
+function patchCard(current, build, sig) {
   const id = current.dataset.id;
   const draft = current.querySelector(".hyp-reason");
   if (draft) state.drafts.set(id, draft.value);
+  const card = build();
   const hadFocus = current.contains(document.activeElement);
   card.dataset.sig = sig;
   card.classList.add("patched");

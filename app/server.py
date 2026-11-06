@@ -343,7 +343,10 @@ class Pipeline:
             noun = "hypothesis" if count == 1 else "hypotheses"
             self.event("run.finished", run_id, "intake", f"Run finished in {seconds}s with {count} {noun}",
                        {"case_id": case_id, "seconds": seconds, "hypotheses": count, "nodes": nodes})
-            self.emit_score(run_id)
+            try:
+                self.emit_score(run_id)
+            except Exception as error:
+                self.report_error(run_id, "scorer", "score", "Scoring", error)
 
     def report_error(self, run_id, agent, step, label, error, case_id=None):
         run_dir = self.runs_dir / run_id
