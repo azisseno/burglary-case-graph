@@ -1,0 +1,20 @@
+{
+ "id": "fx-01",
+ "series_id": "fx-series",
+ "date": "2023-09-01",
+ "date_precision": "day",
+ "location": "Renton, WA",
+ "scene_type": "business",
+ "entry_method": "vehicle backed through glass storefront",
+ "vehicle": "stolen black Jeep",
+ "items_taken": [],
+ "evidence": [
+  {
+   "type": "vehicle",
+   "description": "stolen black Jeep"
+  }
+ ],
+ "unknowns": [],
+ "media": [],
+ "notes": null
+}

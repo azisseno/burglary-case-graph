@@ -420,7 +420,7 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
 
 .metrics {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr) 1.4fr;
   padding: 10px 8px;
   gap: 4px;
   background: var(--ink);
@@ -449,3 +449,10 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
   .pipeline li.active::before, .conn[data-state="reconnecting"] .conn-dot { animation: none; }
   .console li, .hyp { animation: none; }
 }
+
+.run-progress { font-family: var(--mono); font-size: 11px; color: var(--case); margin-left: auto; margin-right: 10px; }
+.toggle-small { font-size: 11px; }
+.dropzone-copy .btn-plain { align-self: flex-start; margin-top: 4px; }
+.pane-head .toggle { margin-left: auto; margin-right: 10px; }
+.hyp[data-below-floor="true"] { opacity: 0.7; }
+.hyp-floor { color: var(--dim); font-family: var(--mono); font-size: 10.5px; }

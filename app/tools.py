@@ -1,3 +1,4 @@
+import re
 from datetime import date
 
 from . import normalize as N
@@ -9,6 +10,7 @@ ATTRIBUTE_RELS = {
     "location": "AT_LOCATION",
     "time_window": "IN_WINDOW",
 }
+CONFIDENCE_FLOOR = 0.5
 SCORE_WEIGHTS = {
     "method": 3,
     "vehicle": 3,
@@ -46,17 +48,37 @@ def parse_date(text):
         return None
 
 
-def get_case(graph, case_id):
+ANSWER_KEY_PROPS = ("source_id", "upload_dir")
+ANSWER_KEY_PROVENANCE = re.compile(r"^[a-z]{3}-\d+/")
+
+
+def without_answer_key(node):
+    props = {k: v for k, v in node["props"].items() if k not in ANSWER_KEY_PROPS}
+    return {**node, "props": props}
+
+
+def clean_provenance(edge):
+    provenance = edge.get("provenance")
+    if isinstance(provenance, str) and ANSWER_KEY_PROVENANCE.match(provenance):
+        return {**edge, "provenance": ANSWER_KEY_PROVENANCE.sub("", provenance)}
+    return edge
+
+
+def get_case(graph, case_id, redact=True):
     node = graph.nodes.get(case_id)
     if node is None or node["type"] != "case":
         return None
     attrs = case_attributes(graph, case_id)
     series = case_series(graph, case_id)
+    edges = graph.edges_of(case_id)
+    if redact:
+        node = without_answer_key(node)
+        edges = [clean_provenance(e) for e in edges]
     return {
         "case": node,
-        "attributes": {t: [{"id": a["node"]["id"], "label": a["node"]["label"], "edge_id": a["edge"]["id"], "provenance": a["edge"]["provenance"]} for a in items] for t, items in attrs.items()},
+        "attributes": {t: [{"id": a["node"]["id"], "label": a["node"]["label"], "edge_id": a["edge"]["id"], "provenance": clean_provenance(a["edge"])["provenance"] if redact else a["edge"]["provenance"]} for a in items] for t, items in attrs.items()},
         "series": {"id": series["id"], "label": series["label"]} if series else None,
-        "edges": graph.edges_of(case_id),
+        "edges": edges,
     }
 
 
@@ -246,6 +268,7 @@ def propose_hypothesis(graph, case_id, linked_case_ids, rationale, cited_edge_id
         "rationale": rationale,
         "cited_edge_ids": list(cited_edge_ids),
         "fallback": fallback,
+        "below_floor": confidence < CONFIDENCE_FLOOR,
         "critic": None,
         "decision": None,
         "decision_reason": None,

@@ -53,9 +53,11 @@
       <h2 id="intake-title" class="pane-title">Intake</h2>
       <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Drop case files or click to choose">
         <input type="file" id="file-input" multiple accept=".txt,.md,.pdf,.docx,image/*" hidden>
+        <input type="file" id="folder-input" webkitdirectory multiple hidden>
         <div class="dropzone-copy">
-          <strong>Drop case files here</strong>
-          <span>Photos, text, PDF or Word. Or click to choose.</span>
+          <strong>Drop a folder or case files</strong>
+          <span>A folder of incidents runs as one bulk import. Files: photos, text, PDF or Word.</span>
+          <button type="button" class="btn-plain" id="choose-folder">Choose folder</button>
         </div>
         <ul class="file-list" id="file-list"></ul>
       </div>
@@ -74,11 +76,12 @@
       </div>
       <button type="button" class="btn btn-primary" id="add-case">Add case</button>
       <div class="samples">
-        <span class="samples-label">Held out samples</span>
+        <span class="samples-label">Samples</span>
         <div class="samples-row">
+          <button type="button" class="btn btn-sample" data-folder="folder-1">Folder 1</button>
+          <button type="button" class="btn btn-sample" data-folder="folder-2">Folder 2</button>
           <button type="button" class="btn btn-sample" data-demo="renton-a">Renton A</button>
           <button type="button" class="btn btn-sample" data-demo="renton-b">Renton B</button>
-          <button type="button" class="btn btn-sample" data-demo="decoy-cannabis">Belltown cannabis</button>
         </div>
       </div>
     </section>
@@ -86,6 +89,7 @@
     <section class="console-wrap" aria-labelledby="console-title">
       <div class="console-head">
         <h2 id="console-title" class="pane-title">Agent console</h2>
+        <span class="run-progress" id="run-progress" hidden></span>
         <span class="console-count" id="console-count">0 events</span>
       </div>
       <ol class="console" id="console" aria-live="polite"></ol>
@@ -125,6 +129,10 @@
       <div class="pane-head">
         <h2 id="review-title" class="pane-title">Review</h2>
         <span class="pane-count" id="review-count"></span>
+        <label class="toggle toggle-small">
+          <input type="checkbox" id="floor-toggle">
+          <span>Show proposals under 0.5</span>
+        </label>
       </div>
       <div class="hypotheses" id="hypotheses">
         <p class="empty">No hypotheses yet. Drop a case or pick a sample.</p>
@@ -142,11 +150,11 @@
     </section>
 
     <section class="metrics" aria-label="Metrics">
-      <div class="metric"><span class="metric-value" id="m-cases">0</span><span class="metric-label">Cases added</span></div>
-      <div class="metric"><span class="metric-value" id="m-proposed">0</span><span class="metric-label">Proposed</span></div>
-      <div class="metric"><span class="metric-value" id="m-accepted">0</span><span class="metric-label">Accepted</span></div>
-      <div class="metric"><span class="metric-value" id="m-rejected">0</span><span class="metric-label">Rejected</span></div>
-      <div class="metric"><span class="metric-value" id="m-median">0s</span><span class="metric-label">Drop to proposal</span></div>
+      <div class="metric"><span class="metric-value" id="m-cases">0</span><span class="metric-label">Cases in graph</span></div>
+      <div class="metric"><span class="metric-value" id="m-proposed">0</span><span class="metric-label">Series proposed (all)</span></div>
+      <div class="metric"><span class="metric-value" id="m-accepted">0</span><span class="metric-label">Series accepted</span></div>
+      <div class="metric"><span class="metric-value" id="m-covered">0</span><span class="metric-label">Cases in accepted series</span></div>
+      <div class="metric metric-wide" title="All cases in the proposal belong to one series that police publicly linked; includes proposals below 0.5"><span class="metric-value" id="m-agree">-</span><span class="metric-label">Proposed series matching a police-linked series</span></div>
     </section>
   </aside>
 </main>

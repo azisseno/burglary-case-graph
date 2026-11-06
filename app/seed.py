@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 from . import normalize as N
@@ -12,6 +13,9 @@ HELD_OUT_PATH = RUNS_DIR / "held_out.json"
 HELD_OUT = ["rcg-04", "rcg-05", "scr-03"]
 
 METHOD_EVIDENCE = {"forced_entry", "entry_damage", "safe_access", "tool", "other", "alarm", "theft", "vehicle", "footage"}
+
+
+GROUND_TRUTH_LINKED = ("linked_by_police", "partly_linked")
 
 
 def case_node_id(case_id):
@@ -143,9 +147,10 @@ def build_graph(cases_dir=CASES_DIR, held_out=HELD_OUT):
 
 
 def main():
+    runs_dir = Path(os.environ.get("CASE_GRAPH_RUNS") or RUNS_DIR)
     graph = build_graph()
-    graph.save(GRAPH_PATH)
-    HELD_OUT_PATH.write_text(json.dumps(HELD_OUT, indent=1))
+    graph.save(runs_dir / "graph.json")
+    (runs_dir / "held_out.json").write_text(json.dumps(HELD_OUT, indent=1))
     print(json.dumps(graph.stats(), indent=1))
 
 

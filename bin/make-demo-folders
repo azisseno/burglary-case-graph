@@ -1,0 +1,283 @@
+#!/usr/bin/env python3
+import json
+import random
+import re
+import shutil
+import sys
+import zlib
+from datetime import date
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from app.scrub import UNKNOWN_DROP, scrub  # noqa: E402
+
+ROOT = Path(__file__).resolve().parent.parent
+CASES = ROOT / "data" / "cases"
+OUT = ROOT / "data" / "demo-folders"
+HELD_OUT = {"rcg-04", "rcg-05"}
+TARGET_TOTAL = 120
+SHUFFLE_SEED = 7
+FOLDERS = ("folder-1", "folder-2")
+IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp"}
+
+SCENE_LABELS = {
+    "residence": "residence",
+    "business": "commercial premises",
+    "cell_phone_store": "cell phone store",
+    "restaurant": "restaurant",
+    "restaurant_bar": "restaurant and bar",
+    "bank": "bank",
+    "business_robbery": "commercial premises (open for business)",
+    "bakery": "bakery",
+    "auto_repair_shop": "auto repair shop",
+    "sand_and_gravel_company": "sand and gravel company",
+    "office_building_and_restaurant": "office building and restaurant",
+    "grocery_store": "grocery store",
+    "school": "school",
+    "vehicle": "vehicle",
+    "unknown": "not reported",
+}
+
+MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+          "August", "September", "October", "November", "December"]
+
+OPENERS = [
+    "Officers were dispatched to the {premises} {where} and met the reporting party.",
+    "A patrol unit responded to a reported burglary at a {premises} {where}.",
+    "The responding officer arrived at the {premises} {where} and made contact with the reporting party.",
+    "Police were called to a {premises} {where} regarding a break-in.",
+    "On arrival at the {premises} {where}, the responding officer began a scene examination.",
+]
+
+LEAD_INS = {
+    "forced_entry": ["The officer documented how entry was made: {d}.", "Entry: {d}.", "Examination of the point of entry showed the following. {d}."],
+    "entry_damage": ["Damage at the scene: {d}.", "The officer recorded damage as follows. {d}.", "Damage noted: {d}."],
+    "theft": ["The reporting party told officers about the loss. {d}.", "Loss reported at the scene: {d}.", "Regarding what was taken, {d_lower}."],
+    "vehicle": ["Vehicle information: {d}.", "The officer noted a vehicle detail. {d}.", "On the vehicle, the report records that {d_lower}."],
+    "footage": ["Camera footage: {d}.", "Regarding video, {d_lower}.", "The officer noted camera coverage. {d}."],
+    "witness": ["Witness information: {d}.", "A witness account was recorded. {d}.", "According to the witness statement, {d_lower}."],
+    "alarm": ["Alarm activity: {d}.", "The officer noted an alarm. {d}."],
+    "tool": ["Tool information: {d}.", "A tool was noted. {d}."],
+    "fingerprint": ["Prints: {d}.", "Fingerprint evidence: {d}."],
+    "dna": ["DNA evidence: {d}."],
+    "phone_location": ["Phone location data: {d}.", "Regarding phone records, {d_lower}."],
+    "plate_reader": ["Plate reader information: {d}.", "A plate reader search was noted. {d}."],
+    "property_recovered": ["Recovery: {d}.", "Property was later recovered. {d}."],
+    "document_found": ["Documents: {d}."],
+    "other": ["Additional observation: {d}.", "The officer also noted the following. {d}.", "Other detail: {d}."],
+}
+
+EVIDENCE_SECTIONS = [
+    ("FOOTAGE", {"footage"}),
+    ("VEHICLE", {"vehicle", "plate_reader"}),
+    ("POINT OF ENTRY", {"forced_entry"}),
+    ("DAMAGE", {"entry_damage"}),
+]
+OTHER_EVIDENCE_TYPES = {"alarm", "tool", "fingerprint", "dna", "phone_location", "property_recovered", "document_found", "witness", "other"}
+
+
+def lower_first(text):
+    keeps_case = len(text) > 1 and text[1].isupper()
+    return text if keeps_case else text[:1].lower() + text[1:]
+
+
+def report_number(record):
+    year = (record["date"] or "2000")[2:4]
+    serial = zlib.crc32(record["id"].encode()) % 100000
+    return f"{year}-0{serial:05d}"
+
+
+def date_phrase(record):
+    year, month, day = (int(p) for p in record["date"].split("-"))
+    if record.get("date_precision") == "month":
+        return f"{MONTHS[month - 1]} {year} (day not reported)"
+    weekday = date(year, month, day).strftime("%A")
+    return f"{weekday}, {MONTHS[month - 1]} {day}, {year}"
+
+
+def time_phrase(record):
+    if not record["time"]:
+        return "not reported"
+    if record["time_precision"] in {"approximate", "window"}:
+        return f"approximately {record['time']}"
+    return record["time"]
+
+
+def location_phrase(record):
+    return record["location"] or "not reported"
+
+
+def where_phrase(record):
+    if not record["location"]:
+        return "(location not reported)"
+    if record["location_precision"] == "block":
+        return f"in the {record['location']}"
+    return f"in {record['location']}"
+
+
+def clean_unknowns(record):
+    return [u for u in record["unknowns"] if not UNKNOWN_DROP.search(u)]
+
+
+def items_phrase(record):
+    items = record["items_taken"]
+    if items is None:
+        return "not reported"
+    if not items:
+        return "none reported"
+    return "; ".join(items)
+
+
+def section_lines(record, types):
+    lines = [scrub(e["description"]) for e in record["evidence"] if e["type"] in types]
+    return lines
+
+
+def render_evidence(record, photo_count):
+    out = ["EVIDENCE"]
+    for title, types in EVIDENCE_SECTIONS:
+        lines = section_lines(record, types)
+        if title == "FOOTAGE" and photo_count:
+            lines.append(f"{photo_count} photograph(s) attached to this report")
+        out.append(f"  {title}: " + (" | ".join(lines) if lines else "not reported"))
+    other = section_lines(record, OTHER_EVIDENCE_TYPES)
+    out.append("  OTHER: " + (" | ".join(other) if other else "not reported"))
+    out.append(f"  ITEMS MISSING: {items_phrase(record)}")
+    return out
+
+
+def render_narrative(record, rng):
+    premises = SCENE_LABELS.get(record["scene_type"], record["scene_type"].replace("_", " "))
+    sentences = [rng.choice(OPENERS).format(premises=premises, where=where_phrase(record))]
+    for item in record["evidence"]:
+        description = scrub(item["description"])
+        template = rng.choice(LEAD_INS[item["type"]])
+        sentences.append(template.format(d=description, d_lower=lower_first(description)))
+    if record["time"]:
+        sentences.append(f"The time of the incident was recorded as {time_phrase(record)}.")
+    return " ".join(sentences)
+
+
+def render_report(record, photo_count):
+    rng = random.Random(record["id"])
+    premises = SCENE_LABELS.get(record["scene_type"], record["scene_type"].replace("_", " "))
+    unknowns = clean_unknowns(record)
+    lines = [
+        "INCIDENT REPORT",
+        f"Report number: {report_number(record)}",
+        f"Date of incident: {date_phrase(record)}",
+        f"Time (approximate): {time_phrase(record)}",
+        f"Location: {location_phrase(record)}",
+        f"Premises type: {premises}",
+        "",
+        "NARRATIVE",
+        render_narrative(record, rng),
+        "",
+        *render_evidence(record, photo_count),
+        "",
+        "UNKNOWNS: " + ("; ".join(unknowns) if unknowns else "none recorded"),
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def load_records():
+    records = []
+    for record_path in sorted(CASES.glob("*/*/record.json")):
+        record = json.loads(record_path.read_text())
+        record["_dir"] = record_path.parent
+        records.append(record)
+    return records
+
+
+def exclusion_reason(record):
+    if record["id"] in HELD_OUT:
+        return "held out as single drop"
+    if record["date"] is None:
+        return "date not reported"
+    if len(record["evidence"]) < 2:
+        return "fewer than two evidence items"
+    return None
+
+
+def trim_to_target(eligible):
+    if len(eligible) <= TARGET_TOTAL:
+        return eligible, {}
+    by_series = {}
+    for record in eligible:
+        by_series.setdefault(record["series_id"], []).append(record)
+    removable = sorted(
+        (r for r in eligible if len(by_series[r["series_id"]]) > 3),
+        key=lambda r: (len(r["evidence"]), r["id"]),
+    )
+    dropped = {}
+    for record in removable:
+        if len(eligible) - len(dropped) <= TARGET_TOTAL:
+            break
+        if sum(1 for r in by_series[record["series_id"]] if r["id"] not in dropped) > 3:
+            dropped[record["id"]] = "trimmed to target size (thinnest evidence)"
+    return [r for r in eligible if r["id"] not in dropped], dropped
+
+
+def split_folders(chosen):
+    rng = random.Random(SHUFFLE_SEED)
+    by_series = {}
+    for record in chosen:
+        by_series.setdefault(record["series_id"], []).append(record["id"])
+    series_ids = sorted(by_series)
+    rng.shuffle(series_ids)
+    assignment = {name: [] for name in FOLDERS}
+    turn = 0
+    for series_id in series_ids:
+        members = sorted(by_series[series_id])
+        rng.shuffle(members)
+        for member in members:
+            smaller = min(FOLDERS, key=lambda f: (len(assignment[f]), f))
+            target = smaller if len(members) == 1 else FOLDERS[turn % 2]
+            assignment[target].append(member)
+            turn += 1
+    return {name: sorted(ids) for name, ids in assignment.items()}
+
+
+def write_incident(folder, record):
+    incident_dir = OUT / folder / record["id"]
+    incident_dir.mkdir(parents=True)
+    photos_dir = record["_dir"] / "photos"
+    photos = sorted(p for p in photos_dir.iterdir() if p.suffix.lower() in IMAGE_SUFFIXES) if photos_dir.is_dir() else []
+    for photo in photos:
+        shutil.copy2(photo, incident_dir / photo.name)
+    (incident_dir / "report.txt").write_text(render_report(record, len(photos)))
+
+
+def main():
+    records = load_records()
+    excluded = {}
+    eligible = []
+    for record in records:
+        reason = exclusion_reason(record)
+        if reason:
+            excluded[record["id"]] = reason
+        else:
+            eligible.append(record)
+    chosen, trimmed = trim_to_target(eligible)
+    excluded.update(trimmed)
+    chosen_by_id = {r["id"]: r for r in chosen}
+    assignment = split_folders(chosen)
+
+    if OUT.exists():
+        shutil.rmtree(OUT)
+    OUT.mkdir(parents=True)
+    coverage = {}
+    for folder, ids in assignment.items():
+        for incident_id in ids:
+            record = chosen_by_id[incident_id]
+            write_incident(folder, record)
+            series_counts = coverage.setdefault(record["series_id"], {name: 0 for name in FOLDERS})
+            series_counts[folder] += 1
+    manifest = {"folders": assignment, "excluded": dict(sorted(excluded.items())), "series_coverage": dict(sorted(coverage.items()))}
+    (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    print(json.dumps({"folders": {k: len(v) for k, v in assignment.items()}, "series_coverage": manifest["series_coverage"]}, indent=1))
+
+
+if __name__ == "__main__":
+    main()

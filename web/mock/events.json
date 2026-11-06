@@ -991,6 +991,1254 @@
           }
         }
       }
+    ],
+    "bulk": [
+      {
+        "after_ms": 300,
+        "event": {
+          "type": "run.started",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Bulk run started for folder-1: 6 incidents",
+          "data": {
+            "case_id": null,
+            "label": "folder-1",
+            "file_count": 18,
+            "total": 6,
+            "bulk": true
+          }
+        }
+      },
+      {
+        "after_ms": 450,
+        "event": {
+          "type": "run.case_started",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case 1 of 6: lbs-01",
+          "data": {
+            "case_id": "lbs-01",
+            "index": 1,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 350,
+        "event": {
+          "type": "build.nodes",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "builder",
+          "message": "Built case LBS-01 with 5 observed edges",
+          "data": {
+            "nodes": [
+              {
+                "id": "lbs-01",
+                "type": "case",
+                "label": "LBS-01",
+                "status": "new",
+                "props": {
+                  "date": "2023-08-08",
+                  "location": "Renton, WA",
+                  "scene_type": "business",
+                  "source_id": "lbs-01"
+                },
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "loc-renton",
+                "type": "location",
+                "label": "Renton, WA",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "tw-2023-W34",
+                "type": "time_window",
+                "label": "2023-W34",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "m-ramming",
+                "type": "method",
+                "label": "Vehicle ramming",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "v-jeep",
+                "type": "vehicle",
+                "label": "Black Jeep",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "item-lbs-01",
+                "type": "item",
+                "label": "Tools",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "m-door",
+                "type": "method",
+                "label": "Forced door",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              }
+            ],
+            "edges": [
+              {
+                "id": "e-lbs-01-loc-renton",
+                "source": "lbs-01",
+                "target": "loc-renton",
+                "rel": "AT_LOCATION",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-01-tw-2023-W34",
+                "source": "lbs-01",
+                "target": "tw-2023-W34",
+                "rel": "IN_WINDOW",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-01-m-ramming",
+                "source": "lbs-01",
+                "target": "m-ramming",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-01-v-jeep",
+                "source": "lbs-01",
+                "target": "v-jeep",
+                "rel": "USED_VEHICLE",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-01-item-lbs-01",
+                "source": "lbs-01",
+                "target": "item-lbs-01",
+                "rel": "TOOK_ITEM",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-01-m-door",
+                "source": "lbs-01",
+                "target": "m-door",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 250,
+        "event": {
+          "type": "run.case_finished",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case lbs-01 finished",
+          "data": {
+            "case_id": "lbs-01",
+            "index": 1,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 450,
+        "event": {
+          "type": "run.case_started",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case 2 of 6: lbs-02",
+          "data": {
+            "case_id": "lbs-02",
+            "index": 2,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 350,
+        "event": {
+          "type": "build.nodes",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "builder",
+          "message": "Built case LBS-02 with 5 observed edges",
+          "data": {
+            "nodes": [
+              {
+                "id": "lbs-02",
+                "type": "case",
+                "label": "LBS-02",
+                "status": "new",
+                "props": {
+                  "date": "2023-08-20",
+                  "location": "Renton, WA",
+                  "scene_type": "business",
+                  "source_id": "lbs-02"
+                },
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "tw-2023-W35",
+                "type": "time_window",
+                "label": "2023-W35",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "item-lbs-02",
+                "type": "item",
+                "label": "Electronics",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              }
+            ],
+            "edges": [
+              {
+                "id": "e-lbs-02-loc-renton",
+                "source": "lbs-02",
+                "target": "loc-renton",
+                "rel": "AT_LOCATION",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-02-tw-2023-W35",
+                "source": "lbs-02",
+                "target": "tw-2023-W35",
+                "rel": "IN_WINDOW",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-02-m-ramming",
+                "source": "lbs-02",
+                "target": "m-ramming",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-02-v-jeep",
+                "source": "lbs-02",
+                "target": "v-jeep",
+                "rel": "USED_VEHICLE",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-02-item-lbs-02",
+                "source": "lbs-02",
+                "target": "item-lbs-02",
+                "rel": "TOOK_ITEM",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-02-m-door",
+                "source": "lbs-02",
+                "target": "m-door",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 250,
+        "event": {
+          "type": "run.case_finished",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case lbs-02 finished",
+          "data": {
+            "case_id": "lbs-02",
+            "index": 2,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 450,
+        "event": {
+          "type": "run.case_started",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case 3 of 6: lbs-03",
+          "data": {
+            "case_id": "lbs-03",
+            "index": 3,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 350,
+        "event": {
+          "type": "build.nodes",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "builder",
+          "message": "Built case LBS-03 with 5 observed edges",
+          "data": {
+            "nodes": [
+              {
+                "id": "lbs-03",
+                "type": "case",
+                "label": "LBS-03",
+                "status": "new",
+                "props": {
+                  "date": "2023-09-02",
+                  "location": "Kent, WA",
+                  "scene_type": "business",
+                  "source_id": "lbs-03"
+                },
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "loc-kent",
+                "type": "location",
+                "label": "Kent, WA",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "tw-2023-W36",
+                "type": "time_window",
+                "label": "2023-W36",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "item-lbs-03",
+                "type": "item",
+                "label": "Cash",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              }
+            ],
+            "edges": [
+              {
+                "id": "e-lbs-03-loc-kent",
+                "source": "lbs-03",
+                "target": "loc-kent",
+                "rel": "AT_LOCATION",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-03-tw-2023-W36",
+                "source": "lbs-03",
+                "target": "tw-2023-W36",
+                "rel": "IN_WINDOW",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-03-m-ramming",
+                "source": "lbs-03",
+                "target": "m-ramming",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-03-v-jeep",
+                "source": "lbs-03",
+                "target": "v-jeep",
+                "rel": "USED_VEHICLE",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-03-item-lbs-03",
+                "source": "lbs-03",
+                "target": "item-lbs-03",
+                "rel": "TOOK_ITEM",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-03-m-door",
+                "source": "lbs-03",
+                "target": "m-door",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 250,
+        "event": {
+          "type": "run.case_finished",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case lbs-03 finished",
+          "data": {
+            "case_id": "lbs-03",
+            "index": 3,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 450,
+        "event": {
+          "type": "run.case_started",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case 4 of 6: lbs-04",
+          "data": {
+            "case_id": "lbs-04",
+            "index": 4,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 350,
+        "event": {
+          "type": "build.nodes",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "builder",
+          "message": "Built case LBS-04 with 5 observed edges",
+          "data": {
+            "nodes": [
+              {
+                "id": "lbs-04",
+                "type": "case",
+                "label": "LBS-04",
+                "status": "new",
+                "props": {
+                  "date": "2024-03-04",
+                  "location": "Seattle, WA",
+                  "scene_type": "business",
+                  "source_id": "lbs-04"
+                },
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "loc-seattle",
+                "type": "location",
+                "label": "Seattle, WA",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "tw-2024-W10",
+                "type": "time_window",
+                "label": "2024-W10",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "m-pry",
+                "type": "method",
+                "label": "Rear door pry",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "v-van",
+                "type": "vehicle",
+                "label": "White van",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "item-lbs-04",
+                "type": "item",
+                "label": "Tools",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              }
+            ],
+            "edges": [
+              {
+                "id": "e-lbs-04-loc-seattle",
+                "source": "lbs-04",
+                "target": "loc-seattle",
+                "rel": "AT_LOCATION",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-04-tw-2024-W10",
+                "source": "lbs-04",
+                "target": "tw-2024-W10",
+                "rel": "IN_WINDOW",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-04-m-pry",
+                "source": "lbs-04",
+                "target": "m-pry",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-04-v-van",
+                "source": "lbs-04",
+                "target": "v-van",
+                "rel": "USED_VEHICLE",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-04-item-lbs-04",
+                "source": "lbs-04",
+                "target": "item-lbs-04",
+                "rel": "TOOK_ITEM",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-04-m-door",
+                "source": "lbs-04",
+                "target": "m-door",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 250,
+        "event": {
+          "type": "run.case_finished",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case lbs-04 finished",
+          "data": {
+            "case_id": "lbs-04",
+            "index": 4,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 450,
+        "event": {
+          "type": "run.case_started",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case 5 of 6: lbs-05",
+          "data": {
+            "case_id": "lbs-05",
+            "index": 5,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 350,
+        "event": {
+          "type": "build.nodes",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "builder",
+          "message": "Built case LBS-05 with 5 observed edges",
+          "data": {
+            "nodes": [
+              {
+                "id": "lbs-05",
+                "type": "case",
+                "label": "LBS-05",
+                "status": "new",
+                "props": {
+                  "date": "2024-03-19",
+                  "location": "Seattle, WA",
+                  "scene_type": "business",
+                  "source_id": "lbs-05"
+                },
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "tw-2024-W12",
+                "type": "time_window",
+                "label": "2024-W12",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "item-lbs-05",
+                "type": "item",
+                "label": "Electronics",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              }
+            ],
+            "edges": [
+              {
+                "id": "e-lbs-05-loc-seattle",
+                "source": "lbs-05",
+                "target": "loc-seattle",
+                "rel": "AT_LOCATION",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-05-tw-2024-W12",
+                "source": "lbs-05",
+                "target": "tw-2024-W12",
+                "rel": "IN_WINDOW",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-05-m-pry",
+                "source": "lbs-05",
+                "target": "m-pry",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-05-v-van",
+                "source": "lbs-05",
+                "target": "v-van",
+                "rel": "USED_VEHICLE",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-05-item-lbs-05",
+                "source": "lbs-05",
+                "target": "item-lbs-05",
+                "rel": "TOOK_ITEM",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-05-m-door",
+                "source": "lbs-05",
+                "target": "m-door",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 250,
+        "event": {
+          "type": "run.case_finished",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case lbs-05 finished",
+          "data": {
+            "case_id": "lbs-05",
+            "index": 5,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 450,
+        "event": {
+          "type": "run.case_started",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case 6 of 6: lbs-06",
+          "data": {
+            "case_id": "lbs-06",
+            "index": 6,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 350,
+        "event": {
+          "type": "build.nodes",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "builder",
+          "message": "Built case LBS-06 with 5 observed edges",
+          "data": {
+            "nodes": [
+              {
+                "id": "lbs-06",
+                "type": "case",
+                "label": "LBS-06",
+                "status": "new",
+                "props": {
+                  "date": "2024-03-27",
+                  "location": "Seattle, WA",
+                  "scene_type": "business",
+                  "source_id": "lbs-06"
+                },
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "tw-2024-W13",
+                "type": "time_window",
+                "label": "2024-W13",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              },
+              {
+                "id": "item-lbs-06",
+                "type": "item",
+                "label": "Cash",
+                "status": "new",
+                "props": {},
+                "sources": [
+                  "record.json"
+                ]
+              }
+            ],
+            "edges": [
+              {
+                "id": "e-lbs-06-loc-seattle",
+                "source": "lbs-06",
+                "target": "loc-seattle",
+                "rel": "AT_LOCATION",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-06-tw-2024-W13",
+                "source": "lbs-06",
+                "target": "tw-2024-W13",
+                "rel": "IN_WINDOW",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-06-m-pry",
+                "source": "lbs-06",
+                "target": "m-pry",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-06-v-van",
+                "source": "lbs-06",
+                "target": "v-van",
+                "rel": "USED_VEHICLE",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-06-item-lbs-06",
+                "source": "lbs-06",
+                "target": "item-lbs-06",
+                "rel": "TOOK_ITEM",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              },
+              {
+                "id": "e-lbs-06-m-door",
+                "source": "lbs-06",
+                "target": "m-door",
+                "rel": "USED_METHOD",
+                "kind": "observed",
+                "confidence": 0.95,
+                "provenance": "record.json"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 250,
+        "event": {
+          "type": "run.case_finished",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Case lbs-06 finished",
+          "data": {
+            "case_id": "lbs-06",
+            "index": 6,
+            "total": 6
+          }
+        }
+      },
+      {
+        "after_ms": 700,
+        "event": {
+          "type": "finder.clusters",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "linker",
+          "message": "Finder found 2 candidate clusters",
+          "data": {
+            "clusters": [
+              {
+                "case_ids": [
+                  "lbs-01",
+                  "lbs-02",
+                  "lbs-03"
+                ],
+                "score": 11
+              },
+              {
+                "case_ids": [
+                  "lbs-04",
+                  "lbs-05",
+                  "lbs-06"
+                ],
+                "score": 9
+              }
+            ],
+            "dropped": []
+          }
+        }
+      },
+      {
+        "after_ms": 1500,
+        "event": {
+          "type": "link.hypothesis",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "linker",
+          "message": "H-0001: LBS-01, LBS-02, LBS-03 look like one series, confidence 0.82",
+          "data": {
+            "hypothesis": {
+              "id": "H-0001",
+              "type": "hypothesis",
+              "label": "H-0001",
+              "status": "proposed",
+              "props": {
+                "run_id": "run-mock-bulk",
+                "case_ids": [
+                  "lbs-01",
+                  "lbs-02",
+                  "lbs-03"
+                ],
+                "confidence": 0.82,
+                "rationale": "Three forced-door burglaries in Renton and Kent within five weeks, same entry method.",
+                "below_floor": false,
+                "decision": null,
+                "fallback": false
+              }
+            },
+            "edges": [
+              {
+                "id": "e-H-0001-lbs-01",
+                "source": "H-0001",
+                "target": "lbs-01",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.82,
+                "provenance": "linker"
+              },
+              {
+                "id": "e-H-0001-lbs-02",
+                "source": "H-0001",
+                "target": "lbs-02",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.82,
+                "provenance": "linker"
+              },
+              {
+                "id": "e-H-0001-lbs-03",
+                "source": "H-0001",
+                "target": "lbs-03",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.82,
+                "provenance": "linker"
+              },
+              {
+                "id": "e-H-0001-m-door",
+                "source": "H-0001",
+                "target": "m-door",
+                "rel": "SUPPORTED_BY",
+                "kind": "hypothesis",
+                "confidence": 0.82,
+                "provenance": "record.json",
+                "cites": [
+                  "e-lbs-01-m-door",
+                  "e-lbs-02-m-door",
+                  "e-lbs-03-m-door"
+                ]
+              }
+            ],
+            "rationale": "Three forced-door burglaries in Renton and Kent within five weeks, same entry method.",
+            "confidence": 0.82
+          }
+        }
+      },
+      {
+        "after_ms": 1800,
+        "event": {
+          "type": "link.hypothesis",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "linker",
+          "message": "H-0002: LBS-04, LBS-05, LBS-06 look like one series, confidence 0.67",
+          "data": {
+            "hypothesis": {
+              "id": "H-0002",
+              "type": "hypothesis",
+              "label": "H-0002",
+              "status": "proposed",
+              "props": {
+                "run_id": "run-mock-bulk",
+                "case_ids": [
+                  "lbs-04",
+                  "lbs-05",
+                  "lbs-06"
+                ],
+                "confidence": 0.67,
+                "rationale": "Three forced-door burglaries in Seattle within a month, same entry method.",
+                "below_floor": false,
+                "decision": null,
+                "fallback": false
+              }
+            },
+            "edges": [
+              {
+                "id": "e-H-0002-lbs-04",
+                "source": "H-0002",
+                "target": "lbs-04",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.67,
+                "provenance": "linker"
+              },
+              {
+                "id": "e-H-0002-lbs-05",
+                "source": "H-0002",
+                "target": "lbs-05",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.67,
+                "provenance": "linker"
+              },
+              {
+                "id": "e-H-0002-lbs-06",
+                "source": "H-0002",
+                "target": "lbs-06",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.67,
+                "provenance": "linker"
+              },
+              {
+                "id": "e-H-0002-m-door",
+                "source": "H-0002",
+                "target": "m-door",
+                "rel": "SUPPORTED_BY",
+                "kind": "hypothesis",
+                "confidence": 0.67,
+                "provenance": "record.json",
+                "cites": [
+                  "e-lbs-04-m-door",
+                  "e-lbs-05-m-door",
+                  "e-lbs-06-m-door"
+                ]
+              }
+            ],
+            "rationale": "Three forced-door burglaries in Seattle within a month, same entry method.",
+            "confidence": 0.67
+          }
+        }
+      },
+      {
+        "after_ms": 1800,
+        "event": {
+          "type": "link.hypothesis",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "linker",
+          "message": "H-0003: LBS-02, LBS-03 look like one series, confidence 0.42",
+          "data": {
+            "hypothesis": {
+              "id": "H-0003",
+              "type": "hypothesis",
+              "label": "H-0003",
+              "status": "proposed",
+              "props": {
+                "run_id": "run-mock-bulk",
+                "case_ids": [
+                  "lbs-02",
+                  "lbs-03"
+                ],
+                "confidence": 0.42,
+                "rationale": "Two forced-door burglaries a week apart; the only shared attribute is the entry method.",
+                "below_floor": true,
+                "decision": null,
+                "fallback": false
+              }
+            },
+            "edges": [
+              {
+                "id": "e-H-0003-lbs-02",
+                "source": "H-0003",
+                "target": "lbs-02",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.42,
+                "provenance": "linker"
+              },
+              {
+                "id": "e-H-0003-lbs-03",
+                "source": "H-0003",
+                "target": "lbs-03",
+                "rel": "PROPOSES_LINK",
+                "kind": "hypothesis",
+                "confidence": 0.42,
+                "provenance": "linker"
+              },
+              {
+                "id": "e-H-0003-m-door",
+                "source": "H-0003",
+                "target": "m-door",
+                "rel": "SUPPORTED_BY",
+                "kind": "hypothesis",
+                "confidence": 0.42,
+                "provenance": "record.json",
+                "cites": [
+                  "e-lbs-02-m-door",
+                  "e-lbs-03-m-door"
+                ]
+              }
+            ],
+            "rationale": "Two forced-door burglaries a week apart; the only shared attribute is the entry method.",
+            "confidence": 0.42
+          }
+        }
+      },
+      {
+        "after_ms": 1200,
+        "event": {
+          "type": "critic.verdict",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "critic",
+          "message": "H-0001 holds",
+          "data": {
+            "hypothesis_id": "H-0001",
+            "verdict": "holds",
+            "reasons": [
+              "Specific method and vehicle match",
+              "Tight time span"
+            ],
+            "would_change_mind": [
+              "A plate read that differs between cases"
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 1000,
+        "event": {
+          "type": "critic.verdict",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "critic",
+          "message": "H-0002 holds",
+          "data": {
+            "hypothesis_id": "H-0002",
+            "verdict": "holds",
+            "reasons": [
+              "Same method and vehicle",
+              "Same city, short span"
+            ],
+            "would_change_mind": [
+              "A plate read that differs between cases"
+            ]
+          }
+        }
+      },
+      {
+        "after_ms": 600,
+        "event": {
+          "type": "finder.finished",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "linker",
+          "message": "Finder finished: 2 hypotheses from 2 clusters",
+          "data": {
+            "clusters": 2,
+            "hypotheses": 3,
+            "dropped": 0
+          }
+        }
+      },
+      {
+        "after_ms": 300,
+        "event": {
+          "type": "score.updated",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "system",
+          "message": "Score updated",
+          "data": {
+            "proposed_total": 3,
+            "proposed_agreeing": 2,
+            "accepted_total": 0,
+            "accepted_agreeing": 0,
+            "cases_in_graph": 6,
+            "cases_covered_by_accepted_series": 0,
+            "known_series_touched": 0
+          }
+        }
+      },
+      {
+        "after_ms": 400,
+        "event": {
+          "type": "run.finished",
+          "run_id": "run-mock-bulk",
+          "ts": "2026-11-06T10:00:00.000Z",
+          "agent": "intake",
+          "message": "Bulk run finished in 38.0 s with 2 hypotheses waiting for review",
+          "data": {
+            "case_id": null,
+            "seconds": 38.0,
+            "hypotheses": 3
+          }
+        }
+      }
     ]
   }
 }

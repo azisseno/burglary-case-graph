@@ -1,0 +1,20 @@
+{
+ "id": "fx-03",
+ "series_id": "fx-series",
+ "date": "2023-09-09",
+ "date_precision": "day",
+ "location": "Seattle, WA",
+ "scene_type": "business",
+ "entry_method": "pried rear window with a crowbar",
+ "vehicle": "white van",
+ "items_taken": [],
+ "evidence": [
+  {
+   "type": "vehicle",
+   "description": "white van"
+  }
+ ],
+ "unknowns": [],
+ "media": [],
+ "notes": null
+}

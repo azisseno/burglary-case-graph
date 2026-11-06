@@ -94,9 +94,9 @@ def observe_photo(path, run_dir, step):
     return {"file": path.name, "observations": observations}
 
 
-def extract_record(text, run_dir, step):
+def extract_record(text, run_dir, step, model="sonnet"):
     parsed = run_claude(
-        RECORD_PROMPT.format(text=defang(text)), schema=RECORD_SCHEMA, model="sonnet",
+        RECORD_PROMPT.format(text=defang(text)), schema=RECORD_SCHEMA, model=model,
         allowed_tools=(), run_dir=run_dir, step=step,
     )
     defaults = {"items_taken": [], "evidence": [], "unknowns": []}

@@ -1,6 +1,7 @@
 const MOCK = new URLSearchParams(window.location.search).get("mock") === "1";
 const MOCK_GRAPH_URL = "mock/graph.json";
 const MOCK_EVENTS_URL = "mock/events.json";
+const MOCK_BULK_RUN = "run-mock-bulk";
 const CONSOLE_LIMIT = 400;
 
 const TYPE_STYLE = {
@@ -38,6 +39,9 @@ const STAGE_BY_EVENT = {
   "critic.verdict": "critic",
   "decision.recorded": "review",
   "gap.next_steps": "gaps",
+  "run.case_started": "build",
+  "finder.clusters": "link",
+  "finder.finished": "critic",
 };
 
 const STAGE_BY_STEP = {
@@ -53,6 +57,29 @@ const STAGE_BY_STEP = {
 };
 
 const MAX_FOCUS_ZOOM = 1.3;
+const CASE_LABEL_PX = 11;
+const CASE_LABEL_MAX = 26;
+const SERIES_LABEL_PX = 13;
+const SERIES_LABEL_MAX = 30;
+const LAYOUT_MS = 1000;
+const LABEL_ZOOM_THRESHOLD = 0.8;
+const HUB_DEGREE = 10;
+const MAX_FRESH_EDGE = 110;
+const SHORT_EDGE = 60;
+const IDLE_FOCUS_DELAY_MS = 120;
+const CLOSE_ENOUGH = 75;
+const RELAX_ITERATIONS = 160;
+const REPEL_RADIUS = 70;
+const MAX_HOOD_NODES = 90;
+const BULK_RELAYOUT_EVERY_CASES = 8;
+const BULK_RELAYOUT_EVERY_MS = 3000;
+const FAST_CHORD_MS = 2000;
+const SERIES_RELEASE_DELAY_MS = 1800;
+const IDEAL_EDGE_LENGTH = { PART_OF_SERIES: 34, PROPOSES_LINK: 70, SUPPORTED_BY: 80 };
+const DEFAULT_EDGE_LENGTH = 62;
+const SERIES_ELASTICITY = 15;
+const OTHER_ELASTICITY = 150;
+const BULK_INCREMENTAL_TEMP = 200;
 const RELEASE_VIEW_DELAY_MS = 4000;
 const REJECT_FADE_MS = 1800;
 const ID_PREFIXES = /\b(hyp|case|series|method|vehicle|item|loc|tw):/g;
@@ -77,6 +104,19 @@ const state = {
   mockEvents: null,
   mockReplayHandle: null,
   mockReplayed: false,
+  mockSeeded: null,
+  showBelowFloor: false,
+  score: null,
+  bulk: null,
+  labelsHidden: false,
+  layoutRunning: false,
+  layoutJobs: [],
+  layoutWaiters: [],
+  focusToken: 0,
+  zoomFrame: null,
+  pendingEdges: null,
+  focusTimer: null,
+  fastChordAt: 0,
 };
 
 const el = (id) => document.getElementById(id);
@@ -86,6 +126,7 @@ function init() {
   bindIntake();
   bindReviewControls();
   bindDrawer();
+  bindFastImport();
   window.addEventListener("resize", () => {
     state.cy.resize();
     fitAboveLegend();
@@ -101,6 +142,7 @@ function createGraph() {
     minZoom: 0.25,
     maxZoom: 3,
   });
+  cy.on("zoom", updateLabelVisibility);
   cy.on("tap", "node", (evt) => showNode(evt.target.id()));
   cy.on("tap", (evt) => {
     if (evt.target === cy) clearDrawer();
@@ -147,6 +189,8 @@ function graphStyle() {
     { selector: 'node[type = "time_window"]', style: { color: "#0a0f1e", "font-size": 9, "text-valign": "center", "text-margin-y": 0, "text-outline-width": 0 } },
     { selector: 'node[type = "item"]', style: { "font-size": 9 } },
     { selector: 'node[type = "series"]', style: { "font-size": 11, "font-family": "Barlow Condensed, sans-serif", "font-weight": 600, "text-max-width": 150 } },
+    { selector: 'node[type = "case"], node[type = "series"], node[type = "hypothesis"]', style: { "min-zoomed-font-size": 0 } },
+    { selector: "node.faint", style: { "text-opacity": 0, "text-outline-opacity": 0 } },
     { selector: "node.existing", style: { opacity: 0.5 } },
     { selector: "node.recent", style: { opacity: 1 } },
     { selector: "node.new", style: { opacity: 1, "underlay-opacity": 0.3, "underlay-padding": 10, "border-width": 2, "border-color": "#ffffff" } },
@@ -224,10 +268,17 @@ function loadGraph(graph) {
   (graph.nodes || []).filter((n) => n.type === "hypothesis").forEach((n) => registerHypothesisNode(n));
   cy.layout(fullLayoutOptions()).run();
   fitAboveLegend();
-  el("graph-empty").hidden = true;
+  updateLabelVisibility(true);
+  syncEmptyState();
   applyVisibility();
   renderHypotheses();
   renderGraphStats();
+}
+
+function syncEmptyState() {
+  const empty = state.cy.nodes().empty();
+  el("graph-empty").hidden = !empty;
+  if (empty) el("graph-empty").textContent = "Empty graph. Drop a folder or pick a sample.";
 }
 
 function fullLayoutOptions() {
@@ -236,9 +287,9 @@ function fullLayoutOptions() {
     animate: false,
     randomize: true,
     fit: false,
-    nodeRepulsion: () => 2000,
-    idealEdgeLength: () => 40,
-    edgeElasticity: () => 150,
+    nodeRepulsion: () => 6000,
+    idealEdgeLength: idealEdgeLength,
+    edgeElasticity: edgeElasticity,
     gravity: 5,
     numIter: 1200,
     componentSpacing: 20,
@@ -268,18 +319,371 @@ function fitAboveLegend() {
 
 function focusOn(eles) {
   const cy = state.cy;
-  const visible = eles.closedNeighborhood().filter((ele) => !ele.hasClass("hidden"));
+  const visible = eles.closedNeighborhood().nodes().filter((ele) => !ele.hasClass("hidden") && (eles.contains(ele) || !isHub(ele)));
   if (visible.empty()) return;
-  cy.animate({ ...viewportFor(visible.boundingBox(), 90, MAX_FOCUS_ZOOM), duration: 800, easing: "ease-in-out" });
+  cy.animate({ ...viewportFor(visible.boundingBox(), 90, MAX_FOCUS_ZOOM), duration: 900, easing: "ease-in-out" });
+}
+
+function edgeElasticity(edge) {
+  return edge.data("rel") === "PART_OF_SERIES" ? SERIES_ELASTICITY : OTHER_ELASTICITY;
+}
+
+function idealEdgeLength(edge) {
+  return IDEAL_EDGE_LENGTH[edge.data("rel")] || DEFAULT_EDGE_LENGTH;
+}
+
+function labelDetailNodes() {
+  return state.cy.nodes('[type = "time_window"], [type = "item"]');
+}
+
+function updateLabelVisibility(force) {
+  scheduleLabelScale();
+  const hidden = state.cy.zoom() < LABEL_ZOOM_THRESHOLD;
+  if (hidden === state.labelsHidden && force !== true) return;
+  state.labelsHidden = hidden;
+  labelDetailNodes().toggleClass("faint", hidden);
+}
+
+function scheduleLabelScale() {
+  if (state.zoomFrame) return;
+  state.zoomFrame = requestAnimationFrame(() => {
+    state.zoomFrame = null;
+    const zoom = Math.max(state.cy.zoom(), 0.01);
+    state.cy
+      .style()
+      .selector('node[type = "case"], node[type = "hypothesis"]')
+      .style("font-size", Math.min(CASE_LABEL_PX / zoom, CASE_LABEL_MAX))
+      .selector('node[type = "series"]')
+      .style("font-size", Math.min(SERIES_LABEL_PX / zoom, SERIES_LABEL_MAX))
+      .update();
+  });
+}
+
+function edgeLength(edge) {
+  const a = edge.source().position();
+  const b = edge.target().position();
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function isHub(node) {
+  return node.degree(false) > HUB_DEGREE;
+}
+
+function neighbourhoodOf(endpoints) {
+  const cy = state.cy;
+  const visible = (ele) => !ele.hasClass("hidden");
+  const expanding = endpoints.filter((n) => !isHub(n));
+  let nodes = expanding.closedNeighborhood().nodes().filter(visible);
+  nodes = nodes.filter((n) => expanding.contains(n) || !isHub(n)).union(endpoints.filter((n) => isHub(n) && visible(n)));
+  if (nodes.length > MAX_HOOD_NODES) {
+    const center = endpoints.boundingBox();
+    const cx = (center.x1 + center.x2) / 2;
+    const cyy = (center.y1 + center.y2) / 2;
+    const ranked = nodes.toArray().sort((a, b) => {
+      if (endpoints.contains(a) !== endpoints.contains(b)) return endpoints.contains(a) ? -1 : 1;
+      const da = Math.hypot(a.position("x") - cx, a.position("y") - cyy);
+      const db = Math.hypot(b.position("x") - cx, b.position("y") - cyy);
+      return da - db;
+    });
+    nodes = cy.collection(ranked.slice(0, MAX_HOOD_NODES));
+  }
+  return nodes.union(nodes.edgesWith(nodes).filter(visible));
+}
+
+function privateLeaves(caseNode, exclude) {
+  return caseNode
+    .neighborhood("node")
+    .filter((n) => !isHub(n) && n.data("type") !== "series" && n.data("type") !== "case" && !n.hasClass("hidden") && !exclude.contains(n))
+    .filter((n) => n.neighborhood('node[type = "case"]').length === 1);
+}
+
+function easeInOut(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function tweenPositions(targets, duration, done) {
+  const cy = state.cy;
+  const live = targets.filter(({ node }) => !node.removed());
+  const started = performance.now();
+  const from = live.map(({ node }) => ({ ...node.position() }));
+  const step = (now) => {
+    const t = Math.min(1, (now - started) / duration);
+    const k = easeInOut(t);
+    cy.batch(() => {
+      live.forEach(({ node, to }, i) => {
+        if (!node.removed()) node.position({ x: from[i].x + (to.x - from[i].x) * k, y: from[i].y + (to.y - from[i].y) * k });
+      });
+    });
+    if (t < 1) requestAnimationFrame(step);
+    else if (done) done();
+  };
+  requestAnimationFrame(step);
+}
+
+function runAnimatedLayout(eles, options, done) {
+  const nodes = eles.nodes();
+  const start = nodes.map((node) => ({ node, from: { ...node.position() } }));
+  const layout = eles.layout({ ...options, animate: false, fit: false, randomize: false });
+  layout.one("layoutstop", () => {
+    const targets = start.map(({ node, from }) => ({ node, to: { ...node.position() }, from }));
+    cyBatchReset(targets);
+    tweenPositions(targets, LAYOUT_MS, done);
+  });
+  layout.run();
+}
+
+function cyBatchReset(targets) {
+  state.cy.batch(() => targets.forEach(({ node, from }) => node.position(from)));
+}
+
+function choreograph(freshEdges) {
+  const edges = freshEdges.filter((e) => !e.hasClass("hidden") && !e.source().hasClass("hidden") && !e.target().hasClass("hidden") && edgeLength(e) > CLOSE_ENOUGH);
+  if (edges.empty()) return;
+  state.pendingEdges = state.pendingEdges ? state.pendingEdges.union(edges) : edges;
+  if (!state.layoutRunning) runChoreography();
+}
+
+function layoutDone() {
+  state.layoutRunning = false;
+  if (state.pendingEdges) return runChoreography();
+  const job = state.layoutJobs.shift();
+  if (job) return job();
+  state.layoutWaiters.splice(0).forEach((waiter) => waiter());
+}
+
+function queueLayoutJob(job) {
+  if (state.layoutRunning) state.layoutJobs.push(job);
+  else job();
+}
+
+function afterLayout(callback) {
+  if (state.layoutRunning || state.pendingEdges || state.layoutJobs.length) state.layoutWaiters.push(callback);
+  else setTimeout(callback, IDLE_FOCUS_DELAY_MS);
+}
+
+function runChoreography() {
+  const edges = state.pendingEdges.filter((e) => !e.removed());
+  state.pendingEdges = null;
+  if (edges.empty()) return layoutDone();
+  state.layoutRunning = true;
+  const endpoints = edges.connectedNodes();
+  const hood = neighbourhoodOf(endpoints);
+  const finish = () => shortenStretched(edges, layoutDone);
+  tweenPositions(relaxTargets(hood), LAYOUT_MS, finish);
+}
+
+function boundarySprings(hood) {
+  const inside = hood.nodes();
+  return inside
+    .connectedEdges()
+    .not(hood.edges())
+    .filter((e) => !e.hasClass("hidden"))
+    .map((edge) => {
+      const insideEnd = inside.contains(edge.source()) ? edge.source() : edge.target();
+      const outsideEnd = insideEnd === edge.source() ? edge.target() : edge.source();
+      return { edge, insideId: insideEnd.id(), outside: { ...outsideEnd.position() }, outsideHub: isHub(outsideEnd) || outsideEnd.hasClass("hidden") };
+    })
+    .filter((spring) => !spring.outsideHub);
+}
+
+function relaxTargets(hood) {
+  const nodes = hood.nodes().toArray();
+  const pinned = new Set(nodes.filter(isHub).map((n) => n.id()));
+  const pos = new Map(nodes.map((n) => [n.id(), { ...n.position() }]));
+  const home = new Map(nodes.map((n) => [n.id(), { ...n.position() }]));
+  const edges = hood.edges().toArray();
+  const springs = boundarySprings(hood);
+  for (let iter = 0; iter < RELAX_ITERATIONS; iter += 1) {
+    const cooling = 1 - iter / RELAX_ITERATIONS;
+    const force = new Map(nodes.map((n) => [n.id(), { x: 0, y: 0 }]));
+    edges.forEach((edge) => {
+      const a = pos.get(edge.source().id());
+      const b = pos.get(edge.target().id());
+      if (!a || !b) return;
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const dist = Math.hypot(dx, dy) || 0.01;
+      const pull = (edge.data("rel") === "PART_OF_SERIES" ? 0.25 : 0.12) * (dist - idealEdgeLength(edge)) / dist;
+      force.get(edge.source().id()).x += dx * pull;
+      force.get(edge.source().id()).y += dy * pull;
+      force.get(edge.target().id()).x -= dx * pull;
+      force.get(edge.target().id()).y -= dy * pull;
+    });
+    springs.forEach(({ edge, insideId, outside }) => {
+      const at = pos.get(insideId);
+      const dx = outside.x - at.x;
+      const dy = outside.y - at.y;
+      const dist = Math.hypot(dx, dy) || 0.01;
+      const pull = (0.12 * (dist - idealEdgeLength(edge))) / dist;
+      force.get(insideId).x += dx * pull;
+      force.get(insideId).y += dy * pull;
+    });
+    for (let i = 0; i < nodes.length; i += 1) {
+      for (let j = i + 1; j < nodes.length; j += 1) {
+        const a = pos.get(nodes[i].id());
+        const b = pos.get(nodes[j].id());
+        let dx = a.x - b.x;
+        let dy = a.y - b.y;
+        let dist = Math.hypot(dx, dy);
+        if (dist < 0.5) {
+          dx = Math.cos(i * 2.4);
+          dy = Math.sin(i * 2.4);
+          dist = 1;
+        }
+        if (dist >= REPEL_RADIUS) continue;
+        const push = (0.5 * (REPEL_RADIUS - dist)) / dist;
+        force.get(nodes[i].id()).x += dx * push;
+        force.get(nodes[i].id()).y += dy * push;
+        force.get(nodes[j].id()).x -= dx * push;
+        force.get(nodes[j].id()).y -= dy * push;
+      }
+    }
+    nodes.forEach((n) => {
+      if (pinned.has(n.id())) return;
+      const p = pos.get(n.id());
+      const f = force.get(n.id());
+      const h = home.get(n.id());
+      p.x += (f.x + (h.x - p.x) * 0.01) * 0.5 * cooling;
+      p.y += (f.y + (h.y - p.y) * 0.01) * 0.5 * cooling;
+    });
+  }
+  const targets = nodes.map((node) => ({ node, to: pos.get(node.id()) }));
+  const placed = hood.nodes();
+  nodes
+    .filter((n) => n.data("type") === "case")
+    .forEach((caseNode) => {
+      const delta = { x: pos.get(caseNode.id()).x - home.get(caseNode.id()).x, y: pos.get(caseNode.id()).y - home.get(caseNode.id()).y };
+      privateLeaves(caseNode, placed).forEach((leaf) => targets.push({ node: leaf, to: { x: leaf.position("x") + delta.x, y: leaf.position("y") + delta.y } }));
+    });
+  return targets;
+}
+
+function offsetFrom(center, at, distance, seed) {
+  const dx = at.x - center.x;
+  const dy = at.y - center.y;
+  const length = Math.hypot(dx, dy);
+  const angle = length < 1 ? seed * 2.399963 : Math.atan2(dy, dx);
+  return { x: center.x + Math.cos(angle) * distance, y: center.y + Math.sin(angle) * distance };
+}
+
+function shortenStretched(edges, done) {
+  const pulls = new Map();
+  edges.filter((e) => !e.removed() && edgeLength(e) > MAX_FRESH_EDGE).forEach((edge) => {
+    const ends = [edge.source(), edge.target()].sort((a, b) => Number(isHub(a)) - Number(isHub(b)) || a.degree(false) - b.degree(false));
+    const [mover, anchor] = ends;
+    if (isHub(anchor)) return;
+    const entry = pulls.get(mover.id()) || { node: mover, anchors: [] };
+    entry.anchors.push(anchor);
+    pulls.set(mover.id(), entry);
+  });
+  const moves = [];
+  [...pulls.values()].forEach(({ node, anchors }, index) => {
+    const center = anchors.reduce((acc, a) => ({ x: acc.x + a.position("x") / anchors.length, y: acc.y + a.position("y") / anchors.length }), { x: 0, y: 0 });
+    const at = node.position();
+    const to = offsetFrom(center, at, SHORT_EDGE, index + 1);
+    moves.push({ node, to });
+    if (node.data("type") !== "case") return;
+    privateLeaves(node, node.cy().collection()).forEach((leaf) =>
+      moves.push({ node: leaf, to: { x: leaf.position("x") + to.x - at.x, y: leaf.position("y") + to.y - at.y } })
+    );
+  });
+  if (moves.length === 0) done();
+  else tweenPositions(moves, 500, done);
+}
+
+function centroidOf(nodes) {
+  return nodes.reduce((acc, n) => ({ x: acc.x + n.position("x") / nodes.length, y: acc.y + n.position("y") / nodes.length }), { x: 0, y: 0 });
+}
+
+function pullSeriesTogether(seriesNodes, hypothesisNode) {
+  const moves = new Map();
+  const queue = (node, to) => moves.set(node.id(), { node, to });
+  seriesNodes.forEach((series) => {
+    const members = series.neighborhood('node[type = "case"]');
+    if (members.length < 2) return;
+    const center = centroidOf(members);
+    queue(series, center);
+    const targets = new Map();
+    members.forEach((member, i) => {
+      const at = member.position();
+      const dist = Math.hypot(at.x - center.x, at.y - center.y);
+      const to = offsetFrom(center, at, Math.min(dist || SHORT_EDGE, SHORT_EDGE), i + 1);
+      targets.set(member.id(), to);
+      queue(member, to);
+      privateLeaves(member, members).forEach((n) => queue(n, { x: n.position("x") + to.x - at.x, y: n.position("y") + to.y - at.y }));
+    });
+    members
+      .neighborhood("node")
+      .filter((n) => !isHub(n) && n.data("type") !== "series" && n.data("type") !== "case" && !n.hasClass("hidden"))
+      .forEach((n) => {
+        const touching = n.neighborhood('node[type = "case"]').filter((c) => members.contains(c));
+        if (touching.length < 2 || moves.has(n.id())) return;
+        const sum = touching.reduce((acc, c) => ({ x: acc.x + targets.get(c.id()).x, y: acc.y + targets.get(c.id()).y }), { x: 0, y: 0 });
+        queue(n, { x: sum.x / touching.length, y: sum.y / touching.length });
+      });
+    if (hypothesisNode && !hypothesisNode.removed() && !moves.has(hypothesisNode.id())) queue(hypothesisNode, { x: center.x, y: center.y - SHORT_EDGE });
+  });
+  if (moves.size === 0) return;
+  queueLayoutJob(() => {
+    state.layoutRunning = true;
+    tweenPositions([...moves.values()], LAYOUT_MS, layoutDone);
+  });
+}
+
+function confirmedSeriesNodes() {
+  const series = state.cy.nodes('[type = "series"]');
+  return series.union(series.neighborhood('node[type = "case"]'));
+}
+
+function relayoutAll() {
+  const cy = state.cy;
+  if (cy.nodes().empty() || state.layoutRunning) return;
+  const incremental = Boolean(state.bulk && state.bulk.building);
+  const locked = incremental ? lockedForBulk() : confirmedSeriesNodes();
+  state.layoutRunning = true;
+  locked.lock();
+  runAnimatedLayout(
+    cy.elements().not(".hidden"),
+    {
+      name: "cose",
+      initialTemp: incremental ? BULK_INCREMENTAL_TEMP : 1000,
+      nodeRepulsion: () => 4500,
+      idealEdgeLength: idealEdgeLength,
+      edgeElasticity: edgeElasticity,
+      gravity: 0.4,
+      numIter: 1000,
+      componentSpacing: 60,
+    },
+    () => {
+      locked.unlock();
+      if (incremental) cy.nodes().forEach((n) => state.bulk.placed.add(n.id()));
+      state.layoutRunning = false;
+      choreograph(cy.edges(".fresh").filter((e) => edgeLength(e) > MAX_FRESH_EDGE));
+      if (state.layoutRunning) return;
+      if (state.bulk && state.bulk.active) afterLayout(fitWide);
+      layoutDone();
+    }
+  );
+}
+
+function lockedForBulk() {
+  const bulk = state.bulk;
+  return state.cy.nodes().filter((n) => bulk.settled.has(n.id()) || bulk.placed.has(n.id()));
+}
+
+function fitWide() {
+  const bb = state.cy.elements().not(".hidden").boundingBox();
+  if (!bb.w || !bb.h) return;
+  state.cy.animate({ ...viewportFor(bb, 36, 1.15), duration: 700, easing: "ease-in-out" });
 }
 
 function releaseView() {
-  const bb = state.cy.elements().boundingBox();
+  const bb = state.cy.elements().not(".hidden").boundingBox();
   if (!bb.w || !bb.h) return;
   state.cy.animate({ ...viewportFor(bb, 36, 1.15), duration: 900, easing: "ease-in-out" });
 }
 
-function applyDelta(nodes = [], edges = []) {
+function applyDelta(nodes = [], edges = [], options = {}) {
   const cy = state.cy;
   const added = cy.collection();
   nodes.forEach((node) => {
@@ -306,9 +710,11 @@ function applyDelta(nodes = [], edges = []) {
     freshEdges.merge(cy.add(edgeElement({ ...edge, id })));
   });
   freshEdges.filter(".observed").addClass("fresh");
+  if (state.labelsHidden) added.filter('[type = "time_window"], [type = "item"]').addClass("faint");
   nodes.filter((n) => n.type === "hypothesis").forEach((n) => registerHypothesisNode(n));
-  if (added.nonempty()) settleNeighborhood(added);
+  syncEmptyState();
   applyVisibility();
+  if (!(state.bulk && state.bulk.building)) choreograph(options.skipSeries ? freshEdges.not('[rel = "PART_OF_SERIES"]') : freshEdges);
   renderGraphStats();
   if (state.selectedNodeId && cy.getElementById(state.selectedNodeId).nonempty()) showNode(state.selectedNodeId);
   return added;
@@ -337,6 +743,7 @@ function placementFor(nodeId, edges) {
     .map((e) => cy.getElementById(e.source === nodeId ? e.target : e.source))
     .filter((ele) => ele.nonempty() && !ele.hasClass("hidden"));
   const extent = cy.extent();
+  if (anchors.length === 0 && state.bulk && state.bulk.building) return spiralPlacement(extent);
   if (anchors.length === 0) {
     return { x: extent.x1 + extent.w / 2 + jitter(60), y: extent.y1 + extent.h / 2 + jitter(60) };
   }
@@ -344,41 +751,35 @@ function placementFor(nodeId, edges) {
   return { x: sum.x / anchors.length + jitter(40), y: sum.y / anchors.length + jitter(40) };
 }
 
+function spiralPlacement(extent) {
+  state.spiralIndex = (state.spiralIndex || 0) + 1;
+  const angle = state.spiralIndex * 2.399963;
+  const radius = 70 * Math.sqrt(state.spiralIndex);
+  return { x: extent.x1 + extent.w / 2 + Math.cos(angle) * radius, y: extent.y1 + extent.h / 2 + Math.sin(angle) * radius };
+}
+
 function jitter(range) {
   return (Math.random() - 0.5) * range;
 }
 
-function settleNeighborhood(added) {
-  const cy = state.cy;
-  const hood = added.union(added.neighborhood());
-  const anchored = hood.nodes().not(added);
-  anchored.lock();
-  const layout = hood.layout({
-    name: "cose",
-    animate: true,
-    animationDuration: 900,
-    randomize: false,
-    fit: false,
-    nodeRepulsion: () => 3500,
-    idealEdgeLength: () => 55,
-    edgeElasticity: () => 150,
-    gravity: 0.5,
-    numIter: 400,
-  });
-  layout.on("layoutstop", () => anchored.unlock());
-  layout.run();
-}
-
-const SETTLE_MS = 1000;
-
 function focusSoon(eles) {
-  setTimeout(() => {
-    if (eles.nonempty() && !eles.removed()) focusOn(eles);
-  }, SETTLE_MS);
+  clearTimeout(state.focusTimer);
+  state.focusToken += 1;
+  const token = state.focusToken;
+  afterLayout(() => {
+    if (token === state.focusToken && eles.nonempty() && !eles.removed()) focusOn(eles);
+  });
 }
 
 function applyVisibility() {
   const cy = state.cy;
+  cy.nodes('[type = "hypothesis"]').forEach((node) => {
+    const props = node.data("props") || {};
+    const below = props.below_floor === true && !props.decision;
+    const hide = below && !state.showBelowFloor;
+    node.toggleClass("hidden", hide);
+    node.connectedEdges().toggleClass("hidden", hide);
+  });
   cy.nodes(".rejected").forEach((node) => {
     if (node.hasClass("rejecting")) return;
     node.toggleClass("hidden", !state.showRejected);
@@ -450,6 +851,7 @@ function registerHypothesisNode(node) {
     confidence: props.confidence ?? existing.confidence ?? null,
     rationale: props.rationale || existing.rationale || "",
     fallback: props.fallback ?? existing.fallback ?? false,
+    belowFloor: props.below_floor ?? existing.belowFloor ?? false,
     verdict: readVerdict(props) || existing.verdict || null,
     gaps: existing.gaps || null,
     decision: props.decision ?? existing.decision ?? null,
@@ -486,7 +888,7 @@ function hypothesisEvidence(h) {
 }
 
 function provenanceText(value) {
-  return [...new Set(asList(value))].join(", ");
+  return [...new Set(asList(value).map((item) => String(item).replace(/^[a-z]{3}-\d+\//, "")))].join(", ");
 }
 
 function displayId(text) {
@@ -503,10 +905,14 @@ function matchedText(matched) {
 
 function renderHypotheses() {
   const container = el("hypotheses");
-  const list = [...state.hypotheses.values()].sort((a, b) => b.receivedAt - a.receivedAt);
-  el("review-count").textContent = list.length ? `${list.length} total` : "";
+  const all = [...state.hypotheses.values()];
+  const belowFloorCount = all.filter(isBelowFloor).length;
+  const list = all.filter((h) => state.showBelowFloor || !isBelowFloor(h)).sort((a, b) => (b.confidence ?? -1) - (a.confidence ?? -1) || b.receivedAt - a.receivedAt);
+  el("review-count").textContent = all.length ? `${list.length} shown${belowFloorCount ? `, ${belowFloorCount} under 0.5` : ""}` : "";
   if (list.length === 0 && state.noLinks.length === 0) {
-    container.innerHTML = '<p class="empty">No hypotheses yet. Drop a case or pick a sample.</p>';
+    container.innerHTML = belowFloorCount
+      ? `<p class="empty">No proposals at or above 0.5. ${belowFloorCount} below; tick Show proposals under 0.5 to see them.</p>`
+      : '<p class="empty">No hypotheses yet. Drop a case or pick a sample.</p>';
     return;
   }
   state.drafts = new Map(
@@ -522,6 +928,10 @@ function renderHypotheses() {
       reason.setSelectionRange(reason.value.length, reason.value.length);
     }
   }
+}
+
+function isBelowFloor(h) {
+  return h.belowFloor && !h.decision;
 }
 
 function noLinkCard(entry) {
@@ -564,6 +974,7 @@ function hypothesisCard(h) {
   card.className = "hyp";
   card.dataset.id = h.id;
   if (h.decision) card.dataset.decision = h.decision;
+  if (h.belowFloor) card.dataset.belowFloor = "true";
   card.append(hypothesisHead(h), hypothesisCases(h), hypothesisPhotos(h));
   if (h.rationale) {
     const p = document.createElement("p");
@@ -578,6 +989,11 @@ function hypothesisCard(h) {
   return card;
 }
 
+function confidenceBand(confidence) {
+  if (confidence >= 0.75) return "strong";
+  return confidence >= 0.5 ? "moderate" : "weak";
+}
+
 function hypothesisHead(h) {
   const head = document.createElement("div");
   head.className = "hyp-head";
@@ -587,8 +1003,14 @@ function hypothesisHead(h) {
   const conf = document.createElement("span");
   conf.className = "hyp-conf";
   if (h.fallback) conf.textContent = `rule score ${Math.round((h.confidence || 0) * 12)}/12, fixed weights`;
-  else conf.textContent = h.confidence == null ? "" : `linker estimate ${h.confidence.toFixed(2)}, unverified`;
+  else conf.textContent = h.confidence == null ? "" : `${confidenceBand(h.confidence)} (linker's own rating ${h.confidence.toFixed(1)}, not a probability)`;
   head.append(id, conf);
+  if (h.belowFloor) {
+    const floor = document.createElement("span");
+    floor.className = "hyp-floor";
+    floor.textContent = "below 0.5 floor";
+    head.append(floor);
+  }
   return head;
 }
 
@@ -846,7 +1268,7 @@ function nodeHead(node) {
   return head;
 }
 
-const PROP_SKIP = new Set(["media", "evidence", "critic", "critic_reasons", "would_change_mind"]);
+const PROP_SKIP = new Set(["source_id", "upload_dir", "media", "evidence", "critic", "critic_reasons", "would_change_mind"]);
 
 function propsList(props) {
   const dl = document.createElement("dl");
@@ -1023,6 +1445,15 @@ function bindReviewControls() {
     applyVisibility();
     if (state.selectedNodeId) showNode(state.selectedNodeId);
   });
+  el("floor-toggle").addEventListener("change", (evt) => {
+    state.showBelowFloor = evt.target.checked;
+    applyVisibility();
+    renderHypotheses();
+    if (state.showBelowFloor) {
+      const shown = state.cy.nodes('[type = "hypothesis"]').filter((n) => n.data("props")?.below_floor === true);
+      choreograph(shown.connectedEdges().not(".hidden"));
+    }
+  });
   el("error-dismiss").addEventListener("click", hideError);
 }
 
@@ -1054,6 +1485,21 @@ function handleEvent(evt) {
     case "gap.next_steps":
       onGaps(evt);
       break;
+    case "run.case_started":
+      onCaseStarted(evt);
+      break;
+    case "run.case_finished":
+      onCaseFinished(evt);
+      break;
+    case "finder.clusters":
+      onFinderClusters(evt);
+      break;
+    case "finder.finished":
+      onFinderFinished(evt);
+      break;
+    case "score.updated":
+      onScoreUpdated(evt);
+      break;
     case "run.finished":
       onRunFinished(evt);
       break;
@@ -1068,7 +1514,10 @@ function handleEvent(evt) {
 function onRunStarted(evt) {
   const data = evt.data || {};
   state.currentRunId = evt.run_id;
-  state.runs.set(evt.run_id, { startedAt: Date.parse(evt.ts) || Date.now(), wallStart: Date.now(), caseId: data.case_id, firstProposalAt: null, finished: false, candidates: [] });
+  stopBulkTimer();
+  state.bulk = null;
+  renderProgress();
+  state.runs.set(evt.run_id, { startedAt: Date.parse(evt.ts) || Date.now(), wallStart: Date.now(), caseId: data.case_id, firstProposalAt: null, finished: false, candidates: [], bulk: data.bulk === true });
   state.activeRuns.add(evt.run_id);
   updateRunButtons();
   state.cy.nodes(".recent, .linked").removeClass("recent linked");
@@ -1088,8 +1537,9 @@ function onBuildNodes(evt) {
   const added = applyDelta(data.nodes || [], data.edges || []);
   const fresh = added.filter(".new");
   fresh.forEach((node) => node.data("run", evt.run_id));
-  startPulsing(fresh);
-  if (added.nonempty()) focusSoon(added.filter('[type = "case"]').nonempty() ? added.filter('[type = "case"]') : added);
+  const bulkBuilding = Boolean(state.bulk && state.bulk.building);
+  if (!bulkBuilding) startPulsing(fresh);
+  if (!bulkBuilding && added.nonempty()) focusSoon(added.filter('[type = "case"]').nonempty() ? added.filter('[type = "case"]') : added);
   consoleLine(evt, "milestone");
 }
 
@@ -1104,7 +1554,7 @@ function onHypothesis(evt) {
   startPulsing(proposed);
   const linkedCases = proposed.connectedEdges('[rel = "PROPOSES_LINK"]').connectedNodes('[type = "case"]');
   linkedCases.addClass("linked");
-  if (proposed.nonempty()) focusSoon(proposed.union(linkedCases));
+  if (proposed.nonempty() && !proposed.hasClass("hidden")) focusSoon(proposed.union(linkedCases));
   const run = state.runs.get(evt.run_id);
   if (run && !run.firstProposalAt) run.firstProposalAt = Date.parse(evt.ts) || Date.now();
   renderHypotheses();
@@ -1126,7 +1576,7 @@ function onDecision(evt) {
   const data = evt.data || {};
   if (state.hypotheses.get(data.hypothesis_id)?.decision === data.decision) return;
   recordDecision(data);
-  applyDelta(data.nodes || [], data.edges || []);
+  applyDelta(data.nodes || [], data.edges || [], { skipSeries: data.decision === "accept" });
   const node = state.cy.getElementById(data.hypothesis_id);
   if (node.nonempty()) {
     node.removeClass("pulsing");
@@ -1135,17 +1585,152 @@ function onDecision(evt) {
     if (data.decision === "accept" && !node.hasClass("confirmed")) setNodeStatus(node, "confirmed");
     if (data.decision === "reject" && !node.hasClass("rejected")) setNodeStatus(node, "rejected");
     if (data.decision === "accept") {
-      const decided = node.connectedEdges();
-      (data.edges || []).forEach((edge) => decided.merge(state.cy.getElementById(edge.id)));
+      const decided = node.connectedEdges('[rel = "PROPOSES_LINK"]');
+      (data.edges || []).filter((edge) => edge.rel === "PART_OF_SERIES").forEach((edge) => decided.merge(state.cy.getElementById(edge.id)));
       decided.addClass("decided");
+      pullConfirmedCluster(node);
     }
     if (data.decision === "reject") fadeOutRejected(node);
-    if (data.decision !== "more") focusOn(node);
+    if (data.decision === "reject") {
+      focusOn(node);
+      setTimeout(() => {
+        if (state.activeRuns.size === 0) releaseView();
+      }, REJECT_FADE_MS + 600);
+    }
   }
   applyVisibility();
   renderHypotheses();
   refreshMetrics();
   consoleLine(evt, "milestone", data.reason || "");
+}
+
+function pullConfirmedCluster(hypNode) {
+  const cases = hypNode.connectedEdges('[rel = "PROPOSES_LINK"]').connectedNodes('[type = "case"]');
+  const series = cases.connectedEdges('[rel = "PART_OF_SERIES"]').connectedNodes('[type = "series"]');
+  pullSeriesTogether(series, hypNode);
+  const cluster = cases.union(series).union(hypNode);
+  clearTimeout(state.focusTimer);
+  state.focusToken += 1;
+  const token = state.focusToken;
+  afterLayout(() => {
+    if (token !== state.focusToken || cluster.removed()) return;
+    focusOn(cluster);
+    state.focusTimer = setTimeout(() => {
+      if (state.activeRuns.size === 0) releaseView();
+    }, SERIES_RELEASE_DELAY_MS);
+  });
+}
+
+function onCaseStarted(evt) {
+  const data = evt.data || {};
+  const total = data.total || 0;
+  if (total > 1 && !(state.bulk && state.bulk.active)) startBulk(evt.run_id, total);
+  if (state.bulk && state.bulk.runId === evt.run_id) {
+    state.bulk.total = Math.max(state.bulk.total, total);
+    renderProgress();
+  }
+  if (data.case_id) state.sessionCaseIds.add(data.case_id);
+  const run = state.runs.get(evt.run_id);
+  if (run && state.bulk) run.bulk = true;
+  consoleLine(evt, "info");
+}
+
+function onCaseFinished(evt) {
+  const data = evt.data || {};
+  if (state.bulk && state.bulk.runId === evt.run_id) {
+    state.bulk.finished.add(data.case_id ?? data.index ?? state.bulk.finished.size);
+    state.bulk.sinceLayout += 1;
+    renderProgress();
+    if (state.bulk.sinceLayout >= BULK_RELAYOUT_EVERY_CASES) bulkRelayout();
+  }
+  consoleLine(evt, "info");
+  refreshMetrics();
+}
+
+function startBulk(runId, total) {
+  stopBulkTimer();
+  state.spiralIndex = 0;
+  state.bulk = {
+    active: true,
+    building: true,
+    runId,
+    total,
+    finished: new Set(),
+    sinceLayout: 0,
+    timer: null,
+    settled: new Set(state.cy.nodes().map((n) => n.id())),
+    placed: new Set(),
+  };
+  state.bulk.timer = setInterval(() => {
+    if (state.bulk && state.bulk.sinceLayout > 0) bulkRelayout();
+  }, BULK_RELAYOUT_EVERY_MS);
+  renderProgress();
+}
+
+function bulkRelayout() {
+  if (!state.bulk || state.layoutRunning) return;
+  state.bulk.sinceLayout = 0;
+  relayoutAll();
+}
+
+function stopBulkTimer() {
+  if (state.bulk && state.bulk.timer) clearInterval(state.bulk.timer);
+  if (state.bulk) state.bulk.timer = null;
+}
+
+function endBulkBuilding() {
+  if (!state.bulk || !state.bulk.building) return;
+  state.bulk.building = false;
+  stopBulkTimer();
+  state.bulk.sinceLayout = 0;
+  const wait = setInterval(() => {
+    if (state.layoutRunning) return;
+    clearInterval(wait);
+    relayoutAll();
+  }, 100);
+}
+
+function renderProgress() {
+  const box = el("run-progress");
+  if (!state.bulk) {
+    box.hidden = true;
+    return;
+  }
+  box.hidden = false;
+  box.textContent = `${state.bulk.finished.size} of ${state.bulk.total} cases`;
+}
+
+function onFinderClusters(evt) {
+  const data = evt.data || {};
+  endBulkBuilding();
+  const clusters = asList(data.clusters);
+  const lines = clusters.map((c, i) => {
+    const ids = asList(c.case_ids || c.cases || c);
+    return `cluster ${i + 1}: ${ids.length} cases, ${ids.map(caseName).join(", ")}`;
+  });
+  consoleLine(evt, "milestone", lines.join("\n"));
+}
+
+function onFinderFinished(evt) {
+  const data = evt.data || {};
+  if (state.bulk) state.bulk.active = false;
+  endBulkBuilding();
+  const droppedCount = Array.isArray(data.dropped) ? data.dropped.length : Number(data.dropped) || 0;
+  consoleLine(evt, "milestone", droppedCount ? `dropped ${droppedCount} smaller clusters over the cap of 12` : "");
+  applyVisibility();
+  renderHypotheses();
+  refreshMetrics();
+}
+
+function onScoreUpdated(evt) {
+  const data = evt.data || {};
+  state.score = data.score || data;
+  renderMetrics(currentMetrics());
+  consoleLine(evt, "info", evt.message ? "" : scoreText(state.score));
+}
+
+function scoreText(score) {
+  return `agrees with public record: ${score.proposed_agreeing ?? 0} of ${score.proposed_total ?? 0} proposed`;
 }
 
 function onRunFinished(evt) {
@@ -1156,12 +1741,16 @@ function onRunFinished(evt) {
   updateRunButtons();
   stopPulsing(evt.run_id);
   applyDelta(data.nodes || [], []);
-  if (data.hypotheses === 0 && run) {
+  if (data.hypotheses === 0 && run && !run.bulk) {
     state.noLinks.push({ runId: evt.run_id, caseId: data.case_id || run.caseId, candidates: run.candidates || [] });
   }
   renderHypotheses();
   refreshMetrics();
   consoleLine(evt, "milestone", data.hypotheses === 0 ? "No hypotheses proposed" : "");
+  if (state.bulk && state.bulk.runId === evt.run_id) {
+    state.bulk.active = false;
+    endBulkBuilding();
+  }
   if (evt.run_id !== state.currentRunId) return;
   stopClock(data.seconds);
   markStagesDone();
@@ -1181,7 +1770,7 @@ function onGaps(evt) {
 
 function updateRunButtons() {
   const busy = state.activeRuns.size > 0 || state.submitting;
-  document.querySelectorAll("[data-demo], #add-case").forEach((button) => (button.disabled = busy));
+  document.querySelectorAll("[data-demo], [data-folder], #add-case").forEach((button) => (button.disabled = busy));
 }
 
 function onRunError(evt) {
@@ -1342,14 +1931,27 @@ function setConnection(stateName, label) {
 function bindIntake() {
   const zone = el("dropzone");
   const input = el("file-input");
-  zone.addEventListener("click", () => input.click());
+  const folderInput = el("folder-input");
+  zone.addEventListener("click", (evt) => {
+    if (evt.target.closest("#choose-folder")) return;
+    input.click();
+  });
+  el("choose-folder").addEventListener("click", () => folderInput.click());
   zone.addEventListener("keydown", (evt) => {
     if (evt.key === "Enter" || evt.key === " ") {
       evt.preventDefault();
       input.click();
     }
   });
-  input.addEventListener("change", () => addFiles([...input.files]));
+  input.addEventListener("change", () => {
+    addFiles([...input.files].map((file) => ({ file, path: file.name })));
+    input.value = "";
+  });
+  folderInput.addEventListener("change", () => {
+    const entries = [...folderInput.files].map((file) => ({ file, path: file.webkitRelativePath || file.name })).filter(isUploadable);
+    folderInput.value = "";
+    submitBulkFiles(entries);
+  });
   ["dragenter", "dragover"].forEach((name) =>
     zone.addEventListener(name, (evt) => {
       evt.preventDefault();
@@ -1357,28 +1959,130 @@ function bindIntake() {
     })
   );
   ["dragleave", "drop"].forEach((name) => zone.addEventListener(name, () => zone.classList.remove("over")));
-  zone.addEventListener("drop", (evt) => {
+  zone.addEventListener("drop", async (evt) => {
     evt.preventDefault();
-    addFiles([...evt.dataTransfer.files]);
+    const entries = (await entriesFromDrop(evt.dataTransfer)).filter(isUploadable);
+    if (entries.some((e) => e.path.includes("/"))) submitBulkFiles(entries);
+    else addFiles(entries);
   });
   el("add-case").addEventListener("click", submitCase);
   document.querySelectorAll("[data-demo]").forEach((btn) => btn.addEventListener("click", () => runDemo(btn.dataset.demo)));
+  document.querySelectorAll("[data-folder]").forEach((btn) => btn.addEventListener("click", () => runFolder(btn.dataset.folder)));
 }
 
-function addFiles(files) {
-  state.pendingFiles = [...state.pendingFiles, ...files];
+function isUploadable(entry) {
+  return !entry.path.split("/").some((part) => part.startsWith("."));
+}
+
+async function entriesFromDrop(dataTransfer) {
+  const items = [...(dataTransfer.items || [])];
+  const roots = items.map((item) => (item.webkitGetAsEntry ? item.webkitGetAsEntry() : null)).filter(Boolean);
+  if (roots.length === 0) return [...dataTransfer.files].map((file) => ({ file, path: file.name }));
+  const nested = await Promise.all(roots.map((root) => walkEntry(root)));
+  return nested.flat();
+}
+
+function walkEntry(entry) {
+  if (entry.isFile) {
+    return new Promise((resolve) => entry.file((file) => resolve([{ file, path: entry.fullPath.replace(/^\//, "") }]), () => resolve([])));
+  }
+  return readAllEntries(entry.createReader()).then((children) => Promise.all(children.map(walkEntry))).then((lists) => lists.flat());
+}
+
+function readAllEntries(reader) {
+  return new Promise((resolve) => {
+    const collected = [];
+    const readBatch = () =>
+      reader.readEntries(
+        (batch) => {
+          if (batch.length === 0) return resolve(collected);
+          collected.push(...batch);
+          readBatch();
+        },
+        () => resolve(collected)
+      );
+    readBatch();
+  });
+}
+
+function addFiles(entries) {
+  state.pendingFiles = [...state.pendingFiles, ...entries];
   const list = el("file-list");
   list.replaceChildren(
-    ...state.pendingFiles.map((f) => {
+    ...state.pendingFiles.map(({ file, path }) => {
       const li = document.createElement("li");
       const name = document.createElement("span");
-      name.textContent = f.name;
+      name.textContent = path;
       const size = document.createElement("span");
-      size.textContent = formatSize(f.size);
+      size.textContent = formatSize(file.size);
       li.append(name, size);
       return li;
     })
   );
+}
+
+function bindFastImport() {
+  document.addEventListener("keydown", (evt) => {
+    if (evt.target.closest && evt.target.closest("input, textarea, select")) return;
+    if (evt.key === "F" && evt.shiftKey) {
+      state.fastChordAt = Date.now();
+      return;
+    }
+    if ((evt.key === "1" || evt.key === "2") && Date.now() - state.fastChordAt < FAST_CHORD_MS) {
+      state.fastChordAt = 0;
+      runFolder(`folder-${evt.key}`, true);
+    }
+  });
+}
+
+async function submitBulkFiles(entries) {
+  if (entries.length === 0) {
+    showError("The dropped folder has no files to import.");
+    return;
+  }
+  state.submitting = true;
+  updateRunButtons();
+  try {
+    if (MOCK) {
+      consoleLine({ agent: "intake", ts: new Date().toISOString(), message: `Mock mode: replaying the bulk storyboard for ${entries.length} dropped file(s)` });
+      await replayMock("bulk");
+    } else {
+      const form = new FormData();
+      entries.forEach(({ file, path }) => form.append("files[]", file, path));
+      const res = await api("/api/bulk", { method: "POST", body: form });
+      consoleLine({ agent: "intake", ts: new Date().toISOString(), message: `Queued ${entries.length} files as bulk run ${res.run_id || ""}`.trim() });
+    }
+  } catch (err) {
+    showError(`Bulk drop failed: ${err.message}`);
+  } finally {
+    state.submitting = false;
+    updateRunButtons();
+  }
+}
+
+async function runFolder(folder, fast = false) {
+  if (state.activeRuns.size > 0 || state.submitting) return;
+  state.submitting = true;
+  updateRunButtons();
+  const note = fast ? "fast import" : "";
+  try {
+    if (fast) consoleLine({ agent: "intake", ts: new Date().toISOString(), message: `fast import of ${folder}: reading stored records, skipping the extractor` }, "milestone");
+    if (MOCK) {
+      await replayMock("bulk");
+    } else {
+      const res = await api("/api/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fast ? { folder, fast: true } : { folder }),
+      });
+      consoleLine({ agent: "intake", ts: new Date().toISOString(), message: `Queued ${folder} as bulk run ${res.run_id || ""} ${note}`.trim() });
+    }
+  } catch (err) {
+    showError(`Folder ${folder} failed: ${err.message}`);
+  } finally {
+    state.submitting = false;
+    updateRunButtons();
+  }
 }
 
 function formatSize(bytes) {
@@ -1400,7 +2104,7 @@ async function submitCase() {
       await replayMock();
     } else {
       const form = new FormData();
-      state.pendingFiles.forEach((f) => form.append("files[]", f, f.name));
+      state.pendingFiles.forEach(({ file, path }) => form.append("files[]", file, path));
       appendIfSet(form, "date", el("field-date").value);
       appendIfSet(form, "location", el("field-location").value);
       appendIfSet(form, "scene_type", el("field-scene").value);
@@ -1409,8 +2113,7 @@ async function submitCase() {
     }
     state.pendingFiles = [];
     el("file-list").replaceChildren();
-    el("file-input").value = "";
-  } catch (err) {
+    } catch (err) {
     showError(`Add case failed: ${err.message}`);
   } finally {
     state.submitting = false;
@@ -1460,6 +2163,8 @@ async function startLive() {
   try {
     const graph = await api("/api/graph");
     loadGraph(graph);
+    state.score = await api("/api/score").catch(() => null);
+    refreshMetrics();
   } catch (err) {
     el("graph-empty").textContent = "Graph unavailable";
     showError(`Could not load /api/graph: ${err.message}. Add ?mock=1 to the URL to run without the backend.`);
@@ -1519,52 +2224,36 @@ async function resync() {
   }
 }
 
-async function refreshMetrics() {
-  if (MOCK) return renderMetrics(localMetrics());
-  try {
-    const audit = await api("/api/audit");
-    renderMetrics(normalizeMetrics(audit.metrics || audit));
-  } catch (err) {
-    renderMetrics(localMetrics());
-  }
+function refreshMetrics() {
+  renderMetrics(currentMetrics());
 }
 
-function normalizeMetrics(m) {
-  const pick = (...keys) => keys.map((k) => m[k]).find((v) => v != null) ?? 0;
+function currentMetrics() {
+  const local = localMetrics();
+  const score = state.score;
   return {
-    cases: pick("cases_added", "cases"),
-    proposed: pick("hypotheses_proposed", "proposed", "hypotheses"),
-    accepted: pick("accepted", "hypotheses_accepted"),
-    rejected: pick("rejected", "hypotheses_rejected"),
-    median: pick("median_seconds_to_proposal", "median_seconds", "median_drop_to_proposal_seconds"),
+    ...local,
+    agree: score ? `${score.proposed_agreeing ?? 0} of ${score.proposed_total ?? 0} proposed` : "-",
   };
 }
 
 function localMetrics() {
-  const hyps = [...state.hypotheses.values()];
-  const durations = [...state.runs.values()].filter((r) => r.firstProposalAt).map((r) => (r.firstProposalAt - r.startedAt) / 1000);
+  const hyps = [...state.hypotheses.values()].filter((h) => h.decision !== "reject");
+  const accepted = hyps.filter((h) => h.decision === "accept");
   return {
-    cases: state.sessionCaseIds.size,
+    cases: state.cy.nodes('[type = "case"]').length,
     proposed: hyps.length,
-    accepted: hyps.filter((h) => h.decision === "accept").length,
-    rejected: hyps.filter((h) => h.decision === "reject").length,
-    median: median(durations),
+    accepted: accepted.length,
+    covered: new Set(accepted.flatMap((h) => h.caseIds)).size,
   };
-}
-
-function median(values) {
-  if (!values.length) return 0;
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
 function renderMetrics(m) {
   el("m-cases").textContent = m.cases;
   el("m-proposed").textContent = m.proposed;
   el("m-accepted").textContent = m.accepted;
-  el("m-rejected").textContent = m.rejected;
-  el("m-median").textContent = `${Number(m.median || 0).toFixed(1)}s`;
+  el("m-covered").textContent = m.covered;
+  el("m-agree").textContent = m.agree;
 }
 
 async function startMock() {
@@ -1572,11 +2261,12 @@ async function startMock() {
   try {
     const [graph, events] = await Promise.all([api(MOCK_GRAPH_URL), api(MOCK_EVENTS_URL)]);
     state.mockGraph = graph;
+    state.mockSeeded = graph.seeded || graph;
     state.mockEvents = events;
     loadGraph(graph);
-    renderMetrics(localMetrics());
+    refreshMetrics();
     consoleLine({ agent: "intake", ts: new Date().toISOString(), message: `Mock graph loaded: ${graph.nodes.length} nodes, ${graph.edges.length} edges. Replay starts in a moment` });
-    setTimeout(() => replayMock(), 1500);
+    setTimeout(() => replayMock("bulk"), 1500);
   } catch (err) {
     showError(`Mock data failed to load: ${err.message}`);
   }
@@ -1587,21 +2277,25 @@ function replayMock(name = "renton-a") {
     clearTimeout(state.mockReplayHandle);
     state.mockReplayHandle = null;
   }
-  if (state.mockReplayed) resetMockGraph();
+  if (state.mockReplayed || name !== "bulk") resetMockGraph(name === "bulk" ? state.mockGraph : state.mockSeeded);
   state.mockReplayed = true;
   const sequence = state.mockEvents.replays?.[name] || state.mockEvents.replay;
   return scheduleSequence(sequence.map(withLiveTimestamp));
 }
 
-function resetMockGraph() {
+function resetMockGraph(graph = state.mockGraph) {
+  stopBulkTimer();
+  state.bulk = null;
+  state.score = null;
+  renderProgress();
   state.sessionCaseIds.clear();
   state.runs.clear();
   state.activeRuns.clear();
   state.noLinks = [];
   updateRunButtons();
   clearDrawer();
-  loadGraph(state.mockGraph);
-  renderMetrics(localMetrics());
+  loadGraph(graph);
+  refreshMetrics();
 }
 
 function withLiveTimestamp(step) {
@@ -1627,7 +2321,36 @@ function scheduleSequence(steps) {
   });
 }
 
+function applyBulkMockDecision(id, decision, reason) {
+  const h = state.hypotheses.get(id);
+  const seriesId = `series-${id}`;
+  const confirmed = decision === "accept";
+  const nodes = [{ id, type: "hypothesis", label: id, status: confirmed ? "confirmed" : "rejected", props: { decision } }];
+  const edges = [];
+  if (confirmed) {
+    nodes.push({ id: seriesId, type: "series", label: `Series ${id.replace(/^H-/, "")}`, status: "confirmed", props: { ground_truth_status: "linked_by_police" } });
+    h.caseIds.forEach((caseId) => edges.push({ id: `e-${seriesId}-${caseId}`, source: caseId, target: seriesId, rel: "PART_OF_SERIES", kind: "confirmed", confidence: 1 }));
+  }
+  handleEvent({ type: "decision.recorded", run_id: MOCK_BULK_RUN, ts: new Date().toISOString(), agent: "detective", message: `${id} ${decision}${reason ? `: ${reason}` : ""}`, data: { hypothesis_id: id, decision, reason, nodes, edges } });
+  handleEvent({ type: "score.updated", run_id: MOCK_BULK_RUN, ts: new Date().toISOString(), agent: "detective", message: "score updated", data: mockScore() });
+}
+
+function mockScore() {
+  const hyps = [...state.hypotheses.values()].filter((h) => h.decision !== "reject");
+  const accepted = hyps.filter((h) => h.decision === "accept");
+  return {
+    proposed_total: hyps.length,
+    proposed_agreeing: hyps.length,
+    accepted_total: accepted.length,
+    accepted_agreeing: accepted.length,
+    cases_in_graph: state.cy.nodes('[type = "case"]').length,
+    cases_covered_by_accepted_series: new Set(accepted.flatMap((h) => h.caseIds)).size,
+    known_series_touched: accepted.length,
+  };
+}
+
 function applyMockDecision(id, decision, reason) {
+  if (state.hypotheses.get(id)?.runId === MOCK_BULK_RUN) return applyBulkMockDecision(id, decision, reason);
   const template = state.mockEvents.after_decision[decision];
   if (!template) throw new Error(`no mock decision for ${decision}`);
   const evt = { ...template, ts: new Date().toISOString(), data: { ...template.data, hypothesis_id: id, reason: reason || template.data.reason } };

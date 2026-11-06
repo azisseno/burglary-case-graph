@@ -1,0 +1,15 @@
+{
+ "series_id": "fx-series",
+ "label": "Fixture series",
+ "area": "Renton, WA",
+ "ground_truth": {
+  "status": "linked_by_police",
+  "linked_incidents": [
+   "fx-01",
+   "fx-02"
+  ],
+  "unlinked_incidents": [
+   "fx-03"
+  ]
+ }
+}

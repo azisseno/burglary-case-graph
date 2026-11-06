@@ -1,5 +1,6 @@
 import io
 import json
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -466,3 +467,240 @@ def test_events_are_broadcast_to_subscribers(client):
     pipeline.event("run.started", "run-z", "intake", "hello", {"case_id": "x"})
     assert received[0]["type"] == "run.started"
     assert received[0]["run_id"] == "run-z"
+
+
+FIXTURE_ROOT = Path(__file__).parent / "fixtures" / "root"
+FIXTURE_RECORDS = {
+    "fx-01": RECORD,
+    "fx-02": RECORD,
+    "fx-03": {**RECORD, "location": "Seattle, WA", "entry_method": "pried rear window with a crowbar",
+              "vehicle": "white van", "evidence": [{"type": "vehicle", "description": "white van"}]},
+}
+
+
+@pytest.fixture
+def bulk_calls(monkeypatch):
+    calls = []
+
+    def fake_run(command, **kwargs):
+        calls.append(command)
+        properties = schema_of(command)
+        if "observations" in properties:
+            payload = PHOTO
+        elif "entry_method" in properties:
+            marker = next(key for key in FIXTURE_RECORDS if key in kwargs["input"])
+            payload = FIXTURE_RECORDS[marker]
+        elif "verdict" in properties:
+            payload = CRITIC
+        else:
+            payload = GAPS
+        return SimpleNamespace(stdout=envelope(payload), stderr="", returncode=0)
+
+    monkeypatch.setattr(cli, "runner", fake_run)
+    return calls
+
+
+def fake_cluster_linker(monkeypatch, confidence=0.8):
+    seen = []
+
+    def run_linker(api_base, case_id, run_id, run_dir, emit, graph=None, anchor_ids=()):
+        assert isinstance(case_id, list)
+        seen.append((list(case_id), list(anchor_ids)))
+        first, rest = case_id[0], case_id[1:]
+        top = next(c for c in tools.cluster_candidates(graph, first) if c["case_id"] in rest)
+        tools.propose_hypothesis(graph, first, [top["case_id"]], "same method and vehicle",
+                                 top["cited_edge_ids"], confidence, run_id)
+        return "done"
+
+    monkeypatch.setattr(agents, "run_linker", run_linker)
+    return seen
+
+
+@pytest.fixture
+def bulk_client(tmp_path, bulk_calls, monkeypatch):
+    monkeypatch.delenv(server.SEED_ENV, raising=False)
+    monkeypatch.delenv(server.RUNS_ENV, raising=False)
+    app = server.create_app(root=FIXTURE_ROOT, runs_dir=tmp_path / "runs")
+    with TestClient(app) as test_client:
+        yield test_client
+
+
+def entries_of(client, run_id):
+    return [e for e in client.get("/api/audit").json()["entries"] if e["run_id"] == run_id]
+
+
+def run_bulk(client, **body):
+    started = client.post("/api/bulk", json=body).json()
+    client.app.state.pipeline.join()
+    return started
+
+
+def test_empty_start_without_graph_file(bulk_client):
+    body = bulk_client.get("/api/graph").json()
+    assert body["nodes"] == [] and body["edges"] == []
+    assert not bulk_client.app.state.pipeline.graph_path.exists()
+    assert bulk_client.get("/api/score").json()["cases_in_graph"] == 0
+
+
+def test_full_seed_environment_seeds_from_dataset(tmp_path, monkeypatch):
+    monkeypatch.setenv(server.SEED_ENV, "full")
+    app = server.create_app(root=FIXTURE_ROOT, runs_dir=tmp_path / "runs")
+    assert len(app.state.pipeline.graph.nodes_of_type("case")) == 3
+    assert (tmp_path / "runs" / "graph.json").exists()
+
+
+def test_runs_directory_environment(tmp_path, monkeypatch):
+    monkeypatch.setenv(server.RUNS_ENV, str(tmp_path / "scratch"))
+    app = server.create_app(root=FIXTURE_ROOT)
+    assert app.state.pipeline.runs_dir == tmp_path / "scratch"
+
+
+def test_bulk_folder_emits_per_case_events_and_one_finder_pass(bulk_client, bulk_calls, monkeypatch):
+    seen = fake_cluster_linker(monkeypatch)
+    started = run_bulk(bulk_client, folder="folder-a")
+    assert started["total"] == 3
+    entries = entries_of(bulk_client, started["run_id"])
+    types = [e["type"] for e in entries]
+    assert types[0] == "run.started" and types[-1] == "run.finished"
+    assert types.count("run.case_started") == 3 and types.count("run.case_finished") == 3
+    assert types.count("build.nodes") == 3
+    assert types.count("finder.clusters") == 1 and types.count("finder.finished") == 1
+    assert types.index("finder.clusters") > max(i for i, t in enumerate(types) if t == "run.case_finished")
+    assert types.count("link.hypothesis") == 1 and types.count("critic.verdict") == 1
+    assert types.index("finder.finished") < types.index("score.updated")
+    started_cases = [e["data"] for e in entries if e["type"] == "run.case_started"]
+    assert sorted(d["index"] for d in started_cases) == [1, 2, 3] and {d["total"] for d in started_cases} == {3}
+    clusters = next(e for e in entries if e["type"] == "finder.clusters")["data"]["clusters"]
+    assert [c["case_ids"] for c in clusters] == [["case:NEW-001", "case:NEW-002"]]
+    assert len(seen) == 1
+    graph = bulk_client.app.state.pipeline.graph
+    assert {n["props"]["source_id"] for n in graph.nodes_of_type("case")} == {"fx-01", "fx-02", "fx-03"}
+    assert all(n["status"] == "existing" and n["props"]["series_id"] is None for n in graph.nodes_of_type("case"))
+
+
+def test_bulk_uses_haiku_for_extraction_and_photos(bulk_client, bulk_calls, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    run_bulk(bulk_client, folder="folder-a")
+    models = {}
+    for command in bulk_calls:
+        if "--json-schema" in command:
+            models.setdefault(next(iter(schema_of(command))), set()).add(command[command.index("--model") + 1])
+    assert models["observations"] == {"haiku"}
+    assert models["date"] == {"haiku"}
+    assert models["verdict"] == {"sonnet"}
+
+
+def test_bulk_case_media_urls_are_served_per_case(bulk_client, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    started = run_bulk(bulk_client, folder="folder-a")
+    case = next(c for c in started["cases"] if c["source_id"] == "fx-01")
+    detail = bulk_client.get(f"/api/cases/{case['label']}").json()
+    image = next(m for m in detail["media"] if m["kind"] == "image")
+    assert bulk_client.get(image["url"]).content == b"\xff\xd8fake"
+
+
+def test_bulk_multipart_with_relative_folder_names(bulk_client, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    names = ["drop/fx-01/report.txt", "drop/fx-01/photos/scene.jpg", "drop/fx-02/report.txt", "drop/fx-03/report.txt"]
+    texts = {"fx-01": b"Incident fx-01", "fx-02": b"Incident fx-02", "fx-03": b"Incident fx-03"}
+    files = [("files[]", (name, io.BytesIO(texts.get(name.split("/")[1], b"\xff\xd8x")), "application/octet-stream")) for name in names]
+    started = bulk_client.post("/api/bulk", files=files).json()
+    bulk_client.app.state.pipeline.join()
+    assert started["total"] == 3
+    entries = entries_of(bulk_client, started["run_id"])
+    assert [e["data"]["file_count"] for e in entries if e["type"] == "run.case_started"] == [2, 1, 1]
+    assert [e["type"] for e in entries].count("finder.clusters") == 1
+
+
+def test_fast_import_skips_the_cli_and_announces_itself(bulk_client, bulk_calls, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    started = run_bulk(bulk_client, folder="folder-a", fast=True)
+    entries = entries_of(bulk_client, started["run_id"])
+    first = entries[0]
+    assert first["type"] == "run.started" and "fast import" in first["message"].lower()
+    assert [e["type"] for e in entries].count("build.nodes") == 3
+    assert not [c for c in bulk_calls if "entry_method" in schema_of(c)]
+    assert not [c for c in bulk_calls if "observations" in schema_of(c)]
+    graph = bulk_client.app.state.pipeline.graph
+    assert {n["props"]["source_id"] for n in graph.nodes_of_type("case")} == {"fx-01", "fx-02", "fx-03"}
+    assert "series:fx-series" not in graph.nodes
+    assert all(n["props"]["series_id"] is None for n in graph.nodes_of_type("case"))
+
+
+def test_hypothesis_below_floor_is_created_and_flagged(bulk_client, monkeypatch):
+    fake_cluster_linker(monkeypatch, confidence=0.4)
+    run_bulk(bulk_client, folder="folder-a", fast=True)
+    hypothesis = bulk_client.get("/api/hypotheses").json()[0]
+    assert hypothesis["props"]["below_floor"] is True
+    assert hypothesis["props"]["confidence"] == 0.4
+
+
+def test_score_updates_on_finder_and_decision(bulk_client, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    started = run_bulk(bulk_client, folder="folder-a", fast=True)
+    scores = [e["data"] for e in entries_of(bulk_client, started["run_id"]) if e["type"] == "score.updated"]
+    assert scores[-1]["proposed_total"] == 1 and scores[-1]["proposed_agreeing"] == 1
+    assert scores[-1]["accepted_total"] == 0
+    hyp_id = bulk_client.get("/api/hypotheses").json()[0]["id"]
+    bulk_client.post(f"/api/hypotheses/{hyp_id}/decision", json={"decision": "accept", "reason": "ok"})
+    bulk_client.app.state.pipeline.join()
+    after = [e for e in entries_of(bulk_client, started["run_id"]) if e["type"] == "score.updated"]
+    assert len(after) == len(scores) + 1
+    assert bulk_client.get("/api/score").json() == after[-1]["data"]
+    assert after[-1]["data"]["accepted_agreeing"] == 1
+    assert after[-1]["data"]["known_series_touched"] == 1
+    assert after[-1]["data"]["cases_covered_by_accepted_series"] == 2
+
+
+def test_bulk_rejects_unknown_and_empty_input(bulk_client):
+    assert bulk_client.post("/api/bulk", json={"folder": "nope"}).status_code == 404
+    assert bulk_client.post("/api/bulk", json={"folder": "../cases"}).status_code == 404
+    assert bulk_client.post("/api/bulk", json={}).status_code == 400
+    assert bulk_client.post("/api/bulk", files=[("other", ("a.txt", io.BytesIO(b"x"), "text/plain"))]).status_code == 400
+
+
+def test_bulk_case_failure_does_not_stop_the_run(bulk_client, bulk_calls, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    original = cli.runner
+
+    def flaky(command, **kwargs):
+        if "entry_method" in schema_of(command) and "fx-02" in kwargs["input"]:
+            return SimpleNamespace(stdout="", stderr="no", returncode=1)
+        return original(command, **kwargs)
+
+    monkeypatch.setattr(cli, "runner", flaky)
+    started = run_bulk(bulk_client, folder="folder-a")
+    types = [e["type"] for e in entries_of(bulk_client, started["run_id"])]
+    assert types.count("run.case_finished") == 3 and types.count("run.error") == 1
+    assert types[-1] == "run.finished"
+
+
+def test_fast_import_carries_no_series_text_or_source_urls(bulk_client, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    run_bulk(bulk_client, folder="folder-a", fast=True)
+    for case in bulk_client.app.state.pipeline.graph.nodes_of_type("case"):
+        assert case["props"]["notes"] is None
+        assert case["sources"] == ["report.txt"]
+        assert all("source_url" not in item for item in case["props"]["evidence"])
+
+
+def test_agents_never_see_the_answer_key(bulk_client, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    run_bulk(bulk_client, folder="folder-a", fast=True)
+    graph = bulk_client.app.state.pipeline.graph
+    detail = tools.get_case(graph, "case:NEW-001")
+    assert "source_id" not in detail["case"]["props"]
+    assert all("fx-" not in str(edge["provenance"]) for edge in detail["edges"])
+    assert "source_id" in graph.nodes["case:NEW-001"]["props"]
+    assert "source_id" in tools.get_case(graph, "case:NEW-001", redact=False)["case"]["props"]
+
+
+def test_bulk_errors_carry_the_case_id(bulk_client, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    pipeline = bulk_client.app.state.pipeline
+    monkeypatch.setattr(pipeline, "build_fast", lambda run_id, job: (_ for _ in ()).throw(KeyError("boom")))
+    started = run_bulk(bulk_client, folder="folder-a", fast=True)
+    errors = [e for e in entries_of(bulk_client, started["run_id"]) if e["type"] == "run.error"]
+    assert errors and all(e["data"].get("case_id") for e in errors)
+    types = [e["type"] for e in entries_of(bulk_client, started["run_id"])]
+    assert types.count("run.case_finished") == 3 and "finder.finished" in types
