@@ -1,4 +1,4 @@
-# Burglary case graph
+# Converge CaseLink
 
 Prototype for the Cracking the Burglary Backlog case: evidence goes in, a knowledge graph is built, agents propose cross-case links, a detective decides.
 
