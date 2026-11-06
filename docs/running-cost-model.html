@@ -84,19 +84,19 @@
 
   <section>
     <h2>Sensitivity 1: model spend</h2>
-    <p class="lead">Per year. Rows vary the reasoning model and how many tokens each case consumes; columns vary caching. The Haiku sweep stays on Haiku.</p>
+    <p class="lead">Per year, at base tokens per case. Rows mix the model tier per role; columns vary caching. Caching applies to Linker and Gap finder input only.</p>
     <div class="tablewrap"><table>
-      <thead><tr><th>Reasoning model</th><th>Tokens per case</th><th class="num">No caching</th><th class="num">60% cached</th></tr></thead>
+      <thead><tr><th>Tier mix</th><th>Sweep</th><th>Linker and Gap finder</th><th>Critic</th><th class="num">No caching</th><th class="num">60% cached</th></tr></thead>
       <tbody>
-        <tr><td>Claude Sonnet 5.5</td><td>half the base</td><td class="num">$707</td><td class="num">$462</td></tr>
-        <tr class="base"><td>Claude Sonnet 5.5, base case</td><td>base</td><td class="num">$1,413</td><td class="num">$924</td></tr>
-        <tr><td>Claude Sonnet 5.5</td><td>double</td><td class="num">$2,826</td><td class="num">$1,849</td></tr>
-        <tr><td>Claude Opus 5.5</td><td>half the base</td><td class="num">$1,405</td><td class="num">$889</td></tr>
-        <tr><td>Claude Opus 5.5, upper bound</td><td>base</td><td class="num">$2,811</td><td class="num">$1,779</td></tr>
-        <tr><td>Claude Opus 5.5</td><td>double</td><td class="num">$5,621</td><td class="num">$3,558</td></tr>
+        <tr><td>Haiku everywhere<br><span style="color:var(--muted);font-size:13px">Fastest and cheapest, weakest linking.</span></td><td>Haiku</td><td>Haiku</td><td>Haiku</td><td class="num">$85</td><td class="num">$85</td></tr>
+        <tr class="base"><td>Haiku sweep, Sonnet reasoning, Sonnet critic<br><span style="color:var(--muted);font-size:13px">Base case.</span></td><td>Haiku</td><td>Sonnet</td><td>Sonnet</td><td class="num">$1,413</td><td class="num">$924</td></tr>
+        <tr><td>Haiku sweep, Sonnet reasoning, Opus critic<br><span style="color:var(--muted);font-size:13px">Flagship only to challenge links.</span></td><td>Haiku</td><td>Sonnet</td><td>Opus</td><td class="num">$1,553</td><td class="num">$1,064</td></tr>
+        <tr><td>Haiku sweep, Opus reasoning, Opus critic<br><span style="color:var(--muted);font-size:13px">Upper bound used elsewhere on this page.</span></td><td>Haiku</td><td>Opus</td><td>Opus</td><td class="num">$2,811</td><td class="num">$1,779</td></tr>
+        <tr><td>Sonnet sweep, Opus reasoning, Opus critic<br><span style="color:var(--muted);font-size:13px">No Haiku anywhere.</span></td><td>Sonnet</td><td>Opus</td><td>Opus</td><td class="num">$3,105</td><td class="num">$2,073</td></tr>
+        <tr><td>Opus everywhere<br><span style="color:var(--muted);font-size:13px">Flagship everywhere.</span></td><td>Opus</td><td>Opus</td><td>Opus</td><td class="num">$3,415</td><td class="num">$2,383</td></tr>
       </tbody>
     </table></div>
-    <p class="lead" style="margin-top:12px">Range: $462 to $5,621 a year. The Haiku sweep stays constant across rows and is about $16 a year at base tokens. Model choice is not a cost decision at this volume; pick the model that links cases best.</p>
+    <p class="lead" style="margin-top:12px">Range: $85 to $3,415 a year. Each row scales linearly with tokens per case, so doubling the Linker's graph reads roughly doubles the row. Model choice is not a cost decision at this volume; pick the model that links cases best.</p>
   </section>
 
   <section>
@@ -110,7 +110,7 @@
         <tr><td>4 NCU</td><td class="num">$8,580</td><td class="num">$10,297</td><td class="num">$12,013</td></tr>
       </tbody>
     </table></div>
-    <p class="lead" style="margin-top:12px">Range: $4,355 to $12,013 a year. Worst case across both tables, Opus with double tokens and no caching plus 4 NCU at 40% overhead, is about $77,600 all in. The 15% target then needs 46 minutes saved per case instead of 45.</p>
+    <p class="lead" style="margin-top:12px">Range: $4,355 to $12,013 a year. Worst case, Opus reasoning and critic at double the base tokens with no caching ($5,621 a year, Haiku sweep included) plus 4 NCU at 40% overhead, is about $77,600 all in. The 15% target then needs 46 minutes saved per case instead of 45.</p>
   </section>
 
   <section>
