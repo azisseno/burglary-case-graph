@@ -122,7 +122,7 @@ The page applies deltas to the graph as they arrive. Nodes in a delta carry `sta
 
 ## Front end behaviour
 
-Three regions on a dark screen. Left: intake drop zone, sample buttons, agent console streaming the events as lines with the agent name, time, and message. Center: Cytoscape graph of the whole store. Right: review panel listing hypotheses with rationale, cited evidence, critic verdict, and accept, reject, more buttons; below it, the case detail drawer for the clicked node and a metrics strip.
+Three regions on a dark screen. Left: intake drop zone, agent console streaming the events as lines with the agent name, time, and message. Center: Cytoscape graph of the whole store. Right: review panel listing hypotheses with rationale, cited evidence, critic verdict, and accept, reject, more buttons; below it, the case detail drawer for the clicked node and a metrics strip.
 
 Visual rules: existing nodes dim, new nodes glow and pulse until the run ends, hypothesis nodes amber with dashed edges, confirmed edges green and solid, rejected hypotheses fade and are hidden unless the audit toggle is on. Node color by type, shape by type: case circle, series hexagon, method diamond, location rounded square, time window pill, vehicle triangle, item small circle, hypothesis octagon. New nodes drop in near their linked attributes and the layout animates. Clicking a node opens its detail with provenance. A legend sits in a corner. Works at 1440 wide for the recording and does not break at 1024.
 

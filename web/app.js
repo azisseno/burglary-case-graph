@@ -278,7 +278,7 @@ function loadGraph(graph) {
 function syncEmptyState() {
   const empty = state.cy.nodes().empty();
   el("graph-empty").hidden = !empty;
-  if (empty) el("graph-empty").textContent = "Empty graph. Drop a folder or pick a sample.";
+  if (empty) el("graph-empty").textContent = "Empty graph. Drop a folder of reports to begin.";
 }
 
 function fullLayoutOptions() {
@@ -933,7 +933,7 @@ function renderHypotheses() {
   if (list.length === 0 && state.noLinks.length === 0) {
     container.innerHTML = belowFloorCount
       ? `<p class="empty">No proposals at or above 0.5. ${belowFloorCount} below; tick Show proposals under 0.5 to see them.</p>`
-      : '<p class="empty">No hypotheses yet. Drop a case or pick a sample.</p>';
+      : '<p class="empty">No hypotheses yet. Drop a folder of reports to begin.</p>';
     return;
   }
   state.drafts = new Map(
@@ -1785,7 +1785,7 @@ function onGaps(evt) {
 
 function updateRunButtons() {
   const busy = state.activeRuns.size > 0 || state.submitting;
-  document.querySelectorAll("[data-demo], [data-folder], #add-case").forEach((button) => (button.disabled = busy));
+  el("add-case").disabled = busy;
 }
 
 function onRunError(evt) {
@@ -1976,13 +1976,21 @@ function bindIntake() {
   ["dragleave", "drop"].forEach((name) => zone.addEventListener(name, () => zone.classList.remove("over")));
   zone.addEventListener("drop", async (evt) => {
     evt.preventDefault();
-    const entries = (await entriesFromDrop(evt.dataTransfer)).filter(isUploadable);
-    if (entries.some((e) => e.path.includes("/"))) submitBulkFiles(entries);
-    else addFiles(entries);
+    importDropped((await entriesFromDrop(evt.dataTransfer)).filter(isUploadable));
   });
-  el("add-case").addEventListener("click", submitCase);
-  document.querySelectorAll("[data-demo]").forEach((btn) => btn.addEventListener("click", () => runDemo(btn.dataset.demo)));
-  document.querySelectorAll("[data-folder]").forEach((btn) => btn.addEventListener("click", () => runFolder(btn.dataset.folder)));
+  el("add-case").addEventListener("click", () => submitCase());
+}
+
+function importDropped(entries) {
+  const folders = new Set(entries.map((e) => e.path.split("/").slice(0, -1).join("/")));
+  const singleIncident = folders.size === 1 && !folders.has("") && [...folders][0].split("/").length === 1;
+  if (singleIncident) {
+    const label = [...folders][0];
+    addFiles(entries.map(({ file }) => ({ file, path: file.name })));
+    return submitCase(label);
+  }
+  if (folders.has("") && folders.size === 1) return addFiles(entries);
+  return submitBulkFiles(entries);
 }
 
 function isUploadable(entry) {
@@ -2106,7 +2114,7 @@ function formatSize(bytes) {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-async function submitCase() {
+async function submitCase(label) {
   if (state.pendingFiles.length === 0) {
     showError("Add at least one file before adding a case.");
     return;
@@ -2120,6 +2128,7 @@ async function submitCase() {
     } else {
       const form = new FormData();
       state.pendingFiles.forEach(({ file, path }) => form.append("files[]", file, path));
+      appendIfSet(form, "label", label);
       appendIfSet(form, "date", el("field-date").value);
       appendIfSet(form, "location", el("field-location").value);
       appendIfSet(form, "scene_type", el("field-scene").value);
@@ -2138,24 +2147,6 @@ async function submitCase() {
 
 function appendIfSet(form, key, value) {
   if (value) form.append(key, value);
-}
-
-async function runDemo(name) {
-  state.submitting = true;
-  updateRunButtons();
-  try {
-    if (MOCK) {
-      await replayMock(name);
-    } else {
-      const res = await api(`/api/demo/${encodeURIComponent(name)}`, { method: "POST" });
-      consoleLine({ agent: "intake", ts: new Date().toISOString(), message: `Queued sample ${name} as ${res.run_id || "run"}` });
-    }
-  } catch (err) {
-    showError(`Sample ${name} failed: ${err.message}`);
-  } finally {
-    state.submitting = false;
-    updateRunButtons();
-  }
 }
 
 async function api(path, options = {}) {

@@ -669,7 +669,7 @@ def create_app(root=ROOT, graph=None, api_base=None, runs_dir=None):
             raise HTTPException(400, "no files")
         sources = [(f.filename, f.file) for f in files]
         overrides = {"date": date, "location": location, "scene_type": scene_type}
-        return pipeline.start_run(sources, label, overrides)
+        return pipeline.start_run(sources, label, overrides, demo_source_ids(demo_dir).get(label))
 
     def demo_names():
         return sorted(p.name for p in demo_dir.iterdir() if p.is_dir()) if demo_dir.exists() else []
