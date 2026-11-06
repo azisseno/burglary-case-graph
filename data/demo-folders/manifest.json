@@ -202,5 +202,43 @@
       "folder-1": 2,
       "folder-2": 1
     }
+  },
+  "series_photos": {
+    "fairfax-phone-stores-2026": {
+      "fps-01": [
+        "still-01.jpg"
+      ],
+      "fps-03": [
+        "still-02.jpg"
+      ]
+    },
+    "la-downey-jammer-crew-2026": {
+      "ldj-01": [
+        "evidence-01.jpg",
+        "evidence-02.jpg",
+        "evidence-03.jpg"
+      ]
+    },
+    "renton-crash-and-grab-2023": {
+      "rcg-03": [
+        "still-05.jpg"
+      ]
+    },
+    "seattle-athlete-homes-2025": {
+      "sah-02": [
+        "still-01.jpg",
+        "still-03.jpg",
+        "still-05.jpg"
+      ],
+      "sah-06": [
+        "still-02.jpg",
+        "still-04.jpg"
+      ]
+    },
+    "seattle-cannabis-rammings-2025": {
+      "scr-01": [
+        "still-01.png"
+      ]
+    }
   }
 }

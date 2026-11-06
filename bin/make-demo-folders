@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import hashlib
 import json
 import random
 import re
@@ -14,6 +15,7 @@ from app.scrub import UNKNOWN_DROP, scrub  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 CASES = ROOT / "data" / "cases"
 OUT = ROOT / "data" / "demo-folders"
+DEMO_INPUTS = ROOT / "data" / "demo-inputs"
 HELD_OUT = {"rcg-04", "rcg-05"}
 TARGET_TOTAL = 120
 SHUFFLE_SEED = 7
@@ -239,11 +241,46 @@ def split_folders(chosen):
     return {name: sorted(ids) for name, ids in assignment.items()}
 
 
-def write_incident(folder, record):
+def list_images(directory):
+    if not directory.is_dir():
+        return []
+    return sorted(p for p in directory.iterdir() if p.suffix.lower() in IMAGE_SUFFIXES)
+
+
+def file_digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def held_out_digests():
+    return {file_digest(p) for p in DEMO_INPUTS.glob("*/*") if p.is_file()}
+
+
+def plan_series_photos(chosen, assignment):
+    held_out = held_out_digests()
+    folder_of = {incident_id: folder for folder, ids in assignment.items() for incident_id in ids}
+    by_series = {}
+    for record in chosen:
+        by_series.setdefault(record["series_id"], []).append(record)
+    plan = {}
+    for series_id, members in sorted(by_series.items()):
+        photos = [p for p in list_images(members[0]["_dir"].parent / "photos") if file_digest(p) not in held_out]
+        anchors = []
+        for folder in FOLDERS:
+            in_folder = [r for r in members if folder_of[r["id"]] == folder]
+            if in_folder:
+                anchors.append(min(in_folder, key=lambda r: (r["date"], r["id"]))["id"])
+        dealt = {}
+        for index, photo in enumerate(photos):
+            dealt.setdefault(anchors[index % len(anchors)], []).append(photo)
+        if dealt:
+            plan[series_id] = dealt
+    return plan
+
+
+def write_incident(folder, record, series_photos=()):
     incident_dir = OUT / folder / record["id"]
     incident_dir.mkdir(parents=True)
-    photos_dir = record["_dir"] / "photos"
-    photos = sorted(p for p in photos_dir.iterdir() if p.suffix.lower() in IMAGE_SUFFIXES) if photos_dir.is_dir() else []
+    photos = [*list_images(record["_dir"] / "photos"), *series_photos]
     for photo in photos:
         shutil.copy2(photo, incident_dir / photo.name)
     (incident_dir / "report.txt").write_text(render_report(record, len(photos)))
@@ -263,6 +300,8 @@ def main():
     excluded.update(trimmed)
     chosen_by_id = {r["id"]: r for r in chosen}
     assignment = split_folders(chosen)
+    series_photo_plan = plan_series_photos(chosen, assignment)
+    attached_photos = {incident_id: photos for dealt in series_photo_plan.values() for incident_id, photos in dealt.items()}
 
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -271,10 +310,19 @@ def main():
     for folder, ids in assignment.items():
         for incident_id in ids:
             record = chosen_by_id[incident_id]
-            write_incident(folder, record)
+            write_incident(folder, record, attached_photos.get(incident_id, ()))
             series_counts = coverage.setdefault(record["series_id"], {name: 0 for name in FOLDERS})
             series_counts[folder] += 1
-    manifest = {"folders": assignment, "excluded": dict(sorted(excluded.items())), "series_coverage": dict(sorted(coverage.items()))}
+    series_photos = {
+        series_id: {incident_id: [p.name for p in photos] for incident_id, photos in dealt.items()}
+        for series_id, dealt in series_photo_plan.items()
+    }
+    manifest = {
+        "folders": assignment,
+        "excluded": dict(sorted(excluded.items())),
+        "series_coverage": dict(sorted(coverage.items())),
+        "series_photos": series_photos,
+    }
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(json.dumps({"folders": {k: len(v) for k, v in assignment.items()}, "series_coverage": manifest["series_coverage"]}, indent=1))
 

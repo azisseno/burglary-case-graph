@@ -9,7 +9,7 @@ NARRATIVE
 The responding officer arrived at the cell phone store in the 8500 block of Richmond Highway, Woodlawn, Fairfax County, VA and made contact with the reporting party. Examination of the point of entry showed the following. Front window broken with a rock and the suspect entered. Regarding what was taken, cash register stolen. Camera footage: Surveillance footage captured the whole incident. The time of the incident was recorded as 01:57.
 
 EVIDENCE
-  FOOTAGE: Surveillance footage captured the whole incident
+  FOOTAGE: Surveillance footage captured the whole incident | 1 photograph(s) attached to this report
   VEHICLE: not reported
   POINT OF ENTRY: Front window broken with a rock and the suspect entered
   DAMAGE: not reported
