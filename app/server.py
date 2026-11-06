@@ -83,8 +83,11 @@ def case_node_id(case_id):
     return case_id if case_id.startswith(CASE_PREFIX) else f"{CASE_PREFIX}{case_id}"
 
 
-def with_case(data, case_id):
-    return {**data, "case_id": case_id} if case_id else data
+def with_case(data, case_id, upload_dir=None):
+    if not case_id:
+        return data
+    data = {**data, "case_id": case_id}
+    return {**data, "upload_dir": upload_dir} if upload_dir else data
 
 
 def size_text(size):
@@ -278,8 +281,8 @@ class Pipeline:
             if fast:
                 self.build_fast(run_id, job)
             else:
-                images, texts = self.intake(run_id, job["files"], case_id)
-                observations = self.observe(run_id, case_dir, images, case_id)
+                images, texts = self.intake(run_id, job["files"], case_id, case_label)
+                observations = self.observe(run_id, case_dir, images, case_id, case_label)
                 text_file, text_record = self.extract(run_id, case_dir, texts, case_id, BULK_EXTRACT_MODEL)
                 self.build(run_id, case_id, case_label, job["files"], text_file, text_record, observations, {},
                            source_id=job["source_id"], upload_dir=case_label)
@@ -344,7 +347,7 @@ class Pipeline:
             return [self.graph.set_status(case_id, "existing")]
         return []
 
-    def intake(self, run_id, files, case_id=None):
+    def intake(self, run_id, files, case_id=None, upload_dir=None):
         images, texts = [], []
         for path in files:
             kind = file_kind(path)
@@ -354,11 +357,11 @@ class Pipeline:
                            with_case({"step": "intake", "message": f"unsupported file type {path.suffix}"}, case_id))
                 continue
             self.event("intake.file", run_id, "intake", f"{path.name} sorted as {kind}, {size_text(size)}",
-                       with_case({"name": path.name, "kind": kind, "size": size}, case_id))
+                       with_case({"name": path.name, "kind": kind, "size": size}, case_id, upload_dir))
             (images if kind == "image" else texts).append(path)
         return images, texts
 
-    def observe(self, run_id, run_dir, images, case_id=None):
+    def observe(self, run_id, run_dir, images, case_id=None, upload_dir=None):
         results = []
         for path in images:
             try:
@@ -368,7 +371,7 @@ class Pipeline:
                 continue
             results.append(result)
             self.event("observe.photo", run_id, "photo_observer",
-                       f"{path.name}: {len(result['observations'])} observations", with_case(result, case_id))
+                       f"{path.name}: {len(result['observations'])} observations", with_case(result, case_id, upload_dir))
         return results
 
     def extract(self, run_id, run_dir, texts, case_id=None, model=None):

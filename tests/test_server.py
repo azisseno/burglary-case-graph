@@ -613,6 +613,17 @@ def test_bulk_case_media_urls_are_served_per_case(bulk_client, monkeypatch):
     assert bulk_client.get(image["url"]).content == b"\xff\xd8fake"
 
 
+def test_bulk_photo_events_carry_the_upload_dir(bulk_client, monkeypatch):
+    fake_cluster_linker(monkeypatch)
+    started = run_bulk(bulk_client, folder="folder-a")
+    labels = {c["case_id"]: c["label"] for c in started["cases"]}
+    photo_events = [e for e in entries_of(bulk_client, started["run_id"])
+                    if e["type"] in ("intake.file", "observe.photo") and e["data"].get("kind", "image") == "image"]
+    assert photo_events
+    for event in photo_events:
+        assert event["data"]["upload_dir"] == labels[event["data"]["case_id"]]
+
+
 def test_bulk_multipart_with_relative_folder_names(bulk_client, monkeypatch):
     fake_cluster_linker(monkeypatch)
     names = ["drop/fx-01/report.txt", "drop/fx-01/photos/scene.jpg", "drop/fx-02/report.txt", "drop/fx-03/report.txt"]

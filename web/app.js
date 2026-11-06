@@ -1371,7 +1371,7 @@ function mediaUrl(node, media) {
   if (MOCK) {
     return props.series_id ? `../data/cases/${props.series_id}/${bareId(node.id())}/${media.path}` : null;
   }
-  if (props.run_id) return `/api/uploads/${props.run_id}/${file}`;
+  if (props.run_id) return uploadUrl(props.run_id, props.upload_dir, file);
   if (node.data("type") === "series") return `/api/media/${bareId(node.id())}/_series/${file}`;
   if (props.series_id) return `/api/media/${props.series_id}/${bareId(node.id())}/${file}`;
   return null;
@@ -1854,9 +1854,14 @@ function eventPhoto(evt) {
   const isIntakeImage = evt.type === "intake.file" && data.kind === "image";
   const file = isIntakeImage ? data.name : evt.type === "observe.photo" ? data.file : null;
   if (!file) return null;
-  const link = imageLink(`/api/uploads/${encodeURIComponent(evt.run_id)}/${encodeURIComponent(file)}`, file);
+  const link = imageLink(uploadUrl(evt.run_id, data.upload_dir, file), file);
   link.classList.add("console-photo", isIntakeImage ? "small" : "full");
   return link;
+}
+
+function uploadUrl(runId, uploadDir, file) {
+  const parts = [runId, uploadDir, file].filter(Boolean).map(encodeURIComponent);
+  return `/api/uploads/${parts.join("/")}`;
 }
 
 function imageLink(url, alt) {
