@@ -169,7 +169,7 @@ def test_accept_confirms_edges_and_finds_gaps(client):
     assert decision["data"]["decision"] == "accept"
     assert {e["kind"] for e in decision["data"]["edges"]} == {"confirmed"}
     assert any(e["rel"] == "PART_OF_SERIES" for e in decision["data"]["edges"])
-    gaps = entries[-1]
+    gaps = next(e for e in entries if e["type"] == "gap.next_steps")
     assert gaps["type"] == "gap.next_steps"
     assert gaps["data"]["next_steps"] == GAPS["next_steps"]
     graph = client.get("/api/graph").json()
@@ -242,7 +242,7 @@ def test_decoy_has_no_candidates_and_finishes_empty(client, monkeypatch):
     pipeline = client.app.state.pipeline
     assert not [c for c in tools.cluster_candidates(pipeline.graph, "case:NEW-001") if c["score"] > agents.FALLBACK_SCORE_THRESHOLD]
     entries = [e for e in client.get("/api/audit").json()["entries"] if e["run_id"] == started["run_id"]]
-    assert entries[-2]["data"]["hypotheses"] == 0
+    assert next(e for e in entries if e["type"] == "run.finished")["data"]["hypotheses"] == 0
     assert "run.error" not in [e["type"] for e in entries]
     assert client.get("/api/cases/NEW-001").json()["node"]["status"] == "existing"
 
@@ -252,13 +252,13 @@ def test_linker_that_proposes_nothing_skips_fallback(client, monkeypatch):
     started = run_demo(client)
     entries = [e for e in client.get("/api/audit").json()["entries"] if e["run_id"] == started["run_id"]]
     assert "link.hypothesis" not in [e["type"] for e in entries]
-    assert entries[-2]["data"]["hypotheses"] == 0
+    assert next(e for e in entries if e["type"] == "run.finished")["data"]["hypotheses"] == 0
 
 
 def test_case_with_pending_hypothesis_becomes_existing_and_is_a_candidate(client):
     run_demo(client)
     entries = client.get("/api/audit").json()["entries"]
-    finished = entries[-2]
+    finished = next(e for e in entries if e["type"] == "run.finished")
     assert finished["type"] == "run.finished"
     assert finished["data"]["nodes"][0]["id"] == "case:NEW-001"
     assert finished["data"]["nodes"][0]["status"] == "existing"
@@ -360,8 +360,9 @@ def test_single_case_run_emits_score_after_finishing(client):
     started = run_demo(client)
     entries = [e for e in client.get("/api/audit").json()["entries"] if e["run_id"] == started["run_id"]]
     types = [e["type"] for e in entries]
-    assert types[-2:] == ["run.finished", "score.updated"]
-    assert entries[-1]["data"] == client.get("/api/score").json()
+    assert types.index("score.updated") > types.index("run.finished")
+    score = next(e for e in entries if e["type"] == "score.updated")
+    assert score["data"] == client.get("/api/score").json()
 
 
 def test_decision_message_names_series_when_no_reason(client):
