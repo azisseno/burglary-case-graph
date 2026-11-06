@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Converge CaseLink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.4/cytoscape.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <h1>Converge CaseLink</h1>
+    <span class="brand-sub">Detective follow-up</span>
+  </div>
+  <div class="topbar-center">
+  <ol class="pipeline" id="pipeline" aria-label="Pipeline stages">
+    <li data-stage="intake">Intake</li>
+    <li data-stage="observe">Observe</li>
+    <li data-stage="extract">Extract</li>
+    <li data-stage="build">Build</li>
+    <li data-stage="link">Link</li>
+    <li data-stage="critic">Critic</li>
+    <li data-stage="review">Human review</li>
+    <li data-stage="gaps">Gaps</li>
+  </ol>
+  <span class="run-clock" id="run-clock" hidden></span>
+  </div>
+  <div class="topbar-right">
+    <label class="toggle">
+      <input type="checkbox" id="audit-toggle">
+      <span>Show rejected</span>
+    </label>
+    <span class="conn" id="conn" data-state="idle">
+      <span class="conn-dot" aria-hidden="true"></span>
+      <span id="conn-label">Connecting</span>
+    </span>
+  </div>
+</header>
+
+<div class="banner" id="error-banner" role="alert" hidden>
+  <span id="error-text"></span>
+  <button type="button" id="error-dismiss" class="btn-plain">Dismiss</button>
+</div>
+
+<main class="board">
+  <aside class="pane pane-left">
+    <section class="intake" aria-labelledby="intake-title">
+      <h2 id="intake-title" class="pane-title">Intake</h2>
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Drop case files or click to choose">
+        <input type="file" id="file-input" multiple accept=".txt,.md,.pdf,.docx,image/*" hidden>
+        <input type="file" id="folder-input" webkitdirectory multiple hidden>
+        <div class="dropzone-copy">
+          <strong>Drop a folder or case files</strong>
+          <span>A folder of incidents runs as one bulk import. Files: photos, text, PDF or Word.</span>
+          <button type="button" class="btn-plain" id="choose-folder">Choose folder</button>
+        </div>
+        <ul class="file-list" id="file-list"></ul>
+      </div>
+      <div class="intake-fields">
+        <label><span>Date</span><input type="date" id="field-date"></label>
+        <label><span>Location</span><input type="text" id="field-location" placeholder="Renton, WA"></label>
+        <label><span>Scene</span>
+          <select id="field-scene">
+            <option value="">Not set</option>
+            <option value="business">Business</option>
+            <option value="residence">Residence</option>
+            <option value="vehicle">Vehicle</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+      </div>
+      <button type="button" class="btn btn-primary" id="add-case">Add case</button>
+    </section>
+
+    <section class="console-wrap" aria-labelledby="console-title">
+      <div class="console-head">
+        <h2 id="console-title" class="pane-title">Agent console</h2>
+        <span class="run-progress" id="run-progress" hidden></span>
+        <span class="console-count" id="console-count">0 events</span>
+      </div>
+      <ol class="console" id="console" aria-live="polite"></ol>
+    </section>
+  </aside>
+
+  <section class="pane pane-graph" aria-label="Case graph">
+    <div id="cy"></div>
+    <div class="graph-empty" id="graph-empty">Loading graph</div>
+    <aside class="legend" id="legend" aria-label="Legend">
+      <div class="legend-grid">
+        <span class="legend-item"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" class="lg-case"/></svg>Case</span>
+        <span class="legend-item"><svg viewBox="0 0 20 20"><polygon points="10,2 17,6 17,14 10,18 3,14 3,6" class="lg-series"/></svg>Series</span>
+        <span class="legend-item"><svg viewBox="0 0 20 20"><polygon points="10,2 18,10 10,18 2,10" class="lg-method"/></svg>Method</span>
+        <span class="legend-item"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="4" class="lg-location"/></svg>Location</span>
+        <span class="legend-item"><svg viewBox="0 0 20 20"><rect x="2" y="6" width="16" height="8" rx="4" class="lg-time"/></svg>Time window</span>
+        <span class="legend-item"><svg viewBox="0 0 20 20"><polygon points="10,3 18,17 2,17" class="lg-vehicle"/></svg>Vehicle</span>
+        <span class="legend-item"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" class="lg-item"/></svg>Item</span>
+        <span class="legend-item"><svg viewBox="0 0 20 20"><polygon points="7,2 13,2 18,7 18,13 13,18 7,18 2,13 2,7" class="lg-hypothesis"/></svg>Hypothesis</span>
+      </div>
+      <div class="legend-edges">
+        <span class="legend-item"><svg viewBox="0 0 28 8"><line x1="1" y1="4" x2="27" y2="4" class="lg-observed"/></svg>Observed</span>
+        <span class="legend-item"><svg viewBox="0 0 28 8"><line x1="1" y1="4" x2="27" y2="4" class="lg-hyp-edge"/></svg>Proposed</span>
+        <span class="legend-item"><svg viewBox="0 0 28 8"><line x1="1" y1="4" x2="27" y2="4" class="lg-series-edge"/></svg>Known series</span>
+        <span class="legend-item"><svg viewBox="0 0 28 8"><line x1="1" y1="4" x2="27" y2="4" class="lg-confirmed"/></svg>Confirmed by detective</span>
+      </div>
+      <div class="legend-states">
+        <span class="legend-item"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="6" class="lg-new"/></svg>New this run</span>
+        <span class="legend-item"><svg viewBox="0 0 20 20"><polygon points="7,2 13,2 18,7 18,13 13,18 7,18 2,13 2,7" class="lg-accepted"/></svg>Accepted by detective</span>
+      </div>
+    </aside>
+    <div class="graph-stats" id="graph-stats"></div>
+  </section>
+
+  <aside class="pane pane-right">
+    <section class="review" aria-labelledby="review-title">
+      <div class="pane-head">
+        <h2 id="review-title" class="pane-title">Review</h2>
+        <span class="pane-count" id="review-count"></span>
+        <label class="toggle toggle-small">
+          <input type="checkbox" id="floor-toggle">
+          <span>Show proposals under 0.5</span>
+        </label>
+      </div>
+      <div class="hypotheses" id="hypotheses">
+        <p class="empty">No hypotheses yet. Drop a folder of reports to begin.</p>
+      </div>
+    </section>
+
+    <section class="drawer" id="drawer" aria-labelledby="drawer-title">
+      <div class="pane-head">
+        <h2 id="drawer-title" class="pane-title">Detail</h2>
+        <button type="button" class="btn-plain" id="drawer-close" hidden>Close</button>
+      </div>
+      <div class="drawer-body" id="drawer-body">
+        <p class="empty">Click a node to see its properties, edges and sources.</p>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Metrics">
+      <div class="metric"><span class="metric-value" id="m-cases">0</span><span class="metric-label">Cases in graph</span></div>
+      <div class="metric"><span class="metric-value" id="m-open">0</span><span class="metric-label" title="Proposals neither accepted nor rejected">Proposals open</span></div>
+      <div class="metric"><span class="metric-value" id="m-series">0</span><span class="metric-label">Series confirmed</span></div>
+      <div class="metric"><span class="metric-value" id="m-covered">0</span><span class="metric-label">Cases in accepted series</span></div>
+      <div class="metric metric-wide" title="All cases in the proposal belong to one series that police publicly linked; includes proposals below 0.5"><span class="metric-value" id="m-agree">-</span><span class="metric-label">Match police-linked series</span></div>
+    </section>
+  </aside>
+</main>
+
+<script>window.CASELINK_STATIC = "./data";</script>
+<script src="./app.js"></script>
+</body>
+</html>

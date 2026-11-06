@@ -126,6 +126,7 @@ button { cursor: pointer; }
 .conn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); }
 .conn[data-state="live"] .conn-dot { background: var(--confirmed); box-shadow: 0 0 8px var(--confirmed); }
 .conn[data-state="mock"] .conn-dot { background: var(--hypothesis); box-shadow: 0 0 8px var(--hypothesis); }
+.conn[data-state="static"] .conn-dot { background: var(--dim); }
 .conn[data-state="reconnecting"] .conn-dot { background: var(--danger); animation: stage-pulse 0.9s infinite; }
 
 .banner {
@@ -460,3 +461,6 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
 .pane-head .toggle { margin-left: auto; margin-right: 10px; }
 .hyp[data-below-floor="true"] { opacity: 0.7; }
 .hyp-floor { color: var(--dim); font-family: var(--mono); font-size: 10.5px; }
+
+.static-note { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.console li.console-empty { display: block; padding: 8px 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); list-style: none; }

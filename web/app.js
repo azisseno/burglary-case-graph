@@ -1,4 +1,7 @@
 const MOCK = new URLSearchParams(window.location.search).get("mock") === "1";
+const STATIC_DATA_DIR = window.CASELINK_STATIC || null;
+const STATIC = STATIC_DATA_DIR !== null;
+const STATIC_MEDIA_DIR = "./media/";
 const MOCK_GRAPH_URL = "mock/graph.json";
 const MOCK_EVENTS_URL = "mock/events.json";
 const MOCK_BULK_RUN = "run-mock-bulk";
@@ -149,7 +152,9 @@ function init() {
     state.cy.resize();
     fitAboveLegend();
   });
+  if (STATIC) enterStaticMode();
   if (MOCK) startMock();
+  else if (STATIC) startStatic();
   else startLive();
 }
 
@@ -1296,7 +1301,7 @@ function hypothesisPhotos(h) {
 
 function caseMedia(caseId) {
   if (!state.caseMedia.has(caseId)) {
-    state.caseMedia.set(caseId, api(`/api/cases/${encodeURIComponent(caseId)}`).then((detail) => (detail.media || []).filter((m) => m.url)).catch(() => []));
+    state.caseMedia.set(caseId, api(`/api/cases/${encodeURIComponent(caseId)}`).then((detail) => (detail.media || []).filter((m) => m.url).map((m) => ({ ...m, url: assetUrl(m.url) }))).catch(() => []));
   }
   return state.caseMedia.get(caseId);
 }
@@ -1394,6 +1399,7 @@ function asList(value) {
 }
 
 function decisionControls(h) {
+  if (STATIC) return staticDecisionNote(h);
   const wrap = document.createElement("div");
   wrap.className = "hyp-decide";
   const reason = document.createElement("input");
@@ -1601,6 +1607,10 @@ function bareId(id) {
 }
 
 function mediaUrl(node, media) {
+  return assetUrl(rawMediaUrl(node, media));
+}
+
+function rawMediaUrl(node, media) {
   if (media.url) return media.url;
   if (!media.path) return null;
   if (/^https?:/.test(media.path)) return media.path;
@@ -2027,6 +2037,7 @@ function onGaps(evt) {
 }
 
 function updateRunButtons() {
+  if (STATIC) return;
   const busy = state.activeRuns.size > 0 || state.submitting;
   el("add-case").disabled = busy;
 }
@@ -2104,7 +2115,7 @@ function eventPhoto(evt) {
 
 function uploadUrl(runId, uploadDir, file) {
   const parts = [runId, uploadDir, file].filter(Boolean).map(encodeURIComponent);
-  return `/api/uploads/${parts.join("/")}`;
+  return assetUrl(`/api/uploads/${parts.join("/")}`);
 }
 
 function imageLink(url, alt) {
@@ -2398,7 +2409,7 @@ function appendIfSet(form, key, value) {
 }
 
 async function api(path, options = {}) {
-  const res = await fetch(path, options);
+  const res = await fetch(STATIC ? staticDataUrl(path) : path, options);
   if (!res.ok) {
     let text = "";
     try {
@@ -2425,6 +2436,61 @@ async function startLive() {
   }
   connectEvents();
   refreshMetrics();
+}
+
+const STATIC_READ_ONLY_NOTE = "Read-only demo. This is the graph after the recorded run on 6 November 2026. Click a hypothesis or series node to focus it.";
+const STATIC_CONSOLE_NOTE = "Console not recorded in the static demo";
+
+function assetUrl(url) {
+  if (!STATIC || !url || !url.startsWith("/api/")) return url;
+  return STATIC_MEDIA_DIR + url.slice("/api/".length);
+}
+
+function staticDataUrl(path) {
+  const caseMatch = path.match(/^\/api\/cases\/(.+)$/);
+  if (caseMatch) return `${STATIC_DATA_DIR}/cases/${decodeURIComponent(caseMatch[1]).replace(/:/g, "_")}.json`;
+  return `${STATIC_DATA_DIR}/${path.replace(/^\/api\//, "")}.json`;
+}
+
+function staticDecisionNote(h) {
+  const wrap = document.createElement("div");
+  wrap.className = "hyp-decide";
+  if (h.decision === "more") {
+    const note = document.createElement("span");
+    note.className = "hyp-decided";
+    note.textContent = h.decisionReason ? `More evidence requested: ${h.decisionReason}` : "More evidence requested";
+    wrap.append(note);
+  }
+  return wrap;
+}
+
+function enterStaticMode() {
+  document.body.classList.add("static-demo");
+  setConnection("static", "Read-only demo");
+  const intake = document.querySelector(".intake");
+  const note = document.createElement("p");
+  note.className = "static-note";
+  note.textContent = STATIC_READ_ONLY_NOTE;
+  intake.replaceChildren(intake.querySelector("#intake-title"), note);
+  const consoleList = el("console");
+  const line = document.createElement("li");
+  line.className = "console-empty";
+  line.textContent = STATIC_CONSOLE_NOTE;
+  consoleList.append(line);
+  el("console-count").textContent = "";
+}
+
+async function startStatic() {
+  try {
+    const graph = await api("/api/graph");
+    (graph.nodes || []).filter((n) => n.type === "case" && n.props?.run_id).forEach((n) => state.sessionCaseIds.add(n.id));
+    loadGraph(graph);
+    state.score = await api("/api/score").catch(() => null);
+    refreshMetrics();
+  } catch (err) {
+    el("graph-empty").textContent = "Graph unavailable";
+    showError(`Could not load the static graph: ${err.message}`);
+  }
 }
 
 const RECONNECT_DELAY_MS = 2000;
