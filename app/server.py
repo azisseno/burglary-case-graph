@@ -470,7 +470,7 @@ class Pipeline:
         self.announce(run_id)
 
     def critique(self, run_id, hypothesis, run_dir):
-        cases = [tools.get_case(self.graph, cid) for cid in hypothesis["props"]["case_ids"]]
+        cases = [tools.case_brief(self.graph, cid) for cid in hypothesis["props"]["case_ids"]]
         try:
             verdict = agents.run_critic(hypothesis, cases, run_dir)
         except CliError as error:
@@ -501,7 +501,7 @@ class Pipeline:
     def find_gaps(self, hyp_id):
         hypothesis = self.graph.nodes[hyp_id]
         run_id = hypothesis["props"]["run_id"]
-        cases = [tools.get_case(self.graph, cid) for cid in hypothesis["props"]["case_ids"]]
+        cases = [tools.case_brief(self.graph, cid) for cid in hypothesis["props"]["case_ids"]]
         try:
             result = agents.run_gap_finder(cases, hypothesis, self.runs_dir / run_id)
         except CliError as error:
@@ -759,6 +759,17 @@ def create_app(root=ROOT, graph=None, api_base=None, runs_dir=None):
     @app.get("/api/hypotheses")
     def list_hypotheses():
         return list(reversed(pipeline.graph.nodes_of_type("hypothesis")))
+
+    @app.post("/api/hypotheses/{hyp_id}/recritic")
+    def recritic(hyp_id: str):
+        node_id = hyp_id if hyp_id in pipeline.graph.nodes else f"hyp:{hyp_id}"
+        hypothesis = pipeline.graph.nodes.get(node_id)
+        if hypothesis is None or hypothesis["type"] != "hypothesis":
+            raise HTTPException(404, f"unknown hypothesis {hyp_id}")
+        run_id = hypothesis["props"]["run_id"]
+        pipeline.critique(run_id, hypothesis, pipeline.runs_dir / run_id / "recritic")
+        pipeline.save()
+        return hypothesis["props"].get("critic")
 
     @app.post("/api/hypotheses/{hyp_id}/decision")
     def decide(hyp_id: str, body: dict = Body(...)):

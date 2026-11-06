@@ -317,11 +317,25 @@ function fitAboveLegend() {
   cy.viewport(viewportFor(bb, 36, 1.15));
 }
 
+function animateView(view, duration) {
+  const cy = state.cy;
+  cy.stop();
+  cy.animate({ ...view, duration, easing: "ease-in-out" });
+}
+
+function scheduleRelease(delay) {
+  clearTimeout(state.focusTimer);
+  state.focusTimer = setTimeout(() => {
+    if (state.activeRuns.size === 0) releaseView();
+  }, delay);
+}
+
 function focusOn(eles) {
   const cy = state.cy;
+  clearTimeout(state.focusTimer);
   const visible = eles.closedNeighborhood().nodes().filter((ele) => !ele.hasClass("hidden") && (eles.contains(ele) || !isHub(ele)));
   if (visible.empty()) return;
-  cy.animate({ ...viewportFor(visible.boundingBox(), 90, MAX_FOCUS_ZOOM), duration: 900, easing: "ease-in-out" });
+  animateView(viewportFor(visible.boundingBox(), 90, MAX_FOCUS_ZOOM), 900);
 }
 
 function edgeElasticity(edge) {
@@ -604,10 +618,12 @@ function pullSeriesTogether(seriesNodes, hypothesisNode) {
     const center = centroidOf(members);
     queue(series, center);
     const targets = new Map();
-    members.forEach((member, i) => {
+    const angleOf = (node) => Math.atan2(node.position("y") - center.y, node.position("x") - center.x);
+    const ring = members.toArray().sort((a, b) => angleOf(a) - angleOf(b));
+    ring.forEach((member, i) => {
       const at = member.position();
-      const dist = Math.hypot(at.x - center.x, at.y - center.y);
-      const to = offsetFrom(center, at, Math.min(dist || SHORT_EDGE, SHORT_EDGE), i + 1);
+      const angle = angleOf(ring[0]) + (2 * Math.PI * i) / ring.length;
+      const to = { x: center.x + Math.cos(angle) * SHORT_EDGE, y: center.y + Math.sin(angle) * SHORT_EDGE };
       targets.set(member.id(), to);
       queue(member, to);
       privateLeaves(member, members).forEach((n) => queue(n, { x: n.position("x") + to.x - at.x, y: n.position("y") + to.y - at.y }));
@@ -658,9 +674,9 @@ function relayoutAll() {
       locked.unlock();
       if (incremental) cy.nodes().forEach((n) => state.bulk.placed.add(n.id()));
       state.layoutRunning = false;
-      choreograph(cy.edges(".fresh").filter((e) => edgeLength(e) > MAX_FRESH_EDGE));
-      if (state.layoutRunning) return;
+      choreograph(cy.edges(".fresh, .hypothesis").filter((e) => edgeLength(e) > MAX_FRESH_EDGE));
       if (state.bulk && state.bulk.active) afterLayout(fitWide);
+      if (state.layoutRunning) return;
       layoutDone();
     }
   );
@@ -674,13 +690,13 @@ function lockedForBulk() {
 function fitWide() {
   const bb = state.cy.elements().not(".hidden").boundingBox();
   if (!bb.w || !bb.h) return;
-  state.cy.animate({ ...viewportFor(bb, 36, 1.15), duration: 700, easing: "ease-in-out" });
+  animateView(viewportFor(bb, 36, 1.15), 700);
 }
 
 function releaseView() {
   const bb = state.cy.elements().not(".hidden").boundingBox();
   if (!bb.w || !bb.h) return;
-  state.cy.animate({ ...viewportFor(bb, 36, 1.15), duration: 900, easing: "ease-in-out" });
+  animateView(viewportFor(bb, 36, 1.15), 900);
 }
 
 function applyDelta(nodes = [], edges = [], options = {}) {
@@ -1593,9 +1609,7 @@ function onDecision(evt) {
     if (data.decision === "reject") fadeOutRejected(node);
     if (data.decision === "reject") {
       focusOn(node);
-      setTimeout(() => {
-        if (state.activeRuns.size === 0) releaseView();
-      }, REJECT_FADE_MS + 600);
+      scheduleRelease(REJECT_FADE_MS + 600);
     }
   }
   applyVisibility();
@@ -1615,9 +1629,7 @@ function pullConfirmedCluster(hypNode) {
   afterLayout(() => {
     if (token !== state.focusToken || cluster.removed()) return;
     focusOn(cluster);
-    state.focusTimer = setTimeout(() => {
-      if (state.activeRuns.size === 0) releaseView();
-    }, SERIES_RELEASE_DELAY_MS);
+    scheduleRelease(SERIES_RELEASE_DELAY_MS);
   });
 }
 
@@ -1755,9 +1767,7 @@ function onRunFinished(evt) {
   stopClock(data.seconds);
   markStagesDone();
   setStage("review");
-  setTimeout(() => {
-    if (state.activeRuns.size === 0) releaseView();
-  }, RELEASE_VIEW_DELAY_MS);
+  scheduleRelease(RELEASE_VIEW_DELAY_MS);
 }
 
 function onGaps(evt) {

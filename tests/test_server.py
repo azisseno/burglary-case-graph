@@ -127,6 +127,20 @@ def test_critic_stored_on_node(client):
     assert hypothesis["props"]["decision"] is None
 
 
+def test_recritic_reruns_critic_and_emits_verdict(client):
+    run_demo(client)
+    hyp_id = client.get("/api/hypotheses").json()[0]["id"]
+    before = audit_types(client).count("critic.verdict")
+    response = client.post(f"/api/hypotheses/{hyp_id}/recritic")
+    assert response.status_code == 200
+    assert response.json()["verdict"] == "holds"
+    assert audit_types(client).count("critic.verdict") == before + 1
+
+
+def test_recritic_unknown_hypothesis(client):
+    assert client.post("/api/hypotheses/hyp:H-9999/recritic").status_code == 404
+
+
 def test_metrics_after_run(client):
     run_demo(client)
     metrics = client.get("/api/audit").json()["metrics"]

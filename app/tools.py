@@ -2,6 +2,7 @@ import re
 from datetime import date
 
 from . import normalize as N
+from . import scrub
 
 ATTRIBUTE_RELS = {
     "method": "USED_METHOD",
@@ -79,6 +80,29 @@ def get_case(graph, case_id, redact=True):
         "attributes": {t: [{"id": a["node"]["id"], "label": a["node"]["label"], "edge_id": a["edge"]["id"], "provenance": clean_provenance(a["edge"])["provenance"] if redact else a["edge"]["provenance"]} for a in items] for t, items in attrs.items()},
         "series": {"id": series["id"], "label": series["label"]} if series else None,
         "edges": edges,
+    }
+
+
+def case_brief(graph, case_id):
+    node = graph.nodes.get(case_id)
+    if node is None or node["type"] != "case":
+        return None
+    props = node["props"]
+    places = [a["node"]["props"] for a in case_attributes(graph, case_id)["location"]]
+    place = places[0] if places else {}
+    return {
+        "id": case_id,
+        "date": props.get("date"),
+        "date_precision": props.get("date_precision"),
+        "time": props.get("time"),
+        "city": place.get("city") or None,
+        "neighborhood": place.get("neighborhood") or None,
+        "location": props.get("location"),
+        "scene_type": props.get("scene_type"),
+        "evidence": [{"type": e.get("type"), "description": scrub.scrub(e.get("description", ""))}
+                     for e in props.get("evidence") or []],
+        "items_taken": props.get("items_taken") or [],
+        "unknowns": props.get("unknowns") or [],
     }
 
 

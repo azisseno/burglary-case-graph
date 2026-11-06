@@ -195,8 +195,8 @@ def exclusion_reason(record):
         return "held out as single drop"
     if record["date"] is None:
         return "date not reported"
-    if len(record["evidence"]) < 2:
-        return "fewer than two evidence items"
+    if len(record["evidence"]) < 1:
+        return "no evidence items"
     return None
 
 
