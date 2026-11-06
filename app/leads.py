@@ -10,6 +10,8 @@ VIDEO_EVIDENCE_TYPES = {"video", "camera", "surveillance", "footage", "plate_rea
 DISTRICT_WORDS = re.compile(r"\b(district|division|precinct|county|township|unincorporated)\b", re.I)
 SERIAL_WORDS = re.compile(r"serial", re.I)
 PLATE_WORDS = re.compile(r"plate", re.I)
+MISSING_LINE_CAP = 6
+WEEK_DAYS = 7
 
 PHRASE_SCHEMA = {
     "type": "object",
@@ -73,6 +75,20 @@ def readable(label):
     return re.sub(r"\bsuv\b", "SUV", label)
 
 
+def plural(count, singular, many):
+    return f"{count} {singular if count == 1 else many}"
+
+
+def span_days(dates):
+    return (dates[-1] - dates[0]).days + 1 if dates else 0
+
+
+def reports_phrase(count, total):
+    if count == total:
+        return "both reports" if total == 2 else f"all {total} reports"
+    return f"{count} of {total} reports"
+
+
 def hours_clause(graph, case_ids):
     hours = hour_texts(graph, case_ids)
     return f", {', '.join(hours[:3])}" if hours else ""
@@ -87,10 +103,11 @@ def vehicle_lead(graph, case_ids, dates):
     count = len(top["cases"])
     window = span_text(dates)
     when = f", {window}" if window else ""
+    recency = "that week" if 0 < span_days(dates) <= WEEK_DAYS else "in that window"
     return {
         "kind": "vehicle",
-        "fact": f"{label[:1].upper()}{label[1:]} in {'all ' + str(count) if count == len(case_ids) else str(count) + ' of ' + str(len(case_ids))} reports",
-        "action": f"Plate-reader query for {label} near the {count} sites{when}{hours_clause(graph, top['cases'])}; pull stolen-vehicle reports for {label} that week",
+        "fact": f"{label[:1].upper()}{label[1:]} in {reports_phrase(count, len(case_ids))}",
+        "action": f"Plate-reader query for {label} near the {count} sites{when}{hours_clause(graph, top['cases'])}; pull stolen-vehicle reports for {label} {recency}",
         "case_ids": sorted(top["cases"]),
     }
 
@@ -127,10 +144,11 @@ def geography_lead(graph, case_ids):
     hoods = {p["neighborhood"] for p in flat if p.get("neighborhood")}
     streets = {case_props(graph, c).get("location") for c in places if case_props(graph, c).get("location")}
     area_count = len(hoods) or len(streets)
-    area_word = "neighbourhoods" if hoods else "locations"
+    area = plural(area_count, "neighbourhood", "neighbourhoods") if hoods else plural(area_count, "location", "locations")
+    joiner = "in" if area_count == 1 else "across"
     return {
         "kind": "geography",
-        "fact": f"{area_count} distinct {area_word} across {len(cities)} {'city' if len(cities) == 1 else 'cities'}",
+        "fact": f"{area} {joiner} {plural(len(cities), 'city', 'cities')}",
         "action": "Map the sites, look for the route between them and canvass the blocks around each for cameras and witnesses",
         "case_ids": sorted(places),
     }
@@ -141,7 +159,7 @@ def timing_lead(graph, case_ids, dates):
         return None
     hours = hour_texts(graph, case_ids)
     hour_part = f", reported times {', '.join(hours[:4])}" if hours else ""
-    days = (dates[-1] - dates[0]).days + 1
+    days = span_days(dates)
     return {
         "kind": "timing",
         "fact": f"{len(dates)} incidents over {days} {'day' if days == 1 else 'days'} ({span_text(dates)}){hour_part}",
@@ -195,30 +213,41 @@ def agencies_lead(graph, case_ids):
     }
 
 
+def missing_key(text):
+    return re.sub(r"\s+", " ", re.sub(r"\bthe\b", " ", text.split("(")[0].lower())).strip(" .;,")
+
+
+def missing_text(text):
+    head = text.split("(")[0].strip(" .;,")
+    return f"{head[:1].upper()}{head[1:]}"
+
+
+def case_missing_items(graph, case_id):
+    report = tools.missing_evidence(graph, case_id)
+    items = [missing_text(u) for u in report["unknowns"] if missing_text(u)]
+    items += [f"No {kind.replace('_', ' ')} recorded" for kind in report["absent"]]
+    props = case_props(graph, case_id)
+    has_vehicle = bool(tools.case_attributes(graph, case_id)["vehicle"])
+    if has_vehicle and not any(PLATE_WORDS.search(e.get("description", "")) for e in props.get("evidence") or []):
+        items.append("No plate recorded")
+    return items
+
+
 def missing_lines(graph, case_ids):
-    lines = []
-    seen = set()
-
-    def add(text):
-        if text.lower() not in seen:
-            seen.add(text.lower())
-            lines.append(text)
-
     total = len(case_ids)
-    absent = Counter()
+    counts = Counter()
+    texts = {}
     for case_id in case_ids:
-        report = tools.missing_evidence(graph, case_id)
-        for unknown in report["unknowns"]:
-            add(f"{unknown[:1].upper()}{unknown[1:]} not recorded" if len(unknown.split()) <= 3 else unknown)
-        absent.update(report["absent"])
-    for kind, count in sorted(absent.items()):
-        word = kind.replace("_", " ")
-        add(f"No {word} recorded in any report" if count == total else f"No {word} recorded in {count} of {total} reports")
-    has_vehicle = any(carriers(graph, case_ids, "vehicle"))
-    plate_noted = any(PLATE_WORDS.search(e.get("description", "")) for c in case_ids for e in case_props(graph, c).get("evidence") or [])
-    if has_vehicle and not plate_noted:
-        add("No plate recorded in any report")
-    return lines
+        keys = set()
+        for item in case_missing_items(graph, case_id):
+            key = missing_key(item)
+            if key:
+                keys.add(key)
+                texts.setdefault(key, item)
+        counts.update(keys)
+    kept = [(key, n) for key, n in counts.items() if n * 2 >= total]
+    kept.sort(key=lambda kn: (-kn[1], texts[kn[0]]))
+    return [f"{texts[key]} ({n} of {plural(total, 'case', 'cases')})" for key, n in kept[:MISSING_LINE_CAP]]
 
 
 def pattern_sentence(graph, case_ids):

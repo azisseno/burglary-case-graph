@@ -11,6 +11,6 @@
     {"kind": "property", "fact": "Jewelry, handguns and a laptop taken in four reports", "action": "Alert pawn shops and the secondary-metals database for jewelry and serial-numbered laptops", "case_ids": ["case:NOLA-101", "case:NOLA-104", "case:NOLA-118", "case:NOLA-122"]},
     {"kind": "agencies", "fact": "Jefferson Parish reported two matching rear-door pry entries the same week", "action": "Call Jefferson Parish burglary unit to compare vehicle and tool-mark details", "case_ids": ["case:NOLA-113"]}
   ],
-  "missing": ["No plate recorded in any report", "Tool-mark photos exist for only two of six scenes"],
+  "missing": ["No plate recorded (6 of 6 cases)", "Tool-mark photos (2 of 6 cases)"],
   "phrased_by": "code"
 }

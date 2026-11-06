@@ -1445,12 +1445,19 @@ function onLeadsReady(evt) {
   logEvent(evt);
 }
 
+const MISSING_LINE_CAP = 6;
+
+function missingLines(sheet) {
+  return asList(sheet.missing).slice(0, MISSING_LINE_CAP);
+}
+
 function leadSheetText(sheet) {
   const lines = [`Lead sheet: ${sheet.label}`, sheet.pattern, ""];
   sheet.leads.forEach((lead, i) => {
     lines.push(`${i + 1}. ${lead.action}`, `   Cases: ${lead.case_ids.map(chipLabel).join(", ")}`);
   });
-  if (sheet.missing.length) lines.push("", ...sheet.missing.map((m) => `Missing: ${m}`));
+  const missing = missingLines(sheet);
+  if (missing.length) lines.push("", "Missing:", ...missing.map((m) => `- ${m}`));
   return lines.join("\n");
 }
 
@@ -1519,12 +1526,19 @@ function leadSheetBlock(node) {
   list.className = "lead-list";
   sheet.leads.forEach((lead) => list.append(leadRow(lead)));
   box.append(pattern, list);
-  sheet.missing.forEach((item) => {
-    const line = document.createElement("div");
-    line.className = "gap-missing";
-    line.textContent = `Missing: ${item}`;
-    box.append(line);
-  });
+  const missing = missingLines(sheet);
+  if (missing.length) {
+    const label = document.createElement("div");
+    label.className = "lead-missing-label";
+    label.textContent = "Missing";
+    box.append(label);
+    missing.forEach((item) => {
+      const line = document.createElement("div");
+      line.className = "gap-missing";
+      line.textContent = item;
+      box.append(line);
+    });
+  }
   box.append(copyLeadSheetButton(sheet));
   return labelled("Lead sheet", box);
 }

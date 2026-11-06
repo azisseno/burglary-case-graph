@@ -37,7 +37,7 @@ def test_vehicle_geography_and_timing_leads_cite_their_cases(graph):
     assert "Plate-reader" in vehicle["action"]
     assert lead_of(sheet, "geography")["case_ids"] == sheet["case_ids"]
     assert lead_of(sheet, "timing")["case_ids"] == sheet["case_ids"]
-    assert "No plate recorded in any report" in sheet["missing"]
+    assert "No plate recorded (6 of 6 cases)" in sheet["missing"]
 
 
 def test_vehicle_lead_lists_only_cases_with_the_vehicle(graph):
@@ -154,3 +154,87 @@ def test_reject_emits_no_leads(client):
     client.post(f"/api/hypotheses/{hyp_id}/decision", json={"decision": "reject", "reason": "different city"})
     client.app.state.pipeline.join()
     assert "leads.ready" not in [e["type"] for e in client.get("/api/audit").json()["entries"]]
+
+
+def small_graph(specs, vehicle="dark suv"):
+    from app.store import Graph
+
+    graph = Graph()
+    graph.add_node("series:t", "series", "Series T")
+    for i, (date, unknowns, city) in enumerate(specs):
+        case_id = f"case:t{i}"
+        graph.add_node(case_id, "case", f"T{i}", props={"date": date, "unknowns": unknowns, "location": f"{i} Main St"})
+        graph.add_edge(case_id, "series:t", "PART_OF_SERIES", provenance="test")
+        if vehicle:
+            graph.add_node(f"vehicle:{vehicle}", "vehicle", vehicle)
+            graph.add_edge(case_id, f"vehicle:{vehicle}", "VEHICLE_SEEN", provenance="test")
+        graph.add_node(f"location:{i}", "location", f"L{i}", props={"city": city})
+        graph.add_edge(case_id, f"location:{i}", "AT_LOCATION", provenance="test")
+    return graph
+
+
+def lines_for(specs):
+    return leads.build_leads(small_graph(specs), "series:t")["missing"]
+
+
+def test_missing_items_are_normalised_and_counted_across_cases():
+    specs = [
+        ("2023-08-01", ["Time of incident (report says approximate time not reported)", "Point of entry (not stated)"], "Kent"),
+        ("2023-08-02", ["Time of the incident (not reported)"], "Kent"),
+    ]
+    missing = lines_for(specs)
+    assert "Time of incident (2 of 2 cases)" in missing
+    assert all("not reported" not in line and "not stated" not in line for line in missing)
+
+
+def test_missing_keeps_items_missing_in_at_least_half_and_orders_by_count():
+    specs = [
+        ("2023-08-01", ["Rare thing", "Common thing"], "Kent"),
+        ("2023-08-02", ["Common thing", "Half thing"], "Kent"),
+        ("2023-08-03", ["Common thing"], "Kent"),
+        ("2023-08-04", ["Half thing"], "Kent"),
+    ]
+    missing = lines_for(specs)
+    assert missing.index("Common thing (3 of 4 cases)") < missing.index("Half thing (2 of 4 cases)")
+    assert not any(line.startswith("Rare thing") for line in missing)
+
+
+def test_missing_is_capped_at_six_lines():
+    unknowns = [f"Unknown number {chr(97 + i)}" for i in range(10)]
+    assert len(lines_for([("2023-08-01", unknowns, "Kent"), ("2023-08-02", unknowns, "Kent")])) == 6
+
+
+def test_missing_uses_singular_for_a_single_case():
+    assert "Alpha (1 of 1 case)" in lines_for([("2023-08-01", ["Alpha (x)"], "Kent")])
+
+
+def test_vehicle_action_says_week_only_within_seven_days():
+    short = leads.build_leads(small_graph([("2023-08-01", [], "Kent"), ("2023-08-07", [], "Kent")]), "series:t")
+    longer = leads.build_leads(small_graph([("2023-08-01", [], "Kent"), ("2023-08-08", [], "Kent")]), "series:t")
+    assert lead_of(short, "vehicle")["action"].endswith("that week")
+    assert lead_of(longer, "vehicle")["action"].endswith("in that window")
+
+
+def test_vehicle_fact_wording_for_both_all_and_some():
+    two = leads.build_leads(small_graph([("2023-08-01", [], "Kent"), ("2023-08-02", [], "Kent")]), "series:t")
+    three = leads.build_leads(small_graph([("2023-08-01", [], "Kent")] * 3), "series:t")
+    assert lead_of(two, "vehicle")["fact"] == "Dark SUV in both reports"
+    assert lead_of(three, "vehicle")["fact"] == "Dark SUV in all 3 reports"
+
+
+@pytest.mark.parametrize("cities, fact", [
+    (["Kent"], "1 location in 1 city"),
+    (["Kent"] * 6, "6 locations across 1 city"),
+    (["Kent", "Renton"] * 3, "6 locations across 2 cities"),
+])
+def test_geography_fact_pluralises(cities, fact):
+    specs = [("2023-08-01", [], city) for city in cities]
+    graph = small_graph(specs)
+    sheet = leads.build_leads(graph, "series:t")
+    assert lead_of(sheet, "geography")["fact"] == fact
+
+
+def test_video_action_ends_with_pulled():
+    small = small_graph([("2023-08-01", [], "Kent")])
+    small.nodes["case:t0"]["props"]["media"] = [{"kind": "video"}]
+    assert lead_of(leads.build_leads(small, "series:t"), "video")["action"].endswith("not yet pulled")
