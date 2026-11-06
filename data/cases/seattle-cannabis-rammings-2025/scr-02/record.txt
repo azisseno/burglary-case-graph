@@ -1,0 +1,8 @@
+scr-02 | seattle-cannabis-rammings-2025 | 2024-04-09 | just before 03:30 (approximate) | Central District, Seattle, WA (neighborhood) | business
+Evidence: vehicle - a stolen Hyundai Sonata was rammed into the front doors, wedged between the doors and bike stands near the sidewalk (FOX 13 report of 9 Apr 2024) https://www.fox13seattle.com/news/seattle-central-district-pot-shop
+Evidence: footage - business security footage shows a large group outside, repeated attempts to break the doors, entry into the store and the group fleeing in two cars (FOX 13 report of 9 Apr 2024) https://www.fox13seattle.com/news/seattle-central-district-pot-shop
+Evidence: theft - thousands of dollars of products and cash taken by a group of more than 10 people, a mix of young adults and children (FOX 13 report of 9 Apr 2024) https://www.fox13seattle.com/news/seattle-central-district-pot-shop
+Items taken: products worth thousands of dollars; cash
+Unknowns: whether the two getaway cars were stolen, exact time, block
+Sources: https://www.fox13seattle.com/news/seattle-central-district-pot-shop
+Notes: Reported as just before 3:30 a.m.; 03:30 is the upper bound. FOX 13 was working with police to learn whether the two getaway cars were also stolen and gives no result. The owner said scr-01 was similar. The article gives no police answer on whether the two are related. No police statement links this incident to any other incident in the set.

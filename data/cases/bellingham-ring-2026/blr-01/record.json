@@ -1,0 +1,35 @@
+{
+  "id": "blr-01",
+  "series_id": "bellingham-ring-2026",
+  "date": "2026-02-18",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Cordata neighborhood, Bellingham, WA",
+  "location_precision": "neighborhood",
+  "scene_type": "residence",
+  "evidence": [
+    {
+      "type": "footage",
+      "description": "Camera footage shows suspects ransacking the home",
+      "provenance": "Whatcom News citing the probable cause affidavit",
+      "source_url": "https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/"
+    },
+    {
+      "type": "theft",
+      "description": "A safe was stolen while the residents were at work",
+      "provenance": "Whatcom News citing the probable cause affidavit",
+      "source_url": "https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/"
+    }
+  ],
+  "items_taken": [
+    "safe"
+  ],
+  "unknowns": [
+    "time",
+    "entry method",
+    "contents of the safe"
+  ],
+  "media": [],
+  "notes": "The Bellingham police investigation began with this burglary. Both outlets cite a probable cause affidavit filed in Whatcom County Superior Court on 23 Feb 2026; neither links a police release.",
+  "date_precision": "day"
+}

@@ -1,0 +1,6 @@
+scr-04 | seattle-cannabis-rammings-2025 | date not reported (Thursday before 2025-08-08) | 04:29 | West Seattle, Seattle, WA (neighborhood) | business
+Evidence: vehicle - a black Kia SUV rammed the doors; nothing was taken (MyNorthwest report of 8 Aug 2025) https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825
+Items taken: none (attempt)
+Unknowns: exact date, number of people, footage availability, whether the Kia was stolen
+Sources: https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825
+Notes: Cannabis shop, attempt. The source gives only a weekday, the Thursday before the article of 8 Aug 2025, so the date is left empty. The article says no information has been provided on a connection between the two West Seattle incidents. The MyNorthwest page was read by the research team but returned HTTP 403 to a later check, so it was not re-verified. No police statement links this incident to any other incident in the set.

@@ -1,0 +1,7 @@
+esg-01 | eastside-smash-grab-2018 | 2018-06-01 (month only) | night, exact time not reported | Kirkland, WA (city) | business
+Evidence: entry_damage - Glass smashed at the storefronts (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Evidence: fingerprint - A fingerprint on an office drawer came back as an apparent match to the Seattle man (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Items taken: not reported
+Unknowns: day, exact time, items taken, block
+Sources: https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Notes: Only the month is given, as early June, and the time is described as night. Three businesses on one row of storefronts were struck: an insurance agent, an Indian restaurant and a cafe. The fingerprint match is to a Seattle man, and police in King County knew his name as early as 6 Jul. The Herald article does not say which of the two defendants committed each incident.

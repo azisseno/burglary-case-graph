@@ -1,0 +1,29 @@
+{
+  "id": "esg-02",
+  "series_id": "eastside-smash-grab-2018",
+  "date": "2018-07-01",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Kirkland, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "dna",
+      "description": "Blood on a table leg; DNA swabs later matched the Seattle man",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "day",
+    "time",
+    "entry method",
+    "items taken",
+    "block"
+  ],
+  "media": [],
+  "notes": "Only the month is given, as early July. Vietnamese restaurant. The thief cut himself while breaking in. DNA swabs from blood on a table leg later matched the Seattle man, per charges filed in October. The Herald article does not say which of the two defendants committed each incident.",
+  "date_precision": "month"
+}

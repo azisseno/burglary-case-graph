@@ -1,0 +1,24 @@
+{
+  "series_id": "long-beach-salesman-burglaries-2023",
+  "label": "Salesman-ruse residential burglaries, East Division, Long Beach, 2023 to 2024",
+  "area": "East Division, Long Beach, CA",
+  "period": {"start": "2023-08-01", "end": "2024-03-26"},
+  "scene_types": ["residence"],
+  "sources": [
+    {"url": "https://longbeach.gov/police/press-releases/suspect-arrested-for-multiple-residential-burglaries--additional-victims-sought/", "publisher": "Long Beach Police Department", "date": "2024-04-01", "kind": "press_release"},
+    {"url": "https://mynewsla.com/crime/2024/04/04/man-pleads-not-guilty-in-series-of-residential-burglaries-in-long-beach/", "publisher": "City News Service via MyNewsLA", "date": "2024-04-04", "kind": "news"}
+  ],
+  "ground_truth": {
+    "status": "linked_by_police",
+    "linked_incidents": ["lbs-01", "lbs-02", "lbs-03", "lbs-04", "lbs-05", "lbs-06", "lbs-07", "lbs-08", "lbs-09", "lbs-10", "lbs-11", "lbs-12", "lbs-13", "lbs-14", "lbs-15", "lbs-16", "lbs-17", "lbs-18", "lbs-19", "lbs-20", "lbs-21", "lbs-22", "lbs-23", "lbs-24", "lbs-25"],
+    "unlinked_incidents": [],
+    "linking_evidence": [
+      "police say the incidents follow similar circumstances and have similar suspect descriptions",
+      "same method in every incident: suspect posed as a salesman or service worker, knocked, and entered when the victim did not appear to be home",
+      "search warrant served 2024-03-29 at the suspect's residence recovered a volume of evidence; the nature of that evidence is not reported"
+    ],
+    "notes": "Police list 25 Long Beach incidents and say the suspect is also believed responsible for incidents in Glendale, Los Alamitos, Cerritos and Torrance, which are not itemized and have no folders. Police believe there may be additional unreported incidents. The district attorney charged six counts of first-degree residential burglary covering 2023-08-01 to 2024-03-13; which of the 25 incidents the six counts cover is not reported. Dates, blocks, method and items come from the police release, which takes precedence over the news article."
+  },
+  "outcome": {"summary": "Suspect arrested 2024-03-29 on a search warrant and booked with no bail. District attorney charged six counts of first-degree residential burglary on 2024-04-03. Not-guilty plea entered 2024-04-04. Later disposition not reported.", "date": "2024-03-29"},
+  "data_policy": "Public sources only. No suspect or victim names, ages, or exact addresses."
+}

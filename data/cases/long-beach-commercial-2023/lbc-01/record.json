@@ -1,0 +1,41 @@
+{
+  "id": "lbc-01",
+  "series_id": "long-beach-commercial-2023",
+  "date": "2023-02-03",
+  "time": "06:08",
+  "time_precision": "approximate",
+  "location": "2100 block of East 4th Street, Long Beach, CA",
+  "location_precision": "block",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "forced_entry",
+      "description": "Suspect broke in through the front door",
+      "provenance": "Long Beach Police Department press release 2023-08-10",
+      "source_url": "https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/"
+    },
+    {
+      "type": "theft",
+      "description": "Cash and/or electronic devices taken; not itemized per scene",
+      "provenance": "Long Beach Police Department press release 2023-08-10",
+      "source_url": "https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/"
+    },
+    {
+      "type": "footage",
+      "description": "Video surveillance footage; police say video was used to identify the suspect responsible for the burglaries",
+      "provenance": "Long Beach Police Department press release 2023-08-10",
+      "source_url": "https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/"
+    }
+  ],
+  "items_taken": [
+    "cash and/or electronic devices (not itemized per scene)"
+  ],
+  "unknowns": [
+    "business type",
+    "items taken at this scene",
+    "vehicle",
+    "tool used"
+  ],
+  "media": [],
+  "notes": "Police say they believe one suspect is responsible. Time is approximate as published."
+}

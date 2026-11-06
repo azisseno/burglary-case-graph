@@ -1,0 +1,3 @@
+evidence-01.jpg	https://lapdonlinestrgeacc.blob.core.usgovcloudapi.net/lapdonlinemedia/NR26220-pic6-300x86.jpg	Los Angeles Police Department	Seized firearms and magazines laid out on a table
+evidence-02.jpg	https://lapdonlinestrgeacc.blob.core.usgovcloudapi.net/lapdonlinemedia/NR26220-pic7-300x129.jpg	Los Angeles Police Department	Seized firearm, magazines, hand-held radios and a dark bag laid out on a table
+evidence-03.jpg	https://lapdonlinestrgeacc.blob.core.usgovcloudapi.net/lapdonlinemedia/NR26220-pic8.jpg	Los Angeles Police Department	Backpack with a panel of vertical antenna-like elements that appears to be the jammer; the page caption says only Evidence

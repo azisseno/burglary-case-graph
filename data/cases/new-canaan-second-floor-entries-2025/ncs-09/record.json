@@ -1,0 +1,21 @@
+{
+  "id": "ncs-09",
+  "series_id": "new-canaan-second-floor-entries-2025",
+  "date": "2026-01-23",
+  "time": "22:42",
+  "time_precision": "approximate",
+  "location": "Oenoke Ridge, New Canaan, CT",
+  "location_precision": "street",
+  "scene_type": "residence",
+  "evidence": [
+    {"type": "forced_entry", "description": "Rear glass door shattered.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"},
+    {"type": "entry_damage", "description": "Ladder at a broken second-floor window.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"},
+    {"type": "alarm", "description": "Alarm call at about 22:42; the alarm scared the intruders off.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"},
+    {"type": "other", "description": "A police dog tracked footprints to fresh tire marks.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"},
+    {"type": "plate_reader", "description": "Plate reader search narrowed to New York and New Jersey plates on high-end vehicles.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"}
+  ],
+  "items_taken": [],
+  "unknowns": ["loss value", "vehicle identity at this scene"],
+  "media": [],
+  "notes": "Attempt only; nothing was taken. The time is the time of the alarm call. Only the street name is given. The source does not say in so many words which charges, if any, cover this attempt."
+}

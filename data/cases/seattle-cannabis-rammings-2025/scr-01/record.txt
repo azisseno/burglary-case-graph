@@ -1,0 +1,6 @@
+scr-01 | seattle-cannabis-rammings-2025 | 2024-04-05 | time not reported | Central District, Seattle, WA (neighborhood) | business
+Evidence: witness - the owner described an unsuccessful break-in attempt on 5 Apr, called the Seattle Police Department and hired extra security (owner account in FOX 13 report of 9 Apr 2024) https://www.fox13seattle.com/news/seattle-central-district-pot-shop
+Items taken: none (attempt)
+Unknowns: time, entry method, number of people, vehicle use, footage availability
+Sources: https://www.fox13seattle.com/news/seattle-central-district-pot-shop
+Notes: Cannabis shop, attempt only. The owner said it was similar to scr-02. FOX 13 asked police whether the two were related and the article gives no answer. No police statement links this incident to any other incident in the set.

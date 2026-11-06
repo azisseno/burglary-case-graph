@@ -1,0 +1,6 @@
+ncs-06 | new-canaan-second-floor-entries-2025 | 2025-12-13 | time not reported | New Canaan, CT | residence
+Evidence 1 [plate_reader]: A rented Mercedes G-Wagon was picked up many times by license plate readers between 2025-12-11 and 2025-12-13. Provenance: NewCanaanite summary of arrest warrant affidavit.
+Items taken: not reported
+Unknowns: street; time of day; entry method; items taken; loss value
+Sources: https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992
+Notes: The source reports two incidents on this date in New Canaan without separating them, so the two folders carry the same facts and neither can be told apart from the other. The source also mentions similar crimes in Greenwich, which are not itemized and have no folders. Location is town level only.

@@ -1,0 +1,30 @@
+{
+  "id": "ram-06",
+  "series_id": "rochester-atm-series-2025",
+  "date": "2025-04-11",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Northwest Rochester, MN",
+  "location_precision": "neighborhood",
+  "scene_type": "bank",
+  "evidence": [
+    {
+      "type": "other",
+      "description": "Police responded to a person spray-painting the security camera that faces the ATM",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    },
+    {
+      "type": "other",
+      "description": "Police list records an ATM incident on this date",
+      "provenance": "KTTC, police list",
+      "source_url": "https://www.kttc.com/2025/04/21/police-investigating-string-atms-broken-into-around-rochester/"
+    }
+  ],
+  "items_taken": [],
+  "unknowns": [
+    "time of day"
+  ],
+  "media": [],
+  "notes": "Nothing was taken. Police called the arrested man a person of interest in this burglary and did not put it on the arrest list; the criminal complaint narrative includes it."
+}

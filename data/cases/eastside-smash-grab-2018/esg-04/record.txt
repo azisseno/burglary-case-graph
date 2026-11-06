@@ -1,0 +1,6 @@
+esg-04 | eastside-smash-grab-2018 | 2018-08-10 | overnight, exact time not reported | Lynnwood, WA (city) | business
+Evidence: entry_damage - Glass front door of the salon punched out (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Items taken: not reported
+Unknowns: time, items taken, block
+Sources: https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Notes: Salon. Found by employees who arrived hours after the suspect posted bond on the evening of 10 Aug, so the break-in was overnight 10 to 11 Aug; the start date is used. The Herald article does not say which of the two defendants committed each incident.

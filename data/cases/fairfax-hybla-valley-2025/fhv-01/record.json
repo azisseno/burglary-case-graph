@@ -1,0 +1,58 @@
+{
+  "id": "fhv-01",
+  "series_id": "fairfax-hybla-valley-2025",
+  "date": "2025-04-17",
+  "time": "02:15",
+  "time_precision": "reported",
+  "location": "7800 block of Richmond Highway, Hybla Valley, Fairfax County, VA",
+  "location_precision": "block",
+  "scene_type": "bakery",
+  "evidence": [
+    {
+      "type": "forced_entry",
+      "description": "Complainant reported the suspect broke in using a rock",
+      "provenance": "Fairfax County Police release 2025-05-05",
+      "source_url": "https://fcpdnews.org/2025/05/05/detectives-seek-suspect-responsible-for-burglaries-in-hybla-valley/"
+    },
+    {
+      "type": "theft",
+      "description": "Money stolen before the suspect fled",
+      "provenance": "Fairfax County Police release 2025-05-05",
+      "source_url": "https://fcpdnews.org/2025/05/05/detectives-seek-suspect-responsible-for-burglaries-in-hybla-valley/"
+    },
+    {
+      "type": "footage",
+      "description": "Detectives obtained security footage that police say shows the suspect involved in the burglaries; two stills published",
+      "provenance": "Fairfax County Police release 2025-05-05",
+      "source_url": "https://fcpdnews.org/2025/05/05/detectives-seek-suspect-responsible-for-burglaries-in-hybla-valley/"
+    }
+  ],
+  "items_taken": [
+    "money"
+  ],
+  "unknowns": [
+    "amount taken",
+    "what the published stills show for this incident versus the others"
+  ],
+  "media": [
+    {
+      "path": "photos/still-01.jpg",
+      "kind": "surveillance_still",
+      "source_url": "https://fcpdnews.org/wp-content/uploads/2025/05/screenshot-2025-05-05-091934.jpg",
+      "publisher": "Fairfax County Police"
+    },
+    {
+      "path": "photos/still-02.jpg",
+      "kind": "surveillance_still",
+      "source_url": "https://fcpdnews.org/wp-content/uploads/2025/05/screenshot-2025-05-05-091840-1.jpg",
+      "publisher": "Fairfax County Police"
+    },
+    {
+      "path": "documents/incident-table.jpg",
+      "kind": "incident_table_image",
+      "source_url": "https://fcpdnews.org/wp-content/uploads/2025/05/screenshot-2025-05-05-140852.jpg",
+      "publisher": "Fairfax County Police"
+    }
+  ],
+  "notes": "Scene type is taken from the business name's descriptor in the release. The two stills and the table image are series-level images from the release and it does not say which incident the stills come from. One panel of still-01 has a camera timestamp overlay reading 2025-04-23 21:06:21, the date of fhv-02 and fhv-03; camera clocks may be off. The table image is saved under documents because it is a table, not a scene photo."
+}

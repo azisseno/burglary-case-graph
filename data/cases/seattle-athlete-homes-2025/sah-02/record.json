@@ -1,0 +1,30 @@
+{
+  "id": "sah-02",
+  "series_id": "seattle-athlete-homes-2025",
+  "date": "2025-02-07",
+  "time": null,
+  "time_precision": "unknown",
+  "location": null,
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [
+    {
+      "type": "theft",
+      "description": "Louis Vuitton bags valued at more than 6,000 dollars reported taken",
+      "provenance": "CBS News report of court documents",
+      "source_url": "https://www.cbsnews.com/news/seattle-man-earl-enderson-riley-iv-burglaries-pro-athletes-mariners/"
+    }
+  ],
+  "items_taken": [
+    "Louis Vuitton bags valued at more than 6,000 dollars"
+  ],
+  "unknowns": [
+    "time",
+    "location",
+    "entry method",
+    "physical or digital evidence"
+  ],
+  "media": [],
+  "notes": "Home of a professional athlete, called pro athlete A in the research file. The same resident is the victim in sah-05. Labels such as pro athlete A are internal to the research file, not the sources. The date comes from the charging documents as presented by KOMO on 13 Sep 2025 and matches KOMO's 6 Jun report that the series began on 7 Feb.",
+  "date_precision": "day"
+}

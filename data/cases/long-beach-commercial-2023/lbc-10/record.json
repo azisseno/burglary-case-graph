@@ -1,0 +1,34 @@
+{
+  "id": "lbc-10",
+  "series_id": "long-beach-commercial-2023",
+  "date": "2023-06-23",
+  "time": "23:05",
+  "time_precision": "approximate",
+  "location": "4400 block of Los Coyotes Diagonal, Long Beach, CA",
+  "location_precision": "block",
+  "scene_type": "business_robbery",
+  "evidence": [
+    {
+      "type": "theft",
+      "description": "Suspects entered the open business and took merchandise without paying",
+      "provenance": "Long Beach Police Department press release 2023-08-10",
+      "source_url": "https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/"
+    },
+    {
+      "type": "witness",
+      "description": "Employees tried to stop them and a struggle followed",
+      "provenance": "Long Beach Police Department press release 2023-08-10",
+      "source_url": "https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/"
+    }
+  ],
+  "items_taken": [
+    "merchandise"
+  ],
+  "unknowns": [
+    "business type",
+    "merchandise value",
+    "number of suspects"
+  ],
+  "media": [],
+  "notes": "Recorded as a robbery in the release. Walk-in during business hours, unlike the burglaries. Charged in the same court filing as the burglaries; a second suspect was arrested for robberies only."
+}

@@ -1,0 +1,6 @@
+lmd-01 | lower-moreland-development-2023 | 2023-07-11 | time not reported | Single residential development in Lower Moreland Township, PA (Pine Road or Red Lion Road area; street for this date not reported) | residence
+Evidence 1 [forced_entry]: Entry by kicking in a rear glass door or forcing open doors. Patch gives this as the method used across the series, not specific to this date. Provenance: Patch report of police information, 2025-01-24.
+Items taken: not reported
+Unknowns: time of day; street for this date; items taken at this address; property recovery; camera types or footage; vehicle
+Sources: https://patch.com/pennsylvania/lowermoreland/1-arrested-string-montco-home-burglaries-2023-police
+Notes: Only source is a local news report; no police release was found. The report says at least five burglaries but lists six dates, and the discrepancy is unexplained, so all six are kept. Which street goes with which date, time of day and items taken at this address are not reported. Series-level loss was reported as around 1 million dollars.

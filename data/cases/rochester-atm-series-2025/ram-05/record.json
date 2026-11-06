@@ -1,0 +1,32 @@
+{
+  "id": "ram-05",
+  "series_id": "rochester-atm-series-2025",
+  "date": "2025-04-07",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Byron, MN",
+  "location_precision": "city",
+  "scene_type": "grocery_store",
+  "evidence": [
+    {
+      "type": "other",
+      "description": "Suspect tried to spray-paint the cameras pointing at an ATM",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    },
+    {
+      "type": "tool",
+      "description": "Stolen sanitation vehicle used to pull the ATM out of its setting",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "time of day",
+    "items taken",
+    "whether the ATM was removed"
+  ],
+  "media": [],
+  "notes": "The 2025-04-07 date comes from the research table. The court-document summary read for this series lists the call without a date. Described in the criminal complaint but not on the police arrest list."
+}

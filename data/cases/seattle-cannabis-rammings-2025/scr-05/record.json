@@ -1,0 +1,34 @@
+{
+  "id": "scr-05",
+  "series_id": "seattle-cannabis-rammings-2025",
+  "date": null,
+  "time": "03:29",
+  "time_precision": "reported",
+  "location": "West Seattle, Seattle, WA",
+  "location_precision": "neighborhood",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "vehicle",
+      "description": "A stolen gold Kia rammed the front of the shop and was left at the scene",
+      "provenance": "MyNorthwest report of 8 Aug 2025",
+      "source_url": "https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825"
+    },
+    {
+      "type": "vehicle",
+      "description": "Six masked people left in a silver vehicle",
+      "provenance": "MyNorthwest report of 8 Aug 2025",
+      "source_url": "https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "exact date",
+    "items taken",
+    "plate or fingerprint results",
+    "footage availability"
+  ],
+  "media": [],
+  "notes": "Cannabis shop. The source gives only a weekday, the Friday before the article of 8 Aug 2025, so the date is left empty. The article says no information has been provided on a connection between the two West Seattle incidents. The MyNorthwest page was read by the research team but returned HTTP 403 to a later check, so it was not re-verified. No police statement links this incident to any other incident in the set.",
+  "date_precision": "unknown"
+}

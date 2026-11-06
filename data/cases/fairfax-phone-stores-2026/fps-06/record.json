@@ -1,0 +1,38 @@
+{
+  "id": "fps-06",
+  "series_id": "fairfax-phone-stores-2026",
+  "date": "2026-02-04",
+  "time": "04:06",
+  "time_precision": "reported",
+  "location": "7800 block of Richmond Highway, Hybla Valley, Fairfax County, VA",
+  "location_precision": "block",
+  "scene_type": "cell_phone_store",
+  "evidence": [
+    {
+      "type": "footage",
+      "description": "Security camera footage reviewed by detectives",
+      "provenance": "Fairfax County Police release 2026-02-09",
+      "source_url": "https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/"
+    },
+    {
+      "type": "other",
+      "description": "Offense list names burglary and destruction of property.",
+      "provenance": "Fairfax County Police release 2026-02-09",
+      "source_url": "https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "entry method",
+    "items taken"
+  ],
+  "media": [
+    {
+      "path": null,
+      "kind": "video_link",
+      "source_url": "https://www.youtube.com/watch?v=0Zv3mbNSXoQ",
+      "publisher": "Fairfax County Police"
+    }
+  ],
+  "notes": "The video is embedded in the February 4 section and covers that night in general; its contents were not viewed."
+}

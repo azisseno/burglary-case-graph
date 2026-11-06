@@ -1,0 +1,19 @@
+{
+  "id": "ncs-02",
+  "series_id": "new-canaan-second-floor-entries-2025",
+  "date": "2025-10-01",
+  "date_precision": "month",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Ferris Hill Road, New Canaan, CT",
+  "location_precision": "street",
+  "scene_type": "residence",
+  "evidence": [
+    {"type": "other", "description": "Entry through the second floor, the pattern of the series.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"},
+    {"type": "theft", "description": "Watches and jewelry; reported loss 66,400 dollars.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"}
+  ],
+  "items_taken": ["watches", "jewelry"],
+  "unknowns": ["exact day", "time of day", "forensic or camera evidence at this address"],
+  "media": [],
+  "notes": "Reported month is October 2025; the day is not reported, so date is the first of the month. Order among the four October incidents follows the order in the source and is not a known sequence. Only the street name is given. The source is a local news summary of a court document, not the affidavit."
+}

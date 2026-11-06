@@ -1,0 +1,40 @@
+{
+  "id": "rcg-04",
+  "series_id": "renton-crash-and-grab-2023",
+  "date": "2023-09-07",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Renton, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "vehicle",
+      "description": "Stolen black Jeep backed through the glass front of the nail business",
+      "provenance": "Renton Reporter, 10 Oct 2023",
+      "source_url": "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/"
+    },
+    {
+      "type": "footage",
+      "description": "Surveillance video; police compared it with witness accounts to connect the cases",
+      "provenance": "Renton Reporter, 2 Oct 2023",
+      "source_url": "https://www.rentonreporter.com/2023/10/02/renton-police-catch-prolific-smash-and-grab-burglary-suspect/"
+    },
+    {
+      "type": "witness",
+      "description": "Witness accounts compared by police with video to connect the cases",
+      "provenance": "Renton Reporter, 2 Oct 2023",
+      "source_url": "https://www.rentonreporter.com/2023/10/02/renton-police-catch-prolific-smash-and-grab-burglary-suspect/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "time",
+    "block",
+    "items taken at this business",
+    "plate, fingerprint or DNA evidence"
+  ],
+  "media": [],
+  "notes": "Nail business; the business type is inferred from the business name in the article. The month and day come from the 10 Oct 2023 Renton Reporter; the year 2023 is inferred from the article date. Per incident times and items are not reported; the sources give cash, jewelry and small valuables only as a total for the series. Which charge covers which incident is not reported. Same date as rcg-05. Five Renton Police Department photos republished by KOMO are in the series photos folder. Four show an on-image date of 2023-09-07; the source does not say which of the two 7 Sep incidents (rcg-04 or rcg-05) each shows, so none is attached to a single record.",
+  "date_precision": "day"
+}

@@ -1,0 +1,36 @@
+{
+  "id": "blr-04",
+  "series_id": "bellingham-ring-2026",
+  "date": null,
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Snohomish or Mill Creek, WA",
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [
+    {
+      "type": "vehicle",
+      "description": "The Snohomish County Sheriff's Department identified the black Dodge Durango as involved in three separate burglaries in Snohomish and Mill Creek",
+      "provenance": "Whatcom News citing the probable cause affidavit",
+      "source_url": "https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/"
+    },
+    {
+      "type": "footage",
+      "description": "Surveillance video was used to identify the suspects' cars and connect them to three other burglaries of Asian families in Snohomish and Mill Creek",
+      "provenance": "My Bellingham Now citing court documents",
+      "source_url": "https://mybellinghamnow.com/news/297792-bellingham-police-arrest-four-suspects-in-connection-to-regional-burglary-ring-targeting-asian-families/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "date",
+    "time",
+    "which of the two cities this burglary was in",
+    "entry method",
+    "items taken",
+    "block"
+  ],
+  "media": [],
+  "notes": "One of three separate burglaries in Snohomish and Mill Creek that the sources describe together without dates or per incident details, so the three records are identical apart from the id. The sources do not say how many were in each city. Both outlets cite a probable cause affidavit filed in Whatcom County Superior Court on 23 Feb 2026; neither links a police release.",
+  "date_precision": "unknown"
+}

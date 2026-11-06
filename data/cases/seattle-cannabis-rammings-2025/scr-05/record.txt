@@ -1,0 +1,7 @@
+scr-05 | seattle-cannabis-rammings-2025 | date not reported (Friday before 2025-08-08) | 03:29 | West Seattle, Seattle, WA (neighborhood) | business
+Evidence: vehicle - a stolen gold Kia rammed the front of the shop and was left at the scene (MyNorthwest report of 8 Aug 2025) https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825
+Evidence: vehicle - six masked people left in a silver vehicle (MyNorthwest report of 8 Aug 2025) https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825
+Items taken: not reported
+Unknowns: exact date, items taken, plate or fingerprint results, footage availability
+Sources: https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825
+Notes: Cannabis shop. The source gives only a weekday, the Friday before the article of 8 Aug 2025, so the date is left empty. The article says no information has been provided on a connection between the two West Seattle incidents. The MyNorthwest page was read by the research team but returned HTTP 403 to a later check, so it was not re-verified. No police statement links this incident to any other incident in the set.

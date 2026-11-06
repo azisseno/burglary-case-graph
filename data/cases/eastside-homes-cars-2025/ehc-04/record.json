@@ -1,0 +1,37 @@
+{
+  "id": "ehc-04",
+  "series_id": "eastside-homes-cars-2025",
+  "date": "2024-12-04",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Fremont, Seattle, WA",
+  "location_precision": "neighborhood",
+  "scene_type": "residence",
+  "evidence": [
+    {
+      "type": "theft",
+      "description": "Eleven firearms were taken, including multiple AR-15 style rifles and handguns, with the gun safe loaded into a vehicle",
+      "provenance": "KIRO 7 report of charging documents",
+      "source_url": "https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/"
+    },
+    {
+      "type": "footage",
+      "description": "A neighbor's surveillance camera showed a suspect returning to the home with a trailer before loading the gun safe into a vehicle",
+      "provenance": "KIRO 7 report of charging documents",
+      "source_url": "https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/"
+    }
+  ],
+  "items_taken": [
+    "11 firearms including multiple AR-15 style rifles and handguns",
+    "gun safe"
+  ],
+  "unknowns": [
+    "time",
+    "block",
+    "entry method",
+    "vehicle used"
+  ],
+  "media": [],
+  "notes": "Reported as the night of 4 to 5 Dec 2024; the start date is used. The series is described in KIRO 7 as burglaries between November 2024 and February 2025 across Seattle, Medina, Sammamish and Everett.",
+  "date_precision": "day"
+}

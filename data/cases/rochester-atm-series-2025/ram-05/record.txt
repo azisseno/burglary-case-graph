@@ -1,0 +1,8 @@
+ram-05 | series: rochester-atm-series-2025 | date: 2025-04-07 | time: not reported (unknown) | location: Byron, MN | scene type: grocery_store
+Evidence (other): Suspect tried to spray-paint the cameras pointing at an ATM [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (tool): Stolen sanitation vehicle used to pull the ATM out of its setting [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Items taken: not reported
+Unknowns: time of day; items taken; whether the ATM was removed
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+Notes: The 2025-04-07 date comes from the research table. The court-document summary read for this series lists the call without a date. Described in the criminal complaint but not on the police arrest list.

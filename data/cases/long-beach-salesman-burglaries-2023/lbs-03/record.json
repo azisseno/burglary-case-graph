@@ -1,0 +1,17 @@
+{
+  "id": "lbs-03",
+  "series_id": "long-beach-salesman-burglaries-2023",
+  "date": "2023-10-06",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "2800 block of San Vicente Avenue, Long Beach, CA",
+  "location_precision": "block",
+  "scene_type": "residence",
+  "evidence": [
+    {"type": "other", "description": "Suspect posed as a salesman or service worker, knocked, and entered when the occupants did not appear to be home. Police state this for every incident in the series; it is not specific to this address.", "provenance": "LBPD press release 2024-04-01", "source_url": "https://longbeach.gov/police/press-releases/suspect-arrested-for-multiple-residential-burglaries--additional-victims-sought/"}
+  ],
+  "items_taken": null,
+  "unknowns": ["time of day", "items taken at this address", "loss value", "entry force", "surveillance or doorbell footage"],
+  "media": [],
+  "notes": "Police name this incident among those the suspect is believed responsible for. Time of day, items taken at this address, loss value, entry force and any camera footage are not reported. The series-wide items were jewelry, collectible coins, heirlooms, jewelry boxes and money."
+}

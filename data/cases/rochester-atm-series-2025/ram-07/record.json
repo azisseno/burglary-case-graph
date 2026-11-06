@@ -1,0 +1,27 @@
+{
+  "id": "ram-07",
+  "series_id": "rochester-atm-series-2025",
+  "date": "2025-04-13",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Northeast Rochester, MN",
+  "location_precision": "neighborhood",
+  "scene_type": "sand_and_gravel_company",
+  "evidence": [
+    {
+      "type": "theft",
+      "description": "Silver GMC Sierra truck stolen from the company",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    }
+  ],
+  "items_taken": [
+    "truck"
+  ],
+  "unknowns": [
+    "time of day",
+    "whether the truck was used at a later scene"
+  ],
+  "media": [],
+  "notes": "On the police arrest list."
+}

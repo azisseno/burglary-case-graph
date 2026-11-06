@@ -1,0 +1,7 @@
+ldj-01 | la-downey-jammer-crew-2026 | 2026-02-01 (month only reported) | time not reported | Tarzana and Woodland Hills, Los Angeles, CA | residence
+Evidence 1 [forced_entry]: Entry by smashing open rear sliding glass doors. Provenance: LAPD press release NR26220ag, 2026-10-20.
+Evidence 2 [theft]: Residences ransacked; jewelry, designer purses, glasses and clothing taken. Provenance: LAPD press release NR26220ag, 2026-10-20.
+Items taken: jewelry; designer purses; glasses; clothing
+Unknowns: exact days; time of day; number of residences; blocks; loss value; vehicle descriptions
+Sources: https://www.lapdonline.org/newsroom/five-serial-burglars-arrested-nr26220ag/
+Notes: One record stands for a string of February 2026 burglaries in two neighborhoods; the release gives no count or dates, so the first of the month is used. Items seized later from the suspects include hand-held radios, masks, gloves, Wi-Fi jammers, two vehicles, weapons and ammunition; the release does not tie any item to a specific burglary, so none is recorded as evidence here. Seizure photos are at series level in photos.

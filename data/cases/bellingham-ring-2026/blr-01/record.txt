@@ -1,0 +1,7 @@
+blr-01 | bellingham-ring-2026 | 2026-02-18 | time not reported | Cordata neighborhood, Bellingham, WA (neighborhood) | residence
+Evidence: footage - camera footage shows suspects ransacking the home (Whatcom News citing the probable cause affidavit) https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/
+Evidence: theft - a safe was stolen while the residents were at work (Whatcom News citing the probable cause affidavit) https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/
+Items taken: safe
+Unknowns: time, entry method, contents of the safe
+Sources: https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/ https://mybellinghamnow.com/news/297792-bellingham-police-arrest-four-suspects-in-connection-to-regional-burglary-ring-targeting-asian-families/
+Notes: The Bellingham police investigation began with this burglary. Both outlets cite a probable cause affidavit filed in Whatcom County Superior Court on 23 Feb 2026; neither links a police release.

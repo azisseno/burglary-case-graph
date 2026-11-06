@@ -1,0 +1,39 @@
+{
+  "id": "ehc-01",
+  "series_id": "eastside-homes-cars-2025",
+  "date": "2024-11-01",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Medina, WA",
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [
+    {
+      "type": "theft",
+      "description": "A white Mercedes, jewelry, silverware and personal documents were taken while the owner was away on a trip",
+      "provenance": "KIRO 7 report of charging documents",
+      "source_url": "https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/"
+    },
+    {
+      "type": "property_recovered",
+      "description": "The stolen Mercedes was recovered in Seattle in mid December with swapped license plates",
+      "provenance": "KIRO 7 report of charging documents",
+      "source_url": "https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/"
+    }
+  ],
+  "items_taken": [
+    "white Mercedes",
+    "jewelry",
+    "silverware",
+    "personal documents"
+  ],
+  "unknowns": [
+    "day",
+    "time",
+    "entry method",
+    "block"
+  ],
+  "media": [],
+  "notes": "Only the month is reported. The series is described in KIRO 7 as burglaries between November 2024 and February 2025 across Seattle, Medina, Sammamish and Everett. The article says fingerprints on a recovered stolen vehicle linked the defendant to the crimes but does not say which vehicle.",
+  "date_precision": "month"
+}

@@ -1,0 +1,6 @@
+ehc-02 | eastside-homes-cars-2025 | 2024-11-01 (month only, days after ehc-01) | time not reported | Seattle, WA (city) | vehicle
+Evidence: theft - an Audi SUV was reported stolen by an owner who was on vacation, along with credit cards that were later used fraudulently (KIRO 7 report of charging documents) https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/
+Items taken: Audi SUV; credit cards
+Unknowns: day, time, where the car was parked, whether a home was burglarized, entry method
+Sources: https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/ https://mynorthwest.com/?p=4059160
+Notes: Reported days after the Medina incident in November 2024; only the month is known. The article does not say a home burglary took place. The scene is typed as vehicle for that reason. The series is described in KIRO 7 as burglaries between November 2024 and February 2025 across Seattle, Medina, Sammamish and Everett.

@@ -1,0 +1,7 @@
+ram-07 | series: rochester-atm-series-2025 | date: 2025-04-13 | time: not reported (unknown) | location: Northeast Rochester, MN | scene type: sand_and_gravel_company
+Evidence (theft): Silver GMC Sierra truck stolen from the company [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Items taken: truck
+Unknowns: time of day; whether the truck was used at a later scene
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+Notes: On the police arrest list.

@@ -1,0 +1,19 @@
+{
+  "id": "ldj-01",
+  "series_id": "la-downey-jammer-crew-2026",
+  "date": "2026-02-01",
+  "date_precision": "month",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Tarzana and Woodland Hills, Los Angeles, CA",
+  "location_precision": "neighborhood",
+  "scene_type": "residence",
+  "evidence": [
+    {"type": "forced_entry", "description": "Entry by smashing open rear sliding glass doors.", "provenance": "LAPD press release NR26220ag, 2026-10-20", "source_url": "https://www.lapdonline.org/newsroom/five-serial-burglars-arrested-nr26220ag/"},
+    {"type": "theft", "description": "Residences ransacked; jewelry, designer purses, glasses and clothing taken.", "provenance": "LAPD press release NR26220ag, 2026-10-20", "source_url": "https://www.lapdonline.org/newsroom/five-serial-burglars-arrested-nr26220ag/"}
+  ],
+  "items_taken": ["jewelry", "designer purses", "glasses", "clothing"],
+  "unknowns": ["exact days", "time of day", "number of residences", "blocks", "loss value", "vehicle descriptions"],
+  "media": [],
+  "notes": "One record stands for a string of February 2026 burglaries in two neighborhoods; the release gives no count or dates, so the first of the month is used. Items seized later from the suspects include hand-held radios, masks, gloves, Wi-Fi jammers, two vehicles, weapons and ammunition; the release does not tie any item to a specific burglary, so none is recorded as evidence here. Seizure photos are at series level in photos."
+}

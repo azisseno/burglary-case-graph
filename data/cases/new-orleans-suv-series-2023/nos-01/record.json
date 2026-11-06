@@ -1,0 +1,31 @@
+{
+  "id": "nos-01",
+  "series_id": "new-orleans-suv-series-2023",
+  "date": "2023-07-22",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "1600 block of South Gayoso Street, New Orleans, LA",
+  "location_precision": "block",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "forced_entry",
+      "description": "Perpetrators forced entry; NOPD classes it as an attempted burglary",
+      "provenance": "NOPD news post 2023-08-01",
+      "source_url": "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+    },
+    {
+      "type": "vehicle",
+      "description": "White Nissan Xterra SUV, which NOPD says connects this incident to the others",
+      "provenance": "NOPD news post 2023-08-01",
+      "source_url": "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+    }
+  ],
+  "items_taken": [],
+  "unknowns": [
+    "time of day",
+    "forced-entry tool"
+  ],
+  "media": [],
+  "notes": "Attempted simple burglary of a business per NOPD. Nothing taken is recorded because it was an attempt."
+}

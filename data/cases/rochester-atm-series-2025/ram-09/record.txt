@@ -1,0 +1,14 @@
+ram-09 | series: rochester-atm-series-2025 | date: 2025-04-17 | time: not reported (unknown) | location: Northwest Rochester, MN | scene type: office_building_and_restaurant
+Evidence (alarm): Officer responded to an alarm and saw a motion light come on inside [source: KROC, criminal complaint; https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/]
+Evidence (witness): Officer saw a masked, gloved person in dark clothing carrying a bag, who ran back inside [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (forced_entry): Video shows the person riding a bike into one office, taking cash from a cash box, sawing into a safe, then sawing through a wall into the restaurant [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (vehicle): Van stolen from a nearby business and driven through a garage door, causing more than $70,000 in damage [source: KROC, criminal complaint; https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/]
+Evidence (vehicle): E-bike left behind, wrapped in cloth and other material to hide its outline [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (property_recovered): Stolen van found the next morning in northeast Rochester with a black jacket on the front seat [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (footage): Security video nearby appeared to show a person walking away from the van [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Items taken: cash from cash box; van (recovered next morning)
+Unknowns: time of day; amount of cash taken
+Source URLs:
+  https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/
+  https://www.kaaltv.com/?p=883642
+Notes: Police list and arrest list agree on the date. Court-document coverage places the scene in northwest Rochester; the police list gives the same street block as ram-03. On the police arrest list.

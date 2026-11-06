@@ -1,0 +1,21 @@
+{
+  "series_id": "seattle-cannabis-rammings-2025",
+  "label": "Cannabis shop stolen vehicle rammings not linked by police, Seattle, 2024 to 2025",
+  "area": "Central District, Belltown, West Seattle, WA",
+  "period": {"start": "2024-04-05", "end": "2025-08-08"},
+  "scene_types": ["business"],
+  "sources": [
+    {"url": "https://www.fox13seattle.com/news/seattle-central-district-pot-shop", "publisher": "FOX 13", "date": "2024-04-09", "kind": "news_article"},
+    {"url": "https://mynorthwest.com/local/four-arrested-belltown-pot-shop-smash-and-grab-burglars-initial-burglars-loose/3971948", "publisher": "MyNorthwest", "date": "2024-07-31", "kind": "news_article"},
+    {"url": "https://mynorthwest.com/crime_blotter/west-seattle-cannabis-robbery/4119825", "publisher": "MyNorthwest", "date": "2025-08-08", "kind": "news_article"}
+  ],
+  "ground_truth": {
+    "status": "not_linked",
+    "linked_incidents": [],
+    "unlinked_incidents": ["scr-01", "scr-02", "scr-03", "scr-04", "scr-05"],
+    "linking_evidence": [],
+    "notes": "No source states a police link between any two incidents. For scr-01 and scr-02 the owner said they were similar, and FOX 13 asked police whether they were related without a reported answer. For the two West Seattle incidents the article says no information has been provided on a connection. In Belltown the four men arrested entered after the original group left, and the original five were not reported identified. No plate, fingerprint or DNA evidence is mentioned. The King 5 pages for Belltown and Capitol Hill returned HTTP 403 and were not read. The set is a pattern of similar methods and is useful only for testing whether a tool avoids claiming links the sources do not make."
+  },
+  "outcome": {"summary": "Four men booked for commercial burglary in the Belltown incident. Nothing else reported.", "date": "2024-07-31"},
+  "data_policy": "Public sources only. No suspect or victim names, ages, or exact addresses."
+}

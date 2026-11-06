@@ -1,0 +1,39 @@
+{
+  "id": "ram-10",
+  "series_id": "rochester-atm-series-2025",
+  "date": "2025-04-25",
+  "time": "04:00",
+  "time_precision": "approximate",
+  "location": "Mazeppa, MN",
+  "location_precision": "city",
+  "scene_type": "restaurant_bar",
+  "evidence": [
+    {
+      "type": "forced_entry",
+      "description": "Glass breaker used to get into the restaurant and the ATM broken into",
+      "provenance": "KAAL, court documents and owner account",
+      "source_url": "https://www.kaaltv.com/news/the-pondy-restaurant-and-bar-targeted-by-break-in-according-to-owner/"
+    },
+    {
+      "type": "entry_damage",
+      "description": "Equipment behind the bar damaged",
+      "provenance": "Owner account, KAAL",
+      "source_url": "https://www.kaaltv.com/news/the-pondy-restaurant-and-bar-targeted-by-break-in-according-to-owner/"
+    },
+    {
+      "type": "other",
+      "description": "Break-in listed in the court documents as an April 25 incident",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    }
+  ],
+  "items_taken": [
+    "cash"
+  ],
+  "unknowns": [
+    "time confirmed by police",
+    "cash amount confirmed by police"
+  ],
+  "media": [],
+  "notes": "Time and the $15,000 figure are the owner's account to a local TV station, not a police statement. An earlier research summary also described pull-tab machines smashed and the ATM sawed open; the articles read confirm damaged machines and a broken ATM but not the saw. Described in the criminal complaint but not on the police arrest list."
+}

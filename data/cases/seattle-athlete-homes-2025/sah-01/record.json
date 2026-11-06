@@ -1,0 +1,22 @@
+{
+  "id": "sah-01",
+  "series_id": "seattle-athlete-homes-2025",
+  "date": "2025-01-06",
+  "time": null,
+  "time_precision": "unknown",
+  "location": null,
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [],
+  "items_taken": null,
+  "unknowns": [
+    "time",
+    "location",
+    "entry method",
+    "items taken",
+    "physical or digital evidence"
+  ],
+  "media": [],
+  "notes": "Listed in the charging documents as presented by KOMO on 13 Sep 2025. The home is a private home and the resident is not an athlete. The article does not say which defendant the count applies to.",
+  "date_precision": "day"
+}

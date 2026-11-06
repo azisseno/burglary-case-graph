@@ -1,0 +1,22 @@
+{
+  "id": "esg-05",
+  "series_id": "eastside-smash-grab-2018",
+  "date": "2018-08-13",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Bothell, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [],
+  "items_taken": null,
+  "unknowns": [
+    "time",
+    "entry method",
+    "items taken",
+    "block",
+    "evidence"
+  ],
+  "media": [],
+  "notes": "Nail salon. The article gives only the date and business type. The Herald article does not say which of the two defendants committed each incident.",
+  "date_precision": "day"
+}

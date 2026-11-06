@@ -1,0 +1,9 @@
+lbc-04 | series: long-beach-commercial-2023 | date: 2023-02-09 | time: 05:45 (approximate) | location: 2200 block of Lakewood Boulevard, Long Beach, CA | scene type: business
+Evidence (forced_entry): Suspect broke in through the front door [source: Long Beach Police Department press release 2023-08-10; https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/]
+Evidence (theft): Cash and/or electronic devices taken; not itemized per scene [source: Long Beach Police Department press release 2023-08-10; https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/]
+Evidence (footage): Video surveillance footage; police say video was used to identify the suspect responsible for the burglaries [source: Long Beach Police Department press release 2023-08-10; https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/]
+Items taken: cash and/or electronic devices (not itemized per scene)
+Unknowns: business type; items taken at this scene; vehicle; tool used
+Source URLs:
+  https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/
+Notes: The release marks this entry as two incidents; lbc-03 and lbc-04 share the single time given and per-incident time is not reported. Police say they believe one suspect is responsible. Time is approximate as published.

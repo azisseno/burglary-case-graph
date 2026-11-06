@@ -1,0 +1,6 @@
+sah-02 | seattle-athlete-homes-2025 | 2025-02-07 | time not reported | location not reported | residence
+Evidence: theft - Louis Vuitton bags valued at more than 6,000 dollars reported taken (CBS News report of court documents) https://www.cbsnews.com/news/seattle-man-earl-enderson-riley-iv-burglaries-pro-athletes-mariners/
+Items taken: Louis Vuitton bags valued at more than 6,000 dollars
+Unknowns: time, location, entry method, physical or digital evidence
+Sources: https://komonews.com/news/local/macklemore-seattle-burglary-sports-legends-ichiro-mariners-julio-seahawks-true-crime-court-documents-public-safety-police-celebrity-news https://komonews.com/news/local/21-year-old-earl-riley-iv-targeted-robberies-residential-burglary-julio-rodriguez-pitcher-luis-castillo-richard-sherman-cy-young-blake-snelle-prosecutors-kcpao-warrants https://www.cbsnews.com/news/seattle-man-earl-enderson-riley-iv-burglaries-pro-athletes-mariners/
+Notes: Home of a professional athlete, called pro athlete A in the research file. The same resident is the victim in sah-05. Labels such as pro athlete A are internal to the research file, not the sources. The date comes from the charging documents as presented by KOMO on 13 Sep 2025 and matches KOMO's 6 Jun report that the series began on 7 Feb.

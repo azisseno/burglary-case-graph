@@ -1,0 +1,11 @@
+fps-01 | series: fairfax-phone-stores-2026 | date: 2026-01-28 | time: 01:57 (reported) | location: 8500 block of Richmond Highway, Woodlawn, Fairfax County, VA | scene type: cell_phone_store
+Evidence (forced_entry): Front window broken with a rock and the suspect entered [source: Fairfax County Police release 2026-02-09; https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/]
+Evidence (theft): Cash register stolen [source: Fairfax County Police release 2026-02-09; https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/]
+Evidence (footage): Surveillance footage captured the whole incident [source: Fairfax County Police release 2026-02-09; https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/]
+Items taken: cash register
+Unknowns: whether the January 28 store is the same store as fps-04
+Source URLs:
+  https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/
+  https://www.youtube.com/watch?v=7bDqF-8e8oI
+Media: video_link https://www.youtube.com/watch?v=7bDqF-8e8oI
+Notes: The release names a carrier brand in its text for this store and a different brand in its table for the same block at 3:50 a.m., so brand is not recorded and it is not stated whether this and fps-04 are the same store. The video is embedded in the January 28 section of the release; its contents were not viewed.

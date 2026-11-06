@@ -1,0 +1,7 @@
+esg-11 | eastside-smash-grab-2018 | 2018-10-05 | early morning, exact time not reported | Sammamish and Redmond, WA (city) | business
+Evidence: footage - The same car appeared on security footage at the Sammamish burglary and, less than an hour later, at the Redmond break-in (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Evidence: phone_location - Cell tower records allegedly placed the car owner's phone moving from one crime scene to the other (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Items taken: not reported
+Unknowns: time, entry method, items taken, blocks
+Sources: https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Notes: Early morning. A Thai restaurant in Sammamish and, less than an hour later, an Indian restaurant in Redmond, kept together as one record. The car belongs to a person who was arrested with the Seattle man that day. Phone location records are described as allegations in charging papers. The Herald article does not say which of the two defendants committed each incident.

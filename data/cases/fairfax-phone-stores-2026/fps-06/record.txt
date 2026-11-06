@@ -1,0 +1,10 @@
+fps-06 | series: fairfax-phone-stores-2026 | date: 2026-02-04 | time: 04:06 (reported) | location: 7800 block of Richmond Highway, Hybla Valley, Fairfax County, VA | scene type: cell_phone_store
+Evidence (footage): Security camera footage reviewed by detectives [source: Fairfax County Police release 2026-02-09; https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/]
+Evidence (other): Offense list names burglary and destruction of property. [source: Fairfax County Police release 2026-02-09; https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/]
+Items taken: not reported
+Unknowns: entry method; items taken
+Source URLs:
+  https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/
+  https://www.youtube.com/watch?v=0Zv3mbNSXoQ
+Media: video_link https://www.youtube.com/watch?v=0Zv3mbNSXoQ
+Notes: The video is embedded in the February 4 section and covers that night in general; its contents were not viewed.

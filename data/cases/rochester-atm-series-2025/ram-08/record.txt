@@ -1,0 +1,10 @@
+ram-08 | series: rochester-atm-series-2025 | date: 2025-04-15 | time: not reported (unknown) | location: Northwest Rochester, MN | scene type: restaurant_bar
+Evidence (tool): Circular saw used to cut around the side of the ATM and take the cash [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (vehicle): Suspect rode a bicycle [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (other): Police list records an ATM incident at this business on this date [source: KTTC, police list; https://www.kttc.com/2025/04/21/police-investigating-string-atms-broken-into-around-rochester/]
+Items taken: cash
+Unknowns: time of day; amount of cash taken
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+  https://www.kttc.com/2025/04/21/police-investigating-string-atms-broken-into-around-rochester/
+Notes: Two listings of the same date describe one incident. Saws were later found in a storage unit; which saw was used here is not reported. On the police April list but not on the arrest list.

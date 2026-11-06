@@ -1,0 +1,8 @@
+ram-03 | series: rochester-atm-series-2025 | date: 2025-03-31 | time: not reported (unknown) | location: North Rochester, MN | scene type: business
+Evidence (forced_entry): ATM found broken open when a community service officer responded to the burglary call [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (vehicle): Suspect left on a black e-bike [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Items taken: not reported
+Unknowns: time of day; items taken
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+Notes: An owner told a local TV station the back door lock was drilled out; that is not in the evidence list. The police list gives this scene and ram-09 the same street block, while court-document coverage places ram-09 in northwest Rochester. On the police arrest list.

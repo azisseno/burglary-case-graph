@@ -1,0 +1,33 @@
+{
+  "id": "esg-10",
+  "series_id": "eastside-smash-grab-2018",
+  "date": "2018-09-28",
+  "time": null,
+  "time_precision": "window",
+  "location": "Monroe, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "entry_damage",
+      "description": "Glass smashed at ten businesses",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    },
+    {
+      "type": "fingerprint",
+      "description": "An evidence technician lifted a fingerprint from one of the cash registers; the crime lab matched it to the Seattle man",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "time",
+    "items taken",
+    "blocks"
+  ],
+  "media": [],
+  "notes": "Ten businesses hit overnight, kept together as one record, with about 6,000 dollars in damage. Police named the Seattle man as a suspect in these 10 burglaries after the fingerprint match. The Herald article does not say which of the two defendants committed each incident.",
+  "date_precision": "day"
+}

@@ -1,0 +1,8 @@
+lbc-10 | series: long-beach-commercial-2023 | date: 2023-06-23 | time: 23:05 (approximate) | location: 4400 block of Los Coyotes Diagonal, Long Beach, CA | scene type: business_robbery
+Evidence (theft): Suspects entered the open business and took merchandise without paying [source: Long Beach Police Department press release 2023-08-10; https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/]
+Evidence (witness): Employees tried to stop them and a struggle followed [source: Long Beach Police Department press release 2023-08-10; https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/]
+Items taken: merchandise
+Unknowns: business type; merchandise value; number of suspects
+Source URLs:
+  https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/
+Notes: Recorded as a robbery in the release. Walk-in during business hours, unlike the burglaries. Charged in the same court filing as the burglaries; a second suspect was arrested for robberies only.

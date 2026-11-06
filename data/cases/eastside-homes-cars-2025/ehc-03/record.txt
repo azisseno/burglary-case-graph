@@ -1,0 +1,6 @@
+ehc-03 | eastside-homes-cars-2025 | 2024-12-01 (month only) | overnight, exact time not reported | Seattle, WA (city) | business
+Evidence: theft - cash was taken from the registers of two restaurants and mail was taken from the businesses, overnight (KIRO 7 report of charging documents) https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/
+Items taken: register cash; business mail
+Unknowns: day, restaurant neighborhoods, entry method, exact time
+Sources: https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/ https://mynorthwest.com/?p=4059160
+Notes: Two restaurants burglarized overnight in one report, kept together as one record. Only the month is reported. The time is an overnight window. The series is described in KIRO 7 as burglaries between November 2024 and February 2025 across Seattle, Medina, Sammamish and Everett.

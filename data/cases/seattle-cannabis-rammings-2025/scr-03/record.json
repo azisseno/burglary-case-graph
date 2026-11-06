@@ -1,0 +1,33 @@
+{
+  "id": "scr-03",
+  "series_id": "seattle-cannabis-rammings-2025",
+  "date": "2024-07-31",
+  "time": "02:30",
+  "time_precision": "approximate",
+  "location": "Belltown, Seattle, WA",
+  "location_precision": "neighborhood",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "vehicle",
+      "description": "A stolen car was driven into the storefront and towed for evidence",
+      "provenance": "MyNorthwest report of 31 Jul 2024",
+      "source_url": "https://mynorthwest.com/local/four-arrested-belltown-pot-shop-smash-and-grab-burglars-initial-burglars-loose/3971948"
+    },
+    {
+      "type": "other",
+      "description": "Police believe five people originally smashed in; four men who entered after that group left were arrested and booked for commercial burglary",
+      "provenance": "MyNorthwest report of 31 Jul 2024",
+      "source_url": "https://mynorthwest.com/local/four-arrested-belltown-pot-shop-smash-and-grab-burglars-initial-burglars-loose/3971948"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "items taken",
+    "identity of the original group of five",
+    "block"
+  ],
+  "media": [],
+  "notes": "Cannabis shop. The four men arrested were described as opportunists who entered after the original group left; the original five were not reported identified. The MyNorthwest page was read by the research team but returned no content to a later check, so these details were not re-verified. No police statement links this incident to any other incident in the set.",
+  "date_precision": "day"
+}

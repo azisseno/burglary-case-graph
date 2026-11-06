@@ -1,0 +1,27 @@
+{
+  "series_id": "bellingham-ring-2026",
+  "label": "Regional ring of home burglaries targeting Asian families, Bellingham to Snohomish County, 2026",
+  "area": "Bellingham, Anacortes, Snohomish, Mill Creek, WA",
+  "period": {"start": "2026-02-18", "end": "2026-02-19"},
+  "scene_types": ["residence"],
+  "sources": [
+    {"url": "https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/", "publisher": "Whatcom News", "date": "2026-02-26", "kind": "news_article"},
+    {"url": "https://mybellinghamnow.com/news/297792-bellingham-police-arrest-four-suspects-in-connection-to-regional-burglary-ring-targeting-asian-families/", "publisher": "My Bellingham Now", "date": "2026-02-27", "kind": "news_article"}
+  ],
+  "ground_truth": {
+    "status": "linked_by_police",
+    "linked_incidents": ["blr-01", "blr-02", "blr-03", "blr-04", "blr-05"],
+    "unlinked_incidents": [],
+    "linking_evidence": [
+      "surveillance video identified the suspects' cars and connected them to three other burglaries in Snohomish and Mill Creek",
+      "GPS trackers placed on the cars under a warrant showed them traveling to Anacortes during a burglary there",
+      "a black Dodge Durango and a Hyundai Elantra, both with Texas registrations, were tracked to a Bellingham apartment complex",
+      "the Snohomish County Sheriff's Department identified the Dodge as involved in three burglaries",
+      "a search of the apartment recovered bags with jewelry, designer handbags and cash",
+      "detectives noted a pattern of victims of Asian descent"
+    ],
+    "notes": "Total losses across the group are given as about 1.4 million dollars by Whatcom News and as nearly 1.5 million by My Bellingham Now. Both pages say the group is part of a larger organization; one gives it a name as a report, not an official finding, and it is context only. Entry methods, times, plate numbers and the Snohomish and Mill Creek dates are not reported. No source links this group to the 2021 to 2023 group in the Snohomish County series. Neither page links a police release; both cite the affidavit."
+  },
+  "outcome": {"summary": "Four men arrested 20 Feb 2026 and booked in Whatcom County Jail for criminal conspiracy, residential burglary and malicious mischief, with hate crime charges reported by Whatcom News. Not guilty pleas at the 23 Feb arraignment, bonds from 150,000 to 260,000 dollars, jury trial set for 13 Apr 2026. Trial result not found.", "date": "2026-02-20"},
+  "data_policy": "Public sources only. No suspect or victim names, ages, or exact addresses."
+}

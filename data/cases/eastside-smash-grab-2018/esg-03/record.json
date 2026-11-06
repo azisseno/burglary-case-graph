@@ -1,0 +1,41 @@
+{
+  "id": "esg-03",
+  "series_id": "eastside-smash-grab-2018",
+  "date": "2018-07-14",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Near Silver Lake, WA",
+  "location_precision": "neighborhood",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "tool",
+      "description": "Window punching tool on the front seat of the van",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    },
+    {
+      "type": "vehicle",
+      "description": "Suspect was sitting in a stolen van at a nearby gas station moments after the break-in",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    },
+    {
+      "type": "other",
+      "description": "Broken glass found in the suspect's shoe",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "time of break-in",
+    "which business was hit",
+    "items taken",
+    "block",
+    "city"
+  ],
+  "media": [],
+  "notes": "A business near Silver Lake. The man was caught moments after the break-in, early on 14 Jul, sitting in a stolen van at a nearby gas station. A baggie in his backpack tested positive for methamphetamine. Snohomish County prosecutors charged him with three counts of burglary after this arrest. The Herald article does not say which of the two defendants committed each incident.",
+  "date_precision": "day"
+}

@@ -1,0 +1,26 @@
+{
+  "series_id": "renton-crash-and-grab-2023",
+  "label": "Stolen car crash and grab burglaries of small businesses, Renton and Kent, 2023",
+  "area": "Renton and Kent, WA",
+  "period": {"start": "2023-08-08", "end": "2023-09-15"},
+  "scene_types": ["business"],
+  "sources": [
+    {"url": "https://www.rentonreporter.com/2023/10/02/renton-police-catch-prolific-smash-and-grab-burglary-suspect/", "publisher": "Renton Reporter", "date": "2023-10-02", "kind": "news_article"},
+    {"url": "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/", "publisher": "Renton Reporter", "date": "2023-10-10", "kind": "news_article"},
+    {"url": "https://www.fox13seattle.com/news/renton-police-arrest-prolific-offender-accused-of-stealing-cars-for-crash-and-grab-burglary-schemes.amp", "publisher": "FOX 13", "date": "2023-09-29", "kind": "news_article"},
+    {"url": "https://www.kiro7.com/news/local/renton-police-arrest-prolific-smash-and-grab-burglary-suspect/ZTHFJLTLC5HINJ3N6BMM3S36XY/", "publisher": "KIRO 7", "date": "2023-09-29", "kind": "news_article"}
+  ],
+  "ground_truth": {
+    "status": "linked_by_police",
+    "linked_incidents": ["rcg-01", "rcg-02", "rcg-03", "rcg-04", "rcg-05", "rcg-06", "rcg-07", "rcg-08"],
+    "unlinked_incidents": [],
+    "linking_evidence": [
+      "police compared surveillance video and witness accounts to connect all the cases",
+      "a detective said video shows the suspect always used the same tactic: a stolen car backed into a front door, then a masked person runs in and out within a minute or two",
+      "stacks of paperwork from the Kent pho restaurant and the Renton cafe, both burglary victims, found in a stolen U-Haul on 31 Mar 2023"
+    ],
+    "notes": "Renton detectives cited 19 burglary, four attempted burglary and three stolen vehicle possession cases since Oct 2022, which is far more than the eight incidents with details here. Charge counts differ between outlets: KIRO 7 says three counts of second degree burglary and one stolen vehicle count, and FOX 13 says four pending cases. A 25 Jul 2023 Renton restaurant incident involving a U-Haul, reported by the Renton Reporter on 4 Aug 2023, is not linked to this series by any source and is not included. A 2025 Renton business case of about 90,000 dollars over at least 13 burglaries involves a different suspect and method and is not part of this series. rcg-01 and rcg-02 are tied through paperwork found in a U-Haul, not through the Jeep, and their burglary dates are not reported."
+  },
+  "outcome": {"summary": "Suspect arrested 22 Sep 2023 in Renton. King County prosecutors filed two felony cases on 27 Sep 2023 with bail of 100,000 dollars and arraignment set for 11 Oct 2023. Later outcome not found.", "date": "2023-09-27"},
+  "data_policy": "Public sources only. No suspect or victim names, ages, or exact addresses."
+}

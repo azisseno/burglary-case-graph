@@ -1,0 +1,22 @@
+{
+  "id": "sah-05",
+  "series_id": "seattle-athlete-homes-2025",
+  "date": "2025-03-28",
+  "time": null,
+  "time_precision": "unknown",
+  "location": null,
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [],
+  "items_taken": null,
+  "unknowns": [
+    "time",
+    "location",
+    "entry method",
+    "items taken",
+    "physical or digital evidence"
+  ],
+  "media": [],
+  "notes": "Burglary at the home of a professional athlete, called pro athlete A in the research file. Same resident as sah-02. Labels such as pro athlete A are internal to the research file, not the sources. Date from the charging documents as presented by KOMO on 13 Sep 2025.",
+  "date_precision": "day"
+}

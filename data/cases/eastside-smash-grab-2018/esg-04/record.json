@@ -1,0 +1,27 @@
+{
+  "id": "esg-04",
+  "series_id": "eastside-smash-grab-2018",
+  "date": "2018-08-10",
+  "time": null,
+  "time_precision": "window",
+  "location": "Lynnwood, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "entry_damage",
+      "description": "Glass front door of the salon punched out",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "time",
+    "items taken",
+    "block"
+  ],
+  "media": [],
+  "notes": "Salon. Found by employees who arrived hours after the suspect posted bond on the evening of 10 Aug, so the break-in was overnight 10 to 11 Aug; the start date is used. The Herald article does not say which of the two defendants committed each incident.",
+  "date_precision": "day"
+}

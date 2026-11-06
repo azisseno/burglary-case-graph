@@ -1,0 +1,7 @@
+esg-10 | eastside-smash-grab-2018 | 2018-09-28 | overnight, exact time not reported | Monroe, WA (city) | business
+Evidence: entry_damage - Glass smashed at ten businesses (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Evidence: fingerprint - An evidence technician lifted a fingerprint from one of the cash registers; the crime lab matched it to the Seattle man (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Items taken: not reported
+Unknowns: time, items taken, blocks
+Sources: https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Notes: Ten businesses hit overnight, kept together as one record, with about 6,000 dollars in damage. Police named the Seattle man as a suspect in these 10 burglaries after the fingerprint match. The Herald article does not say which of the two defendants committed each incident.

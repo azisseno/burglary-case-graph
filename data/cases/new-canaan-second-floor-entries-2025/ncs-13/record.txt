@@ -1,0 +1,7 @@
+ncs-13 | new-canaan-second-floor-entries-2025 | date not reported (2026) | time not reported | Weed Street, New Canaan, CT | residence
+Evidence 1 [plate_reader]: Tied to the series by plate reader data; specifics not reported. Provenance: NewCanaanite summary of arrest warrant affidavit.
+Evidence 2 [phone_location]: Tied to the series by cell phone location data; specifics not reported. Provenance: NewCanaanite summary of arrest warrant affidavit.
+Items taken: not reported
+Unknowns: exact date; time of day; entry method; items taken; loss value
+Sources: https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992
+Notes: The source gives the year 2026 for this group of five streets and no dates. It ties them together by plate reader and phone data without saying which data applies to which street. Only the street name is given. Possible overlap with other incidents on the same street is not ruled out by the source.

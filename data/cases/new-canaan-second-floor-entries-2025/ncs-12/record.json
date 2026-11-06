@@ -1,0 +1,19 @@
+{
+  "id": "ncs-12",
+  "series_id": "new-canaan-second-floor-entries-2025",
+  "date": null,
+  "date_precision": "unknown",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Canoe Hill Road, New Canaan, CT",
+  "location_precision": "street",
+  "scene_type": "residence",
+  "evidence": [
+    {"type": "plate_reader", "description": "Tied to the series by plate reader data; specifics not reported.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"},
+    {"type": "phone_location", "description": "Tied to the series by cell phone location data; specifics not reported.", "provenance": "NewCanaanite summary of arrest warrant affidavit", "source_url": "https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992"}
+  ],
+  "items_taken": null,
+  "unknowns": ["exact date", "time of day", "entry method", "items taken", "loss value"],
+  "media": [],
+  "notes": "The source gives the year 2026 for this group of five streets and no dates. It ties them together by plate reader and phone data without saying which data applies to which street. Only the street name is given. Possible overlap with other incidents on the same street is not ruled out by the source."
+}

@@ -1,0 +1,35 @@
+{
+  "id": "esg-09",
+  "series_id": "eastside-smash-grab-2018",
+  "date": "2018-08-29",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "South Everett and Mill Creek, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "entry_damage",
+      "description": "Glass broken at the salons; the glass cost 800 dollars",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    },
+    {
+      "type": "theft",
+      "description": "The thief escaped with 3 dollars in change",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    }
+  ],
+  "items_taken": [
+    "3 dollars in change"
+  ],
+  "unknowns": [
+    "time",
+    "blocks",
+    "whether one or both salons lost cash"
+  ],
+  "media": [],
+  "notes": "A nail salon in south Everett and a nail salon in Mill Creek, kept together as one record. The article says the thief escaped with 3 dollars in change and that the broken glass cost 800 dollars; the glass cost is damage, not an item taken. The Herald article does not say which of the two defendants committed each incident.",
+  "date_precision": "day"
+}

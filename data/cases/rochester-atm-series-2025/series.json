@@ -1,0 +1,102 @@
+{
+  "series_id": "rochester-atm-series-2025",
+  "label": "ATM and business burglaries, Rochester and nearby towns, Minnesota, 2025",
+  "area": "Rochester, Byron, Mazeppa, Wanamingo, MN",
+  "period": {
+    "start": "2025-03-05",
+    "end": "2025-05-26"
+  },
+  "scene_types": [
+    "bank",
+    "business",
+    "grocery_store",
+    "office_building_and_restaurant",
+    "restaurant",
+    "restaurant_bar",
+    "sand_and_gravel_company",
+    "school"
+  ],
+  "sources": [
+    {
+      "url": "https://www.kttc.com/2025/04/21/police-investigating-string-atms-broken-into-around-rochester/",
+      "publisher": "KTTC",
+      "date": "2025-04-21",
+      "kind": "news_article"
+    },
+    {
+      "url": "https://www.kttc.com/2025/06/11/pine-island-man-arrested-connection-string-atm-burglaries-around-rochester-area",
+      "publisher": "KTTC",
+      "date": "2025-06-11",
+      "kind": "news_article"
+    },
+    {
+      "url": "https://www.postbulletin.com/news/local/arrest-made-related-to-string-of-atm-burglaries",
+      "publisher": "Post Bulletin",
+      "date": "2025-06-11",
+      "kind": "news_article"
+    },
+    {
+      "url": "https://www.kaaltv.com/?p=883642",
+      "publisher": "KAAL ABC 6 News",
+      "date": null,
+      "kind": "news_article"
+    },
+    {
+      "url": "https://www.kaaltv.com/news/6-rochester-businesses-targeted-by-break-ins-in-recent-weeks-according-to-owners/",
+      "publisher": "KAAL ABC 6 News",
+      "date": null,
+      "kind": "news_article"
+    },
+    {
+      "url": "https://www.kaaltv.com/news/the-pondy-restaurant-and-bar-targeted-by-break-in-according-to-owner/",
+      "publisher": "KAAL ABC 6 News",
+      "date": null,
+      "kind": "news_article"
+    },
+    {
+      "url": "https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/",
+      "publisher": "KROC News",
+      "date": "2025-06-12",
+      "kind": "news_article"
+    },
+    {
+      "url": "https://krocnews.com/guilty-plea-rochester-atm-burglary-spree/",
+      "publisher": "KROC News",
+      "date": "2026-06-26",
+      "kind": "news_article"
+    }
+  ],
+  "ground_truth": {
+    "status": "partly_linked",
+    "linked_incidents": [
+      "ram-01",
+      "ram-02",
+      "ram-03",
+      "ram-04",
+      "ram-05",
+      "ram-06",
+      "ram-07",
+      "ram-08",
+      "ram-09",
+      "ram-10",
+      "ram-11"
+    ],
+    "unlinked_incidents": [],
+    "linking_evidence": [
+      "silver or tan pickup on first-scene video matched a pickup at the suspect's home, and a photo of its tire tread was compared to a track at the scene",
+      "masks and gloves worn at several scenes",
+      "cameras spray-painted at several scenes",
+      "circular saws used at several scenes",
+      "e-bike or bicycle used for short getaways",
+      "stolen van found with a jacket and nearby video appeared to show the suspect walking away",
+      "footage reportedly showed the suspect traveling to and from the Wanamingo bank",
+      "search on 2025-06-10 found clothing worn in various burglaries, two e-bikes and several circular saws in a storage unit"
+    ],
+    "notes": "Police released a list of six charged scenes: ram-01, ram-02, ram-03, ram-04, ram-07 and ram-09. Police called the man a person of interest in ram-06. The criminal complaint also describes ram-05, ram-08, ram-10 and ram-11, so all eleven are listed as linked, but only six are on the police arrest list and sources disagree on how many incidents are charged. Court documents do not show police acting on the public tip about the pickup between March and the arrest. A bar burglary in Oronoco on 2025-03-06 was reported as under county sheriff investigation and is not in the series sources, so it is not recorded. Nearly $8,000 in cash was reportedly taken in total."
+  },
+  "outcome": {
+    "summary": "Arrest 2025-06-10 and charges 2025-06-12; guilty plea reported 2026-06-26 to one second-degree burglary and one first-degree property damage count; sentencing set for October 2026",
+    "date": "2026-06-26"
+  },
+  "data_policy": "Public sources only. No suspect or victim names, ages, or exact addresses."
+}

@@ -1,0 +1,9 @@
+ram-04 | series: rochester-atm-series-2025 | date: 2025-04-07 | time: not reported (unknown) | location: Byron, MN | scene type: school
+Evidence (forced_entry): South entrance doors shattered [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (other): Device similar to a smoke bomb thrown inside [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (vehicle): Suspect left on an e-bike [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Items taken: not reported
+Unknowns: time of day; items taken
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+Notes: Property damage call. The school is named on the police arrest list for 2025-04-07.

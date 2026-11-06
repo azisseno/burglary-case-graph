@@ -1,0 +1,50 @@
+{
+  "series_id": "fairfax-phone-stores-2026",
+  "label": "Cell phone store burglaries, Fairfax County, Virginia, 2026",
+  "area": "Woodlawn, Hybla Valley, Groveton, Falls Church and McLean, Fairfax County, VA",
+  "period": {
+    "start": "2026-01-28",
+    "end": "2026-02-04"
+  },
+  "scene_types": [
+    "cell_phone_store"
+  ],
+  "sources": [
+    {
+      "url": "https://fcpdnews.org/2026/02/09/suspect-in-phone-store-burglaries-arrested-within-24-hours/",
+      "publisher": "Fairfax County Police",
+      "date": "2026-02-09",
+      "kind": "press_release"
+    },
+    {
+      "url": "https://patch.com/virginia/mclean/dc-man-charged-5-cell-phone-store-burglaries-fairfax-police",
+      "publisher": "Patch",
+      "date": null,
+      "kind": "news_article"
+    }
+  ],
+  "ground_truth": {
+    "status": "linked_by_police",
+    "linked_incidents": [
+      "fps-01",
+      "fps-02",
+      "fps-03",
+      "fps-04",
+      "fps-05",
+      "fps-06"
+    ],
+    "unlinked_incidents": [],
+    "linking_evidence": [
+      "detectives reviewed security camera footage from the businesses and determined the same suspect was responsible",
+      "camera registered through the county Connect Fairfax program helped identify a vehicle linked to at least one case",
+      "Real Time Crime Center used license plate reader technology to identify the suspect vehicle",
+      "vehicle located in Washington DC later that evening and the driver detained at a traffic stop"
+    ],
+    "notes": "The release says one suspect was responsible for the January 28 burglary, all four commercial burglaries near Hybla Valley and the McLean burglary, which is six events. It also says five businesses were burglarized on February 4 and its table has five rows, so the six recorded incidents are the January 28 store plus the five rows. The release does not say which row is the McLean burglary. The April 2025 Hybla Valley series, fairfax-hybla-valley-2025, is not tied to this suspect by any source."
+  },
+  "outcome": {
+    "summary": "Driver detained in Washington DC and charged with burglary, destruction of property and petit larceny; extradition pending, more charges anticipated, detectives checking other regional cases",
+    "date": "2026-02-09"
+  },
+  "data_policy": "Public sources only. No suspect or victim names, ages, or exact addresses."
+}

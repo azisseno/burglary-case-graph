@@ -1,0 +1,6 @@
+lpu-01 | la-pico-union-rear-window-2023 | date not reported | time not reported | Pico-Union, Los Angeles, CA (Rampart Division) | residence
+Evidence 1 [forced_entry]: Four masked suspects pried open rear windows and doors. LAPD states this for the series; it is not specific to this incident. Provenance: LAPD press release NR23717am, 2023-10-19.
+Items taken: not reported
+Unknowns: date; time of day; block; items taken at this address; loss value
+Sources: https://www.lapdonline.org/newsroom/residential-burglary-suspects-arrested-in-pico-union-nr23717am/
+Notes: The LAPD release recognizes five burglaries as one series but does not itemize them, so the five records carry the same facts and cannot be told apart. Dates, times, exact blocks, per-victim items and loss are not reported. Series-wide items were cash and jewelry, about 100,000 dollars in total. Scene stills sit at series level in photos because the release does not say which burglary they belong to.

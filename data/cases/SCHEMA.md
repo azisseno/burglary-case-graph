@@ -75,7 +75,9 @@ Same shape as the team's existing evidence.json, extended with a series referenc
 
 Evidence `type` values: `forced_entry`, `entry_damage`, `safe_access`, `alarm`, `theft`, `vehicle`, `tool`, `clothing`, `footage`, `witness`, `fingerprint`, `dna`, `phone_location`, `plate_reader`, `property_recovered`, `document_found`, `other`. Use `other` with a clear description when nothing fits.
 
-`time_precision` is `reported`, `approximate`, `window`, or `unknown`. `location_precision` is `block`, `neighborhood`, or `city`.
+`time_precision` is `reported`, `approximate`, `window`, or `unknown`. `location_precision` is `block`, `street`, `neighborhood`, or `city`.
+
+`date_precision` is `day`, `month`, or `unknown`. When only a month is known, `date` holds the first of that month and `date_precision` is `month`. When no date is known, `date` is `null`. Records that omit the field are `day`.
 
 ## record.txt
 
@@ -83,7 +85,8 @@ A plain text version of the same record for people and for the extraction demo, 
 
 ## Rules
 
-- Public sources only. Government sources first for media: police, sheriff, prosecutor, city, DOJ. News images are not downloaded; link them in `sources` instead.
+- Public sources only. Government sources first for media: police, sheriff, prosecutor, city, DOJ. A photo a news outlet republishes with an explicit police credit counts as government media; record the agency as publisher and the news URL as source. Photos a news outlet took itself are not downloaded; link them in `sources` instead.
+- No booking portraits or other identity material, even when a government source publishes them.
 - No suspect or victim names, ages, or exact street addresses anywhere. Block or neighborhood level only.
 - No invented values. Unknown fields are `null` in JSON and `not reported` in text.
 - Every evidence item has a source URL.

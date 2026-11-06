@@ -1,0 +1,7 @@
+ehc-05 | eastside-homes-cars-2025 | 2024-12-30 (unconfirmed, see notes) | time not reported | Sammamish, WA (city) | residence
+Evidence: theft - a black BMW X5 was allegedly stolen from a Sammamish home (KIRO 7 report of charging documents) https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/
+Evidence: property_recovered - the BMW was found in the parking lot of a Seattle motel where the defendant had reportedly been staying (KIRO 7 report of charging documents) https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/
+Items taken: black BMW X5
+Unknowns: time, block, entry method
+Sources: https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/ https://mynorthwest.com/?p=4059160 https://heraldnet.com/news/police-link-lake-stevens-man-to-burglaries-in-king-county
+Notes: KIRO 7 gives no date for this incident. The date 30 Dec 2024 comes from a Herald search excerpt, and that page was not read, so the date is unconfirmed. The same excerpt calls this the first link between the suspect and the series; that is also unconfirmed. The series is described in KIRO 7 as burglaries between November 2024 and February 2025 across Seattle, Medina, Sammamish and Everett.

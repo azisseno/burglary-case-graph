@@ -1,0 +1,37 @@
+{
+  "id": "sah-07",
+  "series_id": "seattle-athlete-homes-2025",
+  "date": "2025-05-01",
+  "time": null,
+  "time_precision": "unknown",
+  "location": null,
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [
+    {
+      "type": "witness",
+      "description": "A resident was home and called 911, then locked in a bathroom while the burglars took items; the burglars tried to enter the bathroom",
+      "provenance": "Charging documents as reported by KOMO",
+      "source_url": "https://komonews.com/news/local/21-year-old-earl-riley-iv-targeted-robberies-residential-burglary-julio-rodriguez-pitcher-luis-castillo-richard-sherman-cy-young-blake-snelle-prosecutors-kcpao-warrants"
+    },
+    {
+      "type": "theft",
+      "description": "Purses and jewelry valued at more than 194,000 dollars reported taken",
+      "provenance": "Charging documents as reported by KOMO",
+      "source_url": "https://komonews.com/news/local/21-year-old-earl-riley-iv-targeted-robberies-residential-burglary-julio-rodriguez-pitcher-luis-castillo-richard-sherman-cy-young-blake-snelle-prosecutors-kcpao-warrants"
+    }
+  ],
+  "items_taken": [
+    "purses",
+    "jewelry valued with the purses at more than 194,000 dollars"
+  ],
+  "unknowns": [
+    "time",
+    "location",
+    "how the burglars got in",
+    "physical or digital evidence beyond the 911 call"
+  ],
+  "media": [],
+  "notes": "Home of a professional athlete, called pro athlete D in the research file. This incident appears in KOMO's 6 Jun report but is not in the incident list KOMO presented on 13 Sep 2025, so its place in the second defendant's charges is not confirmed. Labels such as pro athlete A are internal to the research file, not the sources.",
+  "date_precision": "day"
+}

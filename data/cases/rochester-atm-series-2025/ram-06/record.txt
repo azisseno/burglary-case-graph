@@ -1,0 +1,9 @@
+ram-06 | series: rochester-atm-series-2025 | date: 2025-04-11 | time: not reported (unknown) | location: Northwest Rochester, MN | scene type: bank
+Evidence (other): Police responded to a person spray-painting the security camera that faces the ATM [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (other): Police list records an ATM incident on this date [source: KTTC, police list; https://www.kttc.com/2025/04/21/police-investigating-string-atms-broken-into-around-rochester/]
+Items taken: none
+Unknowns: time of day
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+  https://www.kttc.com/2025/04/21/police-investigating-string-atms-broken-into-around-rochester/
+Notes: Nothing was taken. Police called the arrested man a person of interest in this burglary and did not put it on the arrest list; the criminal complaint narrative includes it.

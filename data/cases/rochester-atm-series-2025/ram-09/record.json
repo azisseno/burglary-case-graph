@@ -1,0 +1,64 @@
+{
+  "id": "ram-09",
+  "series_id": "rochester-atm-series-2025",
+  "date": "2025-04-17",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Northwest Rochester, MN",
+  "location_precision": "neighborhood",
+  "scene_type": "office_building_and_restaurant",
+  "evidence": [
+    {
+      "type": "alarm",
+      "description": "Officer responded to an alarm and saw a motion light come on inside",
+      "provenance": "KROC, criminal complaint",
+      "source_url": "https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/"
+    },
+    {
+      "type": "witness",
+      "description": "Officer saw a masked, gloved person in dark clothing carrying a bag, who ran back inside",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    },
+    {
+      "type": "forced_entry",
+      "description": "Video shows the person riding a bike into one office, taking cash from a cash box, sawing into a safe, then sawing through a wall into the restaurant",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    },
+    {
+      "type": "vehicle",
+      "description": "Van stolen from a nearby business and driven through a garage door, causing more than $70,000 in damage",
+      "provenance": "KROC, criminal complaint",
+      "source_url": "https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/"
+    },
+    {
+      "type": "vehicle",
+      "description": "E-bike left behind, wrapped in cloth and other material to hide its outline",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    },
+    {
+      "type": "property_recovered",
+      "description": "Stolen van found the next morning in northeast Rochester with a black jacket on the front seat",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    },
+    {
+      "type": "footage",
+      "description": "Security video nearby appeared to show a person walking away from the van",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    }
+  ],
+  "items_taken": [
+    "cash from cash box",
+    "van (recovered next morning)"
+  ],
+  "unknowns": [
+    "time of day",
+    "amount of cash taken"
+  ],
+  "media": [],
+  "notes": "Police list and arrest list agree on the date. Court-document coverage places the scene in northwest Rochester; the police list gives the same street block as ram-03. On the police arrest list."
+}

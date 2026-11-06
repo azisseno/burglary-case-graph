@@ -1,0 +1,23 @@
+{
+  "series_id": "lower-moreland-development-2023",
+  "label": "Break-ins in one residential development, Lower Moreland Township, PA, 2023",
+  "area": "Lower Moreland Township, PA",
+  "period": {"start": "2023-07-11", "end": "2023-10-14"},
+  "scene_types": ["residence"],
+  "sources": [
+    {"url": "https://patch.com/pennsylvania/lowermoreland/1-arrested-string-montco-home-burglaries-2023-police", "publisher": "Patch", "date": "2025-01-24", "kind": "news"}
+  ],
+  "ground_truth": {
+    "status": "linked_by_police",
+    "linked_incidents": ["lmd-01", "lmd-02", "lmd-03", "lmd-04", "lmd-05", "lmd-06"],
+    "unlinked_incidents": [],
+    "linking_evidence": [
+      "all incidents occurred in the same development",
+      "similar entry method each time: kicking in a rear glass door or forcing open doors",
+      "after the suspect was arrested with another man for loitering and prowling in Bucks County in November 2023, police connected him to these incidents based on his appearance and clothing; the source of the images is not stated"
+    ],
+    "notes": "The only source is a local news site, not a police release. It says at least five burglaries but lists six dates. Series-level loss was reported as around 1 million dollars in items. Per-incident items, times, vehicle and recovered property are not reported."
+  },
+  "outcome": {"summary": "Arrest and charges announced by 2025-01-24: numerous felony counts of burglary, theft and receiving stolen property. Preliminary hearing pending at that date. Later outcome not reported.", "date": "2025-01-24"},
+  "data_policy": "Public sources only. No suspect or victim names, ages, or exact addresses."
+}

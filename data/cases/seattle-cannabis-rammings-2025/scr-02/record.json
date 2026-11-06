@@ -1,0 +1,42 @@
+{
+  "id": "scr-02",
+  "series_id": "seattle-cannabis-rammings-2025",
+  "date": "2024-04-09",
+  "time": "03:30",
+  "time_precision": "approximate",
+  "location": "Central District, Seattle, WA",
+  "location_precision": "neighborhood",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "vehicle",
+      "description": "A stolen Hyundai Sonata was rammed into the front doors, wedged between the doors and bike stands near the sidewalk",
+      "provenance": "FOX 13 report of 9 Apr 2024",
+      "source_url": "https://www.fox13seattle.com/news/seattle-central-district-pot-shop"
+    },
+    {
+      "type": "footage",
+      "description": "Business security footage shows a large group outside, repeated attempts to break the doors, entry into the store and the group fleeing in two cars",
+      "provenance": "FOX 13 report of 9 Apr 2024",
+      "source_url": "https://www.fox13seattle.com/news/seattle-central-district-pot-shop"
+    },
+    {
+      "type": "theft",
+      "description": "Thousands of dollars of products and cash taken by a group of more than 10 people, a mix of young adults and children",
+      "provenance": "FOX 13 report of 9 Apr 2024",
+      "source_url": "https://www.fox13seattle.com/news/seattle-central-district-pot-shop"
+    }
+  ],
+  "items_taken": [
+    "products worth thousands of dollars",
+    "cash"
+  ],
+  "unknowns": [
+    "whether the two getaway cars were stolen",
+    "exact time",
+    "block"
+  ],
+  "media": [],
+  "notes": "Reported as just before 3:30 a.m.; 03:30 is the upper bound. FOX 13 was working with police to learn whether the two getaway cars were also stolen and gives no result. The owner said scr-01 was similar. The article gives no police answer on whether the two are related. No police statement links this incident to any other incident in the set.",
+  "date_precision": "day"
+}

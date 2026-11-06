@@ -1,0 +1,32 @@
+{
+  "id": "nos-03",
+  "series_id": "new-orleans-suv-series-2023",
+  "date": "2023-07-26",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "12000 block of South I-10 Service Road, New Orleans, LA",
+  "location_precision": "block",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "forced_entry",
+      "description": "Perpetrators forced entry; NOPD classes it as an burglary",
+      "provenance": "NOPD news post 2023-08-01",
+      "source_url": "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+    },
+    {
+      "type": "vehicle",
+      "description": "White Nissan Xterra SUV, which NOPD says connects this incident to the others",
+      "provenance": "NOPD news post 2023-08-01",
+      "source_url": "https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "time of day",
+    "forced-entry tool",
+    "items taken"
+  ],
+  "media": [],
+  "notes": "Simple burglary of a business per NOPD. Items taken are not reported."
+}

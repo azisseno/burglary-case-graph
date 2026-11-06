@@ -1,0 +1,9 @@
+lbc-02 | series: long-beach-commercial-2023 | date: 2023-02-03 | time: 06:30 (approximate) | location: 2800 block of East Pacific Coast Highway, Long Beach, CA | scene type: business
+Evidence (forced_entry): Suspect broke in through the front door [source: Long Beach Police Department press release 2023-08-10; https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/]
+Evidence (theft): Cash and/or electronic devices taken; not itemized per scene [source: Long Beach Police Department press release 2023-08-10; https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/]
+Evidence (footage): Video surveillance footage; police say video was used to identify the suspect responsible for the burglaries [source: Long Beach Police Department press release 2023-08-10; https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/]
+Items taken: cash and/or electronic devices (not itemized per scene)
+Unknowns: business type; items taken at this scene; vehicle; tool used
+Source URLs:
+  https://longbeach.gov/police/press-releases/commercial-burglary-series-investigation-and-arrests/
+Notes: Police say they believe one suspect is responsible. Time is approximate as published.

@@ -1,0 +1,31 @@
+{
+  "id": "ehc-03",
+  "series_id": "eastside-homes-cars-2025",
+  "date": "2024-12-01",
+  "time": null,
+  "time_precision": "window",
+  "location": "Seattle, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "theft",
+      "description": "Cash was taken from the registers of two restaurants and mail was taken from the businesses, overnight",
+      "provenance": "KIRO 7 report of charging documents",
+      "source_url": "https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/"
+    }
+  ],
+  "items_taken": [
+    "register cash",
+    "business mail"
+  ],
+  "unknowns": [
+    "day",
+    "restaurant neighborhoods",
+    "entry method",
+    "exact time"
+  ],
+  "media": [],
+  "notes": "Two restaurants burglarized overnight in one report, kept together as one record. Only the month is reported. The time is an overnight window. The series is described in KIRO 7 as burglaries between November 2024 and February 2025 across Seattle, Medina, Sammamish and Everett.",
+  "date_precision": "month"
+}

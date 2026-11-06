@@ -1,0 +1,26 @@
+{
+  "id": "fhv-03",
+  "series_id": "fairfax-hybla-valley-2025",
+  "date": "2025-04-23",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "7700 block of Richmond Highway, Hybla Valley, Fairfax County, VA",
+  "location_precision": "block",
+  "scene_type": "restaurant",
+  "evidence": [
+    {
+      "type": "forced_entry",
+      "description": "Police say a rock was used to break the front glass door to get in during each listed incident",
+      "provenance": "Fairfax County Police release 2025-05-05",
+      "source_url": "https://fcpdnews.org/2025/05/05/detectives-seek-suspect-responsible-for-burglaries-in-hybla-valley/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "time of day",
+    "entry details for this scene",
+    "items taken"
+  ],
+  "media": [],
+  "notes": "Date, block and business type come from the table image in the release; the table lists burglary as the offense. Shares its date and block with fhv-02."
+}

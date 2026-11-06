@@ -1,0 +1,29 @@
+{
+  "id": "scr-01",
+  "series_id": "seattle-cannabis-rammings-2025",
+  "date": "2024-04-05",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Central District, Seattle, WA",
+  "location_precision": "neighborhood",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "witness",
+      "description": "The owner described an unsuccessful break-in attempt on 5 Apr, called the Seattle Police Department and hired extra security",
+      "provenance": "Owner account in FOX 13 report of 9 Apr 2024",
+      "source_url": "https://www.fox13seattle.com/news/seattle-central-district-pot-shop"
+    }
+  ],
+  "items_taken": [],
+  "unknowns": [
+    "time",
+    "entry method",
+    "number of people",
+    "vehicle use",
+    "footage availability"
+  ],
+  "media": [],
+  "notes": "Cannabis shop, attempt only. The owner said it was similar to scr-02. FOX 13 asked police whether the two were related and the article gives no answer. No police statement links this incident to any other incident in the set.",
+  "date_precision": "day"
+}

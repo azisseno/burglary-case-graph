@@ -1,0 +1,10 @@
+ram-02 | series: rochester-atm-series-2025 | date: 2025-03-18 | time: not reported (unknown) | location: Northwest Rochester, MN | scene type: business
+Evidence (alarm): Police responded to an alarm at the business [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (forced_entry): Object thrown into the front entryway; court documents describe it as a bomb or a fire extinguisher [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (theft): ATM stolen from the building [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (property_recovered): Stolen ATM later recovered in Faribault, MN [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Items taken: ATM
+Unknowns: time of day; cash amount in the ATM
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+Notes: A manager told a local TV station a fire hydrant was used to get in. Court documents say a bomb or fire extinguisher, and the court-document version is used here. On the police arrest list.

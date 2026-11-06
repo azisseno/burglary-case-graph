@@ -1,0 +1,13 @@
+fhv-01 | series: fairfax-hybla-valley-2025 | date: 2025-04-17 | time: 02:15 (reported) | location: 7800 block of Richmond Highway, Hybla Valley, Fairfax County, VA | scene type: bakery
+Evidence (forced_entry): Complainant reported the suspect broke in using a rock [source: Fairfax County Police release 2025-05-05; https://fcpdnews.org/2025/05/05/detectives-seek-suspect-responsible-for-burglaries-in-hybla-valley/]
+Evidence (theft): Money stolen before the suspect fled [source: Fairfax County Police release 2025-05-05; https://fcpdnews.org/2025/05/05/detectives-seek-suspect-responsible-for-burglaries-in-hybla-valley/]
+Evidence (footage): Detectives obtained security footage that police say shows the suspect involved in the burglaries; two stills published [source: Fairfax County Police release 2025-05-05; https://fcpdnews.org/2025/05/05/detectives-seek-suspect-responsible-for-burglaries-in-hybla-valley/]
+Items taken: money
+Unknowns: amount taken; what the published stills show for this incident versus the others
+Source URLs:
+  https://fcpdnews.org/2025/05/05/detectives-seek-suspect-responsible-for-burglaries-in-hybla-valley/
+  https://fcpdnews.org/wp-content/uploads/2025/05/screenshot-2025-05-05-091934.jpg
+  https://fcpdnews.org/wp-content/uploads/2025/05/screenshot-2025-05-05-091840-1.jpg
+  https://fcpdnews.org/wp-content/uploads/2025/05/screenshot-2025-05-05-140852.jpg
+Media: surveillance_still photos/still-01.jpg; surveillance_still photos/still-02.jpg; incident_table_image documents/incident-table.jpg
+Notes: Scene type is taken from the business name's descriptor in the release. The two stills and the table image are series-level images from the release and it does not say which incident the stills come from. One panel of still-01 has a camera timestamp overlay reading 2025-04-23 21:06:21, the date of fhv-02 and fhv-03; camera clocks may be off. The table image is saved under documents because it is a table, not a scene photo.

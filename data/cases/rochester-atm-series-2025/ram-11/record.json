@@ -1,0 +1,30 @@
+{
+  "id": "ram-11",
+  "series_id": "rochester-atm-series-2025",
+  "date": "2025-05-26",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Wanamingo, MN",
+  "location_precision": "city",
+  "scene_type": "bank",
+  "evidence": [
+    {
+      "type": "forced_entry",
+      "description": "Attempted to saw into the ATM; no cash removed",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    },
+    {
+      "type": "footage",
+      "description": "Police reportedly reviewed footage showing a person leaving a home, parking about three blocks from the bank and leaving town shortly after the attempt",
+      "provenance": "KAAL, court documents",
+      "source_url": "https://www.kaaltv.com/?p=883642"
+    }
+  ],
+  "items_taken": [],
+  "unknowns": [
+    "time of day"
+  ],
+  "media": [],
+  "notes": "Described in the criminal complaint but not on the police arrest list."
+}

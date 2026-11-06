@@ -1,0 +1,34 @@
+{
+  "id": "esg-01",
+  "series_id": "eastside-smash-grab-2018",
+  "date": "2018-06-01",
+  "time": null,
+  "time_precision": "window",
+  "location": "Kirkland, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "entry_damage",
+      "description": "Glass smashed at the storefronts",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    },
+    {
+      "type": "fingerprint",
+      "description": "A fingerprint on an office drawer came back as an apparent match to the Seattle man",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "day",
+    "exact time",
+    "items taken",
+    "block"
+  ],
+  "media": [],
+  "notes": "Only the month is given, as early June, and the time is described as night. Three businesses on one row of storefronts were struck: an insurance agent, an Indian restaurant and a cafe. The fingerprint match is to a Seattle man, and police in King County knew his name as early as 6 Jul. The Herald article does not say which of the two defendants committed each incident.",
+  "date_precision": "month"
+}

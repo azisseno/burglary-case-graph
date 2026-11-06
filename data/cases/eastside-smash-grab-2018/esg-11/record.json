@@ -1,0 +1,34 @@
+{
+  "id": "esg-11",
+  "series_id": "eastside-smash-grab-2018",
+  "date": "2018-10-05",
+  "time": null,
+  "time_precision": "approximate",
+  "location": "Sammamish and Redmond, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "footage",
+      "description": "The same car appeared on security footage at the Sammamish burglary and, less than an hour later, at the Redmond break-in",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    },
+    {
+      "type": "phone_location",
+      "description": "Cell tower records allegedly placed the car owner's phone moving from one crime scene to the other",
+      "provenance": "Herald report of 13 Oct 2018",
+      "source_url": "https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "time",
+    "entry method",
+    "items taken",
+    "blocks"
+  ],
+  "media": [],
+  "notes": "Early morning. A Thai restaurant in Sammamish and, less than an hour later, an Indian restaurant in Redmond, kept together as one record. The car belongs to a person who was arrested with the Seattle man that day. Phone location records are described as allegations in charging papers. The Herald article does not say which of the two defendants committed each incident.",
+  "date_precision": "day"
+}

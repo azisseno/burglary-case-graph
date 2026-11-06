@@ -1,0 +1,13 @@
+ram-01 | series: rochester-atm-series-2025 | date: 2025-03-05 | time: 02:00 (approximate) | location: Southeast Rochester, MN | scene type: restaurant
+Evidence (forced_entry): Front window broken and the ATM in the entryway pried at [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (entry_damage): About $1,500 in damage to the ATM [source: KROC, criminal complaint; https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/]
+Evidence (footage): Surveillance video shows a person in a face mask and gloves getting out of a vehicle and entering the building [source: KROC, criminal complaint; https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/]
+Evidence (vehicle): Silver or tan Toyota Tundra pickup with no front plate, a dimmer passenger-side headlight and a rolled-up bed cover, arriving just before 2 a.m. [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (other): Tire track left at the scene [source: KROC, criminal complaint; https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/]
+Evidence (other): Before the break-in, a person resembling the later suspect drove a similar vehicle to the restaurant and photographed the pull-tab machines [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Items taken: not reported
+Unknowns: items taken; exact time of entry; result of comparing a photo of the pickup's tire tread to the scene track
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+  https://krocnews.com/rochester-atm-burglary-suspect-idd-as-suspect-after-first-crime/
+Notes: Time is when the pickup is seen arriving on video, reported as just before 2 a.m. Police list and court documents agree on the date. The restaurant owner posted a photo of the pickup the next day and a member of the public named its owner; court documents do not show police acting on that until the June 2025 arrest. On the police arrest list.

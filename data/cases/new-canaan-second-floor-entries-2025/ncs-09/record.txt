@@ -1,0 +1,10 @@
+ncs-09 | new-canaan-second-floor-entries-2025 | 2026-01-23 | about 22:42 (alarm call) | Oenoke Ridge, New Canaan, CT | residence
+Evidence 1 [forced_entry]: Rear glass door shattered. Provenance: NewCanaanite summary of arrest warrant affidavit.
+Evidence 2 [entry_damage]: Ladder at a broken second-floor window. Provenance: NewCanaanite summary of arrest warrant affidavit.
+Evidence 3 [alarm]: Alarm call at about 22:42; the alarm scared the intruders off. Provenance: NewCanaanite summary of arrest warrant affidavit.
+Evidence 4 [other]: A police dog tracked footprints to fresh tire marks. Provenance: NewCanaanite summary of arrest warrant affidavit.
+Evidence 5 [plate_reader]: Plate reader search narrowed to New York and New Jersey plates on high-end vehicles. Provenance: NewCanaanite summary of arrest warrant affidavit.
+Items taken: none (attempt only)
+Unknowns: loss value; vehicle identity at this scene
+Sources: https://newcanaanite.com/warrant-man-49-charged-in-connection-with-more-than-one-dozen-residential-burglaries-in-new-canaan-15565992
+Notes: Attempt only; nothing was taken. The time is the time of the alarm call. Only the street name is given. The source does not say in so many words which charges, if any, cover this attempt.

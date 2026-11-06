@@ -1,0 +1,42 @@
+{
+  "id": "sah-06",
+  "series_id": "seattle-athlete-homes-2025",
+  "date": "2025-03-30",
+  "time": null,
+  "time_precision": "approximate",
+  "location": "Maple Valley, WA",
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [
+    {
+      "type": "footage",
+      "description": "Surveillance video still of one of the armed home invaders, published with a KOMO photo caption",
+      "provenance": "KOMO photo caption",
+      "source_url": "https://komonews.com/news/local/21-year-old-earl-riley-iv-targeted-robberies-residential-burglary-julio-rodriguez-pitcher-luis-castillo-richard-sherman-cy-young-blake-snelle-prosecutors-kcpao-warrants"
+    },
+    {
+      "type": "theft",
+      "description": "Watches valued at more than 100,000 dollars reported taken",
+      "provenance": "CBS News report of court documents",
+      "source_url": "https://www.cbsnews.com/news/seattle-man-earl-enderson-riley-iv-burglaries-pro-athletes-mariners/"
+    },
+    {
+      "type": "witness",
+      "description": "Home was occupied during the robbery; authorities confirmed armed men robbed the home",
+      "provenance": "FOX 13",
+      "source_url": "https://www.fox13seattle.com/news/seattle-man-charged-burglaries-nfl-mlb-stars"
+    }
+  ],
+  "items_taken": [
+    "watches valued at more than 100,000 dollars"
+  ],
+  "unknowns": [
+    "exact time",
+    "entry method",
+    "number of invaders",
+    "street or block"
+  ],
+  "media": [],
+  "notes": "Home of a professional athlete, called pro athlete C in the research file. Charged as robbery and burglary. The outlets differ on timing: KOMO says early Sunday morning and FOX 13 says late Saturday night. Both fall around 29 to 30 Mar, and the charging documents list 30 Mar, which is used here. Maple Valley comes from FOX 13. The surveillance still is described in a KOMO caption and was not downloaded because it is a news image. Labels such as pro athlete A are internal to the research file, not the sources.",
+  "date_precision": "day"
+}

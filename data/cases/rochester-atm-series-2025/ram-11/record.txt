@@ -1,0 +1,8 @@
+ram-11 | series: rochester-atm-series-2025 | date: 2025-05-26 | time: not reported (unknown) | location: Wanamingo, MN | scene type: bank
+Evidence (forced_entry): Attempted to saw into the ATM; no cash removed [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Evidence (footage): Police reportedly reviewed footage showing a person leaving a home, parking about three blocks from the bank and leaving town shortly after the attempt [source: KAAL, court documents; https://www.kaaltv.com/?p=883642]
+Items taken: none
+Unknowns: time of day
+Source URLs:
+  https://www.kaaltv.com/?p=883642
+Notes: Described in the criminal complaint but not on the police arrest list.

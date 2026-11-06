@@ -1,0 +1,16 @@
+{
+  "id": "ldj-02",
+  "series_id": "la-downey-jammer-crew-2026",
+  "date": null,
+  "date_precision": "unknown",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Downey, CA",
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [],
+  "items_taken": null,
+  "unknowns": ["date", "time of day", "block", "entry method", "items taken", "loss value", "number of residences"],
+  "media": [],
+  "notes": "One record stands for the Downey burglaries, whose count and dates are not reported. LAPD says the investigation linked four of the five arrested suspects to them and does not explain the first link. Police believe there are additional unreported burglaries."
+}

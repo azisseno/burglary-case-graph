@@ -1,0 +1,7 @@
+esg-09 | eastside-smash-grab-2018 | 2018-08-29 | time not reported | South Everett and Mill Creek, WA (city) | business
+Evidence: entry_damage - Glass broken at the salons; the glass cost 800 dollars (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Evidence: theft - The thief escaped with 3 dollars in change (Herald report of 13 Oct 2018) https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Items taken: 3 dollars in change
+Unknowns: time, blocks, whether one or both salons lost cash
+Sources: https://www.heraldnet.com/2018/10/13/pair-accused-of-50-burglaries-in-king-snohomish-counties/
+Notes: A nail salon in south Everett and a nail salon in Mill Creek, kept together as one record. The article says the thief escaped with 3 dollars in change and that the broken glass cost 800 dollars; the glass cost is damage, not an item taken. The Herald article does not say which of the two defendants committed each incident.

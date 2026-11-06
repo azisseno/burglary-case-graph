@@ -1,0 +1,8 @@
+nos-06 | series: new-orleans-suv-series-2023 | date: 2023-07-27 | time: not reported (unknown) | location: 3600 block of Prytania Street, New Orleans, LA | scene type: business
+Evidence (forced_entry): Perpetrators forced entry; NOPD classes it as an burglary [source: NOPD news post 2023-08-01; https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/]
+Evidence (vehicle): White Nissan Xterra SUV, which NOPD says connects this incident to the others [source: NOPD news post 2023-08-01; https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/]
+Items taken: not reported
+Unknowns: time of day; forced-entry tool; items taken
+Source URLs:
+  https://nopdnews.com/post/august-2023/nopd-arrests-suspect-in-multiple-second-district-b/
+Notes: Simple burglary of a business per NOPD. Items taken are not reported.

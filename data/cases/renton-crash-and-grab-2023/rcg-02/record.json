@@ -1,0 +1,29 @@
+{
+  "id": "rcg-02",
+  "series_id": "renton-crash-and-grab-2023",
+  "date": null,
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Renton, WA",
+  "location_precision": "city",
+  "scene_type": "business",
+  "evidence": [
+    {
+      "type": "document_found",
+      "description": "Stacks of paperwork from this business found in a stolen U-Haul when Kent police were dispatched on 31 Mar 2023 to a report of a stolen parked U-Haul",
+      "provenance": "Renton Reporter, 10 Oct 2023",
+      "source_url": "https://www.rentonreporter.com/news/serial-burglary-suspect-faces-multiple-charges/"
+    }
+  ],
+  "items_taken": null,
+  "unknowns": [
+    "burglary date",
+    "time",
+    "entry method",
+    "items taken",
+    "how the U-Haul relates to the Jeep used in the August and September incidents"
+  ],
+  "media": [],
+  "notes": "Cafe in Renton. The burglary date is not reported; the paperwork was found before 31 Mar 2023, so the burglary came earlier. The article calls this business a burglary victim. Renton detectives cite burglary cases since Oct 2022 across the wider series. Numbered first because the burglary predates the August incidents.",
+  "date_precision": "unknown"
+}

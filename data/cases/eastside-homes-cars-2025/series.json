@@ -1,0 +1,27 @@
+{
+  "series_id": "eastside-homes-cars-2025",
+  "label": "Homes, restaurants and stolen cars across the Eastside and Seattle, 2024 to 2025",
+  "area": "Medina, Sammamish, Fremont and other Seattle neighborhoods, Everett, WA",
+  "period": {"start": "2024-11", "end": "2025-02"},
+  "scene_types": ["residence", "business", "vehicle"],
+  "sources": [
+    {"url": "https://www.kiro7.com/news/local/seattle-man-faces-35-felony-charges-stealing-11-firearms-5-cars-months-long-crime-spree/PNW3LMPMSRH6VNSFOLR4QL6CRA/", "publisher": "KIRO 7", "date": "2025-03-07", "kind": "news_article"},
+    {"url": "https://mynorthwest.com/?p=4059160", "publisher": "MyNorthwest", "date": "2025-03-07", "kind": "news_article"},
+    {"url": "https://shorelineareanews.com/2025/03/35-felony-charges-including-numerous.html", "publisher": "Shoreline Area News", "date": "2025-03-07", "kind": "news_article"},
+    {"url": "https://heraldnet.com/news/police-link-lake-stevens-man-to-burglaries-in-king-county", "publisher": "Herald", "date": "2025-03", "kind": "news_article"}
+  ],
+  "ground_truth": {
+    "status": "linked_by_police",
+    "linked_incidents": ["ehc-01", "ehc-02", "ehc-03", "ehc-04", "ehc-05"],
+    "unlinked_incidents": [],
+    "linking_evidence": [
+      "surveillance footage, witness statements and forensic evidence, including fingerprints on a recovered stolen vehicle, linked one defendant to the crimes according to investigators",
+      "the defendant often returned to crime scenes in stolen cars and swapped stolen license plates",
+      "a stolen Lexus was found outside an Everett storage facility where the defendant allegedly rented two units",
+      "a stolen BMW was found at a Seattle motel where the defendant reportedly stayed"
+    ],
+    "notes": "ehc-06 is not in either list because its locations come from an unconfirmed machine summary. The Herald page was not read and only a search excerpt was seen; that excerpt says the defendant was arrested 27 Feb 2025 after a storage unit search and that arraignment was 17 Mar 2025, both unconfirmed. Shoreline Area News bail and evidence statements conflict with KIRO 7. A phone record link appeared in one search summary but in no page read, so it is not included. Plate reader and DNA evidence are not mentioned. Dates for ehc-01 to ehc-03 are months only."
+  },
+  "outcome": {"summary": "Charged with 35 felonies in early March 2025, including 11 counts of firearm theft. Prosecutors asked for 250,000 dollars bail. Plea and sentence not found.", "date": "2025-03-07"},
+  "data_policy": "Public sources only. No suspect or victim names, ages, or exact addresses."
+}

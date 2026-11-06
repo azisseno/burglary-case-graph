@@ -1,0 +1,22 @@
+{
+  "id": "sah-08",
+  "series_id": "seattle-athlete-homes-2025",
+  "date": null,
+  "time": null,
+  "time_precision": "unknown",
+  "location": null,
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [],
+  "items_taken": [],
+  "unknowns": [
+    "date",
+    "time",
+    "location",
+    "entry method",
+    "physical or digital evidence"
+  ],
+  "media": [],
+  "notes": "Attempted burglary at the home of a professional athlete, called pro athlete F in the research file. Nothing was taken. The sources give no date, so the incident is placed before sah-09 following the order of the research table. Labels such as pro athlete A are internal to the research file, not the sources.",
+  "date_precision": "unknown"
+}

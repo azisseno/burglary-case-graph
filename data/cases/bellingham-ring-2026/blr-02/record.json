@@ -1,0 +1,42 @@
+{
+  "id": "blr-02",
+  "series_id": "bellingham-ring-2026",
+  "date": "2026-02-19",
+  "time": null,
+  "time_precision": "unknown",
+  "location": "Anacortes, WA",
+  "location_precision": "city",
+  "scene_type": "residence",
+  "evidence": [
+    {
+      "type": "vehicle",
+      "description": "Surveillance showed a black Dodge Durango and a Hyundai Elantra, both with Texas registrations, were present during the burglary",
+      "provenance": "Whatcom News citing the probable cause affidavit",
+      "source_url": "https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/"
+    },
+    {
+      "type": "other",
+      "description": "GPS trackers placed on the cars under a warrant showed them traveling to Anacortes at the same time the home was burglarized",
+      "provenance": "My Bellingham Now citing court documents",
+      "source_url": "https://mybellinghamnow.com/news/297792-bellingham-police-arrest-four-suspects-in-connection-to-regional-burglary-ring-targeting-asian-families/"
+    },
+    {
+      "type": "theft",
+      "description": "Luxury watches and jewelry worth more than 4,000 dollars were stolen",
+      "provenance": "Whatcom News citing the probable cause affidavit",
+      "source_url": "https://whatcom-news.com/bellingham-police-bust-burglary-ring-targeting-asian-families_234610/"
+    }
+  ],
+  "items_taken": [
+    "luxury watches",
+    "jewelry worth more than 4,000 dollars together with the watches"
+  ],
+  "unknowns": [
+    "time",
+    "entry method",
+    "block"
+  ],
+  "media": [],
+  "notes": "The two vehicles were tracked to an apartment complex in Bellingham, where a search recovered bags with jewelry, designer handbags and cash. Both outlets cite a probable cause affidavit filed in Whatcom County Superior Court on 23 Feb 2026; neither links a police release.",
+  "date_precision": "day"
+}
