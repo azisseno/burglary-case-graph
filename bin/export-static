@@ -4,6 +4,7 @@ import json
 import re
 import shutil
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -70,6 +71,19 @@ def download_media(base_url, urls):
     return missing
 
 
+def export_leads(base_url, graph):
+    for node in graph["nodes"]:
+        if node["type"] != "series":
+            continue
+        try:
+            sheet = fetch_json(base_url, f"/api/series/{urllib.parse.quote(node['id'], safe='')}/leads")
+        except urllib.error.HTTPError as error:
+            if error.code == 404:
+                continue
+            raise
+        write_json(OUT_DIR / "data" / "series" / case_file_name(node["id"]), sheet)
+
+
 def export(base_url):
     if OUT_DIR.exists():
         shutil.rmtree(OUT_DIR)
@@ -88,6 +102,8 @@ def export(base_url):
     for case_id in case_ids:
         details[case_id] = fetch_json(base_url, f"/api/cases/{urllib.parse.quote(case_id, safe='')}")
         write_json(OUT_DIR / "data" / "cases" / case_file_name(case_id), details[case_id])
+
+    export_leads(base_url, graph)
 
     urls = collect_media_urls(graph, details)
     missing = download_media(base_url, urls)

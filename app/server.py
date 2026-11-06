@@ -17,7 +17,7 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 
-from . import agents, extract, finder, scoring, scrub, seed, tools
+from . import agents, extract, finder, leads, scoring, scrub, seed, tools
 from .cli import CliError
 from .store import Graph
 
@@ -514,6 +514,7 @@ class Pipeline:
         self.emit_score(run_id)
         if decision == "accept":
             self.spawn(self.find_gaps, hyp_id)
+            self.spawn(self.publish_leads, run_id, delta["series"]["id"])
         return {"nodes": nodes, "edges": delta["edges"]}
 
     def find_gaps(self, hyp_id):
@@ -527,6 +528,10 @@ class Pipeline:
             return
         self.event("gap.next_steps", run_id, "gap_finder", f"{len(result['next_steps'])} next steps for {hypothesis['label']}",
                    {"hypothesis_id": hyp_id, **result})
+
+    def publish_leads(self, run_id, series_id):
+        sheet = leads.phrase_leads(leads.build_leads(self.graph, series_id), self.runs_dir / run_id)
+        self.event("leads.ready", run_id, "leads", f"Lead sheet ready for {sheet['label']} ({len(sheet['leads'])} leads)", sheet)
 
     def call_tool(self, name, body):
         graph = self.graph
@@ -642,6 +647,14 @@ def create_app(root=ROOT, graph=None, api_base=None, runs_dir=None):
     def inside(base, candidate):
         resolved = candidate.resolve()
         return resolved.is_file() and resolved.is_relative_to(base.resolve())
+
+    @app.get("/api/series/{series_id}/leads")
+    def series_leads(series_id: str):
+        node_id = series_id if series_id in pipeline.graph.nodes else f"series:{series_id}"
+        sheet = leads.build_leads(pipeline.graph, node_id)
+        if sheet is None:
+            raise HTTPException(404, f"unknown series {series_id}")
+        return sheet
 
     @app.get("/api/media/{series}/_series/{file}")
     def get_series_media(series: str, file: str):

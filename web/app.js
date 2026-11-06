@@ -26,6 +26,7 @@ const AGENTS = {
   linker: { short: "linker", color: "var(--agent-linker)" },
   critic: { short: "critic", color: "var(--agent-critic)" },
   gap_finder: { short: "gaps", color: "var(--agent-gaps)" },
+  leads: { short: "leads", color: "var(--agent-leads)" },
   detective: { short: "you", color: "var(--agent-detective)" },
 };
 
@@ -136,6 +137,7 @@ const state = {
   focusToken: 0,
   zoomFrame: null,
   pendingEdges: null,
+  leads: new Map(),
   focusTimer: null,
   fastChordAt: 0,
 };
@@ -1225,6 +1227,7 @@ function hypothesisCard(h) {
   more.className = "hyp-more";
   more.append(hypothesisEvidenceList(h));
   if (h.gaps) more.append(gapsBlock(h.gaps));
+  if (h.decision === "accept") more.append(leadSheetLink(h));
   card.append(more);
   return card;
 }
@@ -1392,6 +1395,147 @@ function gapsBlock(gaps) {
   return box;
 }
 
+const LEAD_KINDS = ["vehicle", "video", "geography", "timing", "property", "agencies"];
+const COPIED_MS = 2000;
+
+function seriesIdForHypothesis(h) {
+  if (!state.cy) return null;
+  const node = state.cy.getElementById(h.id);
+  if (node.empty()) return null;
+  const cases = node.connectedEdges('[rel = "PROPOSES_LINK"]').connectedNodes('[type = "case"]');
+  const series = cases.connectedEdges('[rel = "PART_OF_SERIES"]').connectedNodes('[type = "series"]');
+  return series.nonempty() ? series[0].id() : null;
+}
+
+function leadSheetLink(h) {
+  const wrap = document.createElement("div");
+  wrap.className = "lead-link";
+  const seriesId = seriesIdForHypothesis(h);
+  if (!seriesId) return wrap;
+  const link = document.createElement("button");
+  link.type = "button";
+  link.className = "btn-plain";
+  link.textContent = "Lead sheet";
+  link.addEventListener("click", () => showNode(seriesId));
+  wrap.append(link);
+  return wrap;
+}
+
+async function loadLeads(seriesId) {
+  try {
+    state.leads.set(seriesId, await api(`/api/series/${encodeURIComponent(seriesId)}/leads`));
+  } catch (err) {
+    return;
+  }
+  rerenderIfOpen(seriesId);
+}
+
+function rerenderIfOpen(seriesId) {
+  if (state.selectedNodeId !== seriesId || !state.cy) return;
+  const node = state.cy.getElementById(seriesId);
+  if (node.nonempty()) renderDrawer(node);
+}
+
+function onLeadsReady(evt) {
+  const sheet = evt.data || {};
+  if (sheet.series_id) {
+    state.leads.set(sheet.series_id, sheet);
+    rerenderIfOpen(sheet.series_id);
+  }
+  logEvent(evt);
+}
+
+function leadSheetText(sheet) {
+  const lines = [`Lead sheet: ${sheet.label}`, sheet.pattern, ""];
+  sheet.leads.forEach((lead, i) => {
+    lines.push(`${i + 1}. ${lead.action}`, `   Cases: ${lead.case_ids.map(chipLabel).join(", ")}`);
+  });
+  if (sheet.missing.length) lines.push("", ...sheet.missing.map((m) => `Missing: ${m}`));
+  return lines.join("\n");
+}
+
+function chipLabel(caseId) {
+  return caseId.replace(/^case:/, "").toUpperCase();
+}
+
+function caseChips(caseIds) {
+  const wrap = document.createElement("div");
+  wrap.className = "hyp-cases";
+  caseIds.forEach((caseId) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
+    chip.textContent = chipLabel(caseId);
+    chip.addEventListener("click", () => showNode(caseId));
+    wrap.append(chip);
+  });
+  return wrap;
+}
+
+function leadRow(lead) {
+  const row = document.createElement("li");
+  row.className = "lead-row";
+  const kind = document.createElement("span");
+  kind.className = "lead-kind";
+  kind.textContent = LEAD_KINDS.includes(lead.kind) ? lead.kind : "other";
+  const fact = document.createElement("div");
+  fact.className = "lead-fact";
+  fact.textContent = lead.fact;
+  const action = document.createElement("div");
+  action.className = "lead-action";
+  action.textContent = lead.action;
+  row.append(kind, fact, action, caseChips(lead.case_ids));
+  return row;
+}
+
+function copyLeadSheetButton(sheet) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "btn-plain";
+  btn.textContent = "Copy lead sheet";
+  btn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(leadSheetText(sheet));
+    } catch (err) {
+      return;
+    }
+    btn.textContent = "Copied";
+    setTimeout(() => {
+      btn.textContent = "Copy lead sheet";
+    }, COPIED_MS);
+  });
+  return btn;
+}
+
+function leadSheetBlock(node) {
+  const sheet = state.leads.get(node.id());
+  const box = document.createElement("div");
+  box.className = "lead-sheet";
+  if (!sheet) return STATIC || MOCK ? box : labelled("Lead sheet", leadSheetPending());
+  const pattern = document.createElement("p");
+  pattern.className = "lead-pattern";
+  pattern.textContent = sheet.pattern;
+  const list = document.createElement("ol");
+  list.className = "lead-list";
+  sheet.leads.forEach((lead) => list.append(leadRow(lead)));
+  box.append(pattern, list);
+  sheet.missing.forEach((item) => {
+    const line = document.createElement("div");
+    line.className = "gap-missing";
+    line.textContent = `Missing: ${item}`;
+    box.append(line);
+  });
+  box.append(copyLeadSheetButton(sheet));
+  return labelled("Lead sheet", box);
+}
+
+function leadSheetPending() {
+  const note = document.createElement("div");
+  note.className = "gap-missing";
+  note.textContent = "No lead sheet yet";
+  return note;
+}
+
 function asList(value) {
   if (Array.isArray(value)) return value;
   if (typeof value === "string" && value) return [value];
@@ -1489,6 +1633,7 @@ function showNode(id) {
   node.select();
   renderDrawer(node);
   if (!MOCK && node.data("type") === "case") enrichCase(node);
+  if (!MOCK && node.data("type") === "series") loadLeads(id);
 }
 
 async function enrichCase(node) {
@@ -1513,6 +1658,7 @@ function renderDrawer(node) {
   if (media.length) body.append(labelled("Media", thumbnails(node, media)));
   body.append(propsList(props));
   if (Array.isArray(props.evidence) && props.evidence.length) body.append(labelled("Evidence", evidenceList(props.evidence)));
+  if (node.data("type") === "series") body.append(leadSheetBlock(node));
   body.append(labelled("Edges", edgeList(node)), labelled("Sources", sourceList(node.data("sources") || [])));
 }
 
@@ -1753,6 +1899,9 @@ function handleEvent(evt) {
       break;
     case "gap.next_steps":
       onGaps(evt);
+      break;
+    case "leads.ready":
+      onLeadsReady(evt);
       break;
     case "run.case_started":
       onCaseStarted(evt);
@@ -2491,6 +2640,8 @@ function assetUrl(url) {
 }
 
 function staticDataUrl(path) {
+  const leadsMatch = path.match(/^\/api\/series\/(.+)\/leads$/);
+  if (leadsMatch) return `${STATIC_DATA_DIR}/series/${decodeURIComponent(leadsMatch[1]).replace(/:/g, "_")}.json`;
   const caseMatch = path.match(/^\/api\/cases\/(.+)$/);
   if (caseMatch) return `${STATIC_DATA_DIR}/cases/${decodeURIComponent(caseMatch[1]).replace(/:/g, "_")}.json`;
   return `${STATIC_DATA_DIR}/${path.replace(/^\/api\//, "")}.json`;

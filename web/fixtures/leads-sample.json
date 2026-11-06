@@ -1,0 +1,16 @@
+{
+  "series_id": "series:S-002",
+  "label": "New Orleans residential",
+  "case_ids": ["case:NOLA-101", "case:NOLA-104", "case:NOLA-109", "case:NOLA-113", "case:NOLA-118", "case:NOLA-122"],
+  "window": {"from": "2023-03-04", "to": "2023-03-12"},
+  "pattern": "Rear-door pry entry at single-family homes in Mid-City and Gentilly, 1 to 4 am, white Nissan Xterra seen leaving.",
+  "leads": [
+    {"kind": "vehicle", "fact": "White Nissan Xterra SUV in five of six reports", "action": "Plate-reader query for white Xterra near the six addresses, 4 to 12 Mar, 1 to 4 am; pull stolen-vehicle reports for white Xterras that week", "case_ids": ["case:NOLA-101", "case:NOLA-104", "case:NOLA-109", "case:NOLA-118", "case:NOLA-122"]},
+    {"kind": "video", "fact": "Doorbell camera at NOLA-109 caught a roof rack and a rear dent on the vehicle", "action": "Canvass doorbell and business cameras on the approach streets for the same roof rack and dent", "case_ids": ["case:NOLA-109", "case:NOLA-113"]},
+    {"kind": "geography", "fact": "All six homes are within 1.8 miles of the Broad Street and Orleans Avenue corridor", "action": "Focus patrol and a bait-property watch on the corridor between 1 and 4 am", "case_ids": ["case:NOLA-101", "case:NOLA-104", "case:NOLA-109", "case:NOLA-113", "case:NOLA-118", "case:NOLA-122"]},
+    {"kind": "property", "fact": "Jewelry, handguns and a laptop taken in four reports", "action": "Alert pawn shops and the secondary-metals database for jewelry and serial-numbered laptops", "case_ids": ["case:NOLA-101", "case:NOLA-104", "case:NOLA-118", "case:NOLA-122"]},
+    {"kind": "agencies", "fact": "Jefferson Parish reported two matching rear-door pry entries the same week", "action": "Call Jefferson Parish burglary unit to compare vehicle and tool-mark details", "case_ids": ["case:NOLA-113"]}
+  ],
+  "missing": ["No plate recorded in any report", "Tool-mark photos exist for only two of six scenes"],
+  "phrased_by": "code"
+}
