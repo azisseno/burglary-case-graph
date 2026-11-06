@@ -24,6 +24,7 @@
   --agent-linker: #ffb224;
   --agent-critic: #ff7b5c;
   --agent-gaps: #b48bff;
+  --agent-leads: #5ce0e6;
   --agent-detective: #3ddc84;
   --display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --body: "IBM Plex Sans", system-ui, sans-serif;
@@ -464,3 +465,13 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
 
 .static-note { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
 .console li.console-empty { display: block; padding: 8px 14px; font-family: var(--mono); font-size: 11px; color: var(--muted); list-style: none; }
+
+.lead-pattern { font-size: 12px; line-height: 1.35; color: var(--text); margin: 0 0 6px; }
+.lead-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.lead-row { display: flex; flex-direction: column; gap: 2px; padding: 5px 8px; border-radius: 4px; background: var(--ink); }
+.lead-kind { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); }
+.lead-fact { font-size: 12px; color: var(--muted); }
+.lead-action { font-size: 12px; font-weight: 600; color: var(--text); }
+.lead-sheet .gap-missing { margin-top: 4px; }
+.lead-sheet > .btn-plain { margin-top: 6px; padding-left: 0; }
+.lead-link .btn-plain { padding-left: 0; }
