@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running cost and sensitivity</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #f7f8fb; --surface: #ffffff; --fg: #16213a; --muted: #5b6478; --line: #d9deea;
+    --accent: #1e40af; --accent-soft: #e3e9fb; --good: #047857; --good-soft: #d9f3e8; --warn: #b45309; --warn-soft: #fdf0d8;
+    --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; --font-mono: "IBM Plex Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #0f1420; --surface: #171d2c; --fg: #e6eaf3; --muted: #9aa5bd; --line: #2a3347; --accent: #8fb0ff; --accent-soft: #1d2a4d; --good: #4ade80; --good-soft: #10301f; --warn: #fbbf24; --warn-soft: #3a2a0a; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #0f1420; --surface: #171d2c; --fg: #e6eaf3; --muted: #9aa5bd; --line: #2a3347; --accent: #8fb0ff; --accent-soft: #1d2a4d; --good: #4ade80; --good-soft: #10301f; --warn: #fbbf24; --warn-soft: #3a2a0a; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 var(--font-body); padding: 32px max(16px, 4vw) 64px; }
+  .wrap { max-width: 920px; margin: 0 auto; }
+  h1 { font-size: 26px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 24px; max-width: 70ch; }
+  .headline { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px; }
+  .tile .n { font: 500 28px/1.1 var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .tile .l { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  .tile.good .n { color: var(--good); }
+  .tile.warn .n { color: var(--warn); }
+  section { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; margin-bottom: 18px; }
+  h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0 0 6px; }
+  p.lead { margin: 0 0 12px; color: var(--muted); font-size: 14px; max-width: 75ch; }
+  .tablewrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 500; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+  td.num, th.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.total td { font-weight: 600; border-top: 2px solid var(--fg); border-bottom: none; }
+  tr.hit td { background: var(--good-soft); }
+  tr.base td { background: var(--accent-soft); }
+  .pill { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 3px; font-weight: 600; letter-spacing: 0.03em; }
+  .pill.ok { background: var(--good-soft); color: var(--good); }
+  .pill.short { background: var(--warn-soft); color: var(--warn); }
+  .pill.verify { background: var(--warn-soft); color: var(--warn); }
+  .finding { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; margin: 0 0 18px; max-width: 80ch; }
+  ul.notes { font-size: 13.5px; color: var(--muted); padding-left: 18px; margin: 0; }
+  ul.notes li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Running cost and sensitivity</h1>
+  <p class="sub">Cascade City case linking system, stage 6. Fixed figures at 10,000 cases a year, with the ranges that matter. Baseline investigative labor is $3.05M a year; the Chief's ask is 15% net, about $457,500.</p>
+
+  <div class="headline">
+    <div class="tile"><div class="n">$7,800</div><div class="l">running cost per year, base case</div></div>
+    <div class="tile"><div class="n">$0.78</div><div class="l">running cost per case, against $305 of labor</div></div>
+    <div class="tile"><div class="n">$67,800</div><div class="l">all in per year, with $60,000 support and maintenance</div></div>
+    <div class="tile warn"><div class="n">45 min</div><div class="l">detective time saved per case needed to reach the 15% net target</div></div>
+  </div>
+
+  <div class="finding">The running cost cannot break the business case. Even the worst case below is 2.5% of baseline. What decides the 15% target is whether detectives save about 45 minutes per case, half of the 90 minutes they spend today. That is the number to defend in the pitch and to measure in the pilot.</div>
+
+  <section>
+    <h2>Base case breakdown</h2>
+    <p class="lead">Haiku sweeps every file, Sonnet reasons over the clusters the code finder flags, and Opus is the upper bound. Sonnet has 60% of agent input served from cache. Neptune Serverless at 2 NCU average. GovCloud and CJIS overhead at 20% on the AWS bill.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Line</th><th>What drives it</th><th class="num">Per case</th><th class="num">Per year</th></tr></thead>
+      <tbody>
+        <tr><td>Sweep on Haiku: photo observer and record extractor</td><td>3 photos at 1,500 input and 300 output tokens each, 1 record at 3,000 input and 700 output, every file swept once</td><td class="num">$0.002</td><td class="num">$16</td></tr>
+        <tr><td>Series finder</td><td>Code, no model spend</td><td class="num">$0</td><td class="num">$0</td></tr>
+        <tr><td>Linker agent</td><td>40,000 input and 3,000 output tokens per case, on Sonnet</td><td class="num">$0.067</td><td class="num">$668</td></tr>
+        <tr><td>Critic</td><td>4,000 input and 600 output tokens per case, on Sonnet</td><td class="num">$0.014</td><td class="num">$140</td></tr>
+        <tr><td>Gap finder agent</td><td>15,000 input and 1,500 output, on the 35% of cases with an accepted link, on Sonnet</td><td class="num">$0.010</td><td class="num">$101</td></tr>
+        <tr><td>Neptune graph</td><td>2 NCU, 50 GB, 20M I/O a month, plus 20% overhead</td><td class="num">$0.351</td><td class="num">$3,510</td></tr>
+        <tr><td>Compute, evidence storage, operations</td><td>$150 compute, 500 GB objects, $75 logging a month, plus 20% overhead</td><td class="num">$0.341</td><td class="num">$3,406</td></tr>
+        <tr class="total"><td>Running cost</td><td></td><td class="num">$0.78</td><td class="num">$7,840</td></tr>
+        <tr><td>Support and maintenance</td><td>Part of one engineer, vendor updates, model changes</td><td class="num">$6.00</td><td class="num">$60,000</td></tr>
+        <tr class="total"><td>All in</td><td></td><td class="num">$6.78</td><td class="num">$67,840</td></tr>
+      </tbody>
+    </table></div>
+    <p class="lead" style="margin-top:12px">One-time build for the pilot: $250,000, covering integration with records and evidence systems, the graph schema, the review screen, and detective training.</p>
+  </section>
+
+  <section>
+    <h2>Sensitivity 1: model spend</h2>
+    <p class="lead">Per year. Rows vary the reasoning model and how many tokens each case consumes; columns vary caching. The Haiku sweep stays on Haiku.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Reasoning model</th><th>Tokens per case</th><th class="num">No caching</th><th class="num">60% cached</th></tr></thead>
+      <tbody>
+        <tr><td>Claude Sonnet 5.5</td><td>half the base</td><td class="num">$707</td><td class="num">$462</td></tr>
+        <tr class="base"><td>Claude Sonnet 5.5, base case</td><td>base</td><td class="num">$1,413</td><td class="num">$924</td></tr>
+        <tr><td>Claude Sonnet 5.5</td><td>double</td><td class="num">$2,826</td><td class="num">$1,849</td></tr>
+        <tr><td>Claude Opus 5.5</td><td>half the base</td><td class="num">$1,405</td><td class="num">$889</td></tr>
+        <tr><td>Claude Opus 5.5, upper bound</td><td>base</td><td class="num">$2,811</td><td class="num">$1,779</td></tr>
+        <tr><td>Claude Opus 5.5</td><td>double</td><td class="num">$5,621</td><td class="num">$3,558</td></tr>
+      </tbody>
+    </table></div>
+    <p class="lead" style="margin-top:12px">Range: $462 to $5,621 a year. The Haiku sweep stays constant across rows and is about $16 a year at base tokens. Model choice is not a cost decision at this volume; pick the model that links cases best.</p>
+  </section>
+
+  <section>
+    <h2>Sensitivity 2: AWS spend</h2>
+    <p class="lead">Per year. Rows vary the Neptune capacity, columns vary the GovCloud and CJIS overhead applied to the whole AWS bill.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Neptune capacity</th><th class="num">No overhead</th><th class="num">20% overhead</th><th class="num">40% overhead</th></tr></thead>
+      <tbody>
+        <tr><td>1 NCU</td><td class="num">$4,355</td><td class="num">$5,226</td><td class="num">$6,096</td></tr>
+        <tr class="base"><td>2 NCU</td><td class="num">$5,763</td><td class="num">$6,916</td><td class="num">$8,069</td></tr>
+        <tr><td>4 NCU</td><td class="num">$8,580</td><td class="num">$10,297</td><td class="num">$12,013</td></tr>
+      </tbody>
+    </table></div>
+    <p class="lead" style="margin-top:12px">Range: $4,355 to $12,013 a year. Worst case across both tables, Opus with double tokens and no caching plus 4 NCU at 40% overhead, is about $77,600 all in. The 15% target then needs 46 minutes saved per case instead of 45.</p>
+  </section>
+
+  <section>
+    <h2>Sensitivity 3: detective time saved, the one that matters</h2>
+    <p class="lead">Base all-in cost of $67,840 against detective time at $70 an hour. Detectives spend 90 minutes per case today. Payback is on the $250,000 build.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Minutes saved per case</th><th class="num">Gross savings</th><th class="num">Net savings</th><th class="num">Share of baseline</th><th class="num">Payback</th><th>Against 15%</th></tr></thead>
+      <tbody>
+        <tr><td>15</td><td class="num">$175,000</td><td class="num">$107,160</td><td class="num">3.5%</td><td class="num">28 months</td><td><span class="pill short">short</span></td></tr>
+        <tr><td>30</td><td class="num">$350,000</td><td class="num">$282,160</td><td class="num">9.3%</td><td class="num">11 months</td><td><span class="pill short">short</span></td></tr>
+        <tr class="hit"><td>45</td><td class="num">$525,000</td><td class="num">$457,160</td><td class="num">15.0%</td><td class="num">7 months</td><td><span class="pill ok">meets</span></td></tr>
+        <tr><td>60</td><td class="num">$700,000</td><td class="num">$632,160</td><td class="num">20.7%</td><td class="num">5 months</td><td><span class="pill ok">exceeds</span></td></tr>
+        <tr><td>90</td><td class="num">$1,050,000</td><td class="num">$982,160</td><td class="num">32.2%</td><td class="num">3 months</td><td><span class="pill ok">exceeds</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="lead" style="margin-top:12px">Where 45 minutes comes from: clustering means a detective works one series instead of three or four separate cases. If a four-case cluster takes 150 minutes of analysis instead of 360, that is 52 minutes saved per case. The pilot's audit log measures this directly: detective minutes per case, before and after.</p>
+  </section>
+
+  <section>
+    <h2>Assumptions and sources</h2>
+    <ul class="notes">
+      <li>Volume and labor: 10,000 cases a year, detective at $70 an hour for 90 minutes, officer at $50 an hour for 240 minutes, $305 per case, $3.05M a year. From the Cracking the Burglary Backlog case packet, which states the data is fictional.</li>
+      <li>Claude API list prices, November 2026: Opus 5.5 at $4 input, $20 output, $0.20 cache read per million tokens; Sonnet 5.5 at $2, $10, $0.20; Haiku 5.5 at $0.10, $0.50. Claude on Amazon Bedrock is priced by AWS and will differ in GovCloud.</li>
+      <li>Tokens per case are prototype estimates. The Linker dominates because it reads the graph across several turns. Measure in week one of the pilot and replace.</li>
+      <li>Amazon Neptune: storage at $0.10 per GB-month and I/O at $0.20 per million requests are from the worked example on <a href="https://aws.amazon.com/neptune/pricing/">aws.amazon.com/neptune/pricing</a>. The serverless rate of $0.1608 per NCU-hour is carried as an assumption <span class="pill verify">verify</span> in the AWS pricing calculator before the deck goes out.</li>
+      <li>Compute, object storage at $0.023 per GB-month, and operations are engineering estimates for about 30 cases a day. The GovCloud overhead is a planning allowance, not a published rate.</li>
+      <li>Support and maintenance at $60,000 a year and a $250,000 build are planning figures for a pilot team, stated so judges can challenge them.</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>
