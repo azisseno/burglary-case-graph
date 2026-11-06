@@ -289,7 +289,7 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
 .lg-time { fill: var(--time); }
 .lg-vehicle { fill: var(--vehicle); }
 .lg-item { fill: var(--item); }
-.lg-hypothesis { fill: var(--hypothesis); }
+.lg-hypothesis { fill: var(--hypothesis); stroke: #fff; stroke-width: 1.2; stroke-dasharray: 2 1.5; filter: drop-shadow(0 0 3px var(--hypothesis)); }
 .lg-observed { stroke: var(--line-strong); stroke-width: 2; }
 .lg-hyp-edge { stroke: var(--hypothesis); stroke-width: 2; stroke-dasharray: 4 3; }
 .lg-confirmed { stroke: var(--confirmed); stroke-width: 2.5; }

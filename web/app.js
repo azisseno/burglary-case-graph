@@ -12,7 +12,7 @@ const TYPE_STYLE = {
   time_window: { color: "#c3ccdd", shape: "round-rectangle", width: 50, height: 20 },
   vehicle: { color: "#ff8fcb", shape: "triangle", width: 32, height: 28 },
   item: { color: "#9ca9c2", shape: "ellipse", width: 18, height: 18 },
-  hypothesis: { color: "#ffb224", shape: "octagon", width: 40, height: 40 },
+  hypothesis: { color: "#ffb224", shape: "octagon", width: 56, height: 56 },
 };
 
 const AGENTS = {
@@ -83,11 +83,27 @@ const OTHER_ELASTICITY = 150;
 const BULK_INCREMENTAL_TEMP = 200;
 const RELEASE_VIEW_DELAY_MS = 4000;
 const REJECT_FADE_MS = 1800;
+const HYPOTHESIS_PULSE_MS = 1100;
+const HYPOTHESIS_PULSE_LOW = 0.2;
+const HYPOTHESIS_PULSE_HIGH = 0.5;
+const FOCUS_CASE_RADIUS = 150;
+const FOCUS_ATTRIBUTE_RADIUS = 260;
+const FOCUS_CLEAR_RADIUS = 320;
+const FOCUS_PUSH_RADIUS = 340;
+const FOCUS_LAYOUT_MS = 600;
+const FOCUS_CAMERA_MS = 700;
+const FOCUS_PADDING = 80;
+const FOCUS_ANCHOR_TYPES = ["hypothesis", "series"];
+const SHARED_ATTRIBUTE_TYPES = ["method", "vehicle", "location", "time_window", "item"];
 const ID_PREFIXES = /\b(hyp|case|series|method|vehicle|item|loc|tw):/g;
 
 const state = {
   cy: null,
   activeRuns: new Set(),
+  focusAnchorId: null,
+  focusRestore: null,
+  focusView: null,
+  hypothesisPulseHigh: false,
   noLinks: [],
   drafts: new Map(),
   expanded: new Set(),
@@ -145,10 +161,16 @@ function createGraph() {
     maxZoom: 3,
   });
   cy.on("zoom", updateLabelVisibility);
-  cy.on("tap", "node", (evt) => showNode(evt.target.id()));
-  cy.on("tap", (evt) => {
-    if (evt.target === cy) clearDrawer();
+  cy.on("tap", "node", (evt) => {
+    showNode(evt.target.id());
+    onNodeTapped(evt.target);
   });
+  cy.on("tap", (evt) => {
+    if (evt.target !== cy) return;
+    clearDrawer();
+    exitFocus();
+  });
+  setInterval(pulseProposedHypotheses, HYPOTHESIS_PULSE_MS);
   return cy;
 }
 
@@ -196,8 +218,10 @@ function graphStyle() {
     { selector: 'node.faint[type = "time_window"]', style: { width: 14, height: 10 } },
     { selector: "node.existing", style: { opacity: 0.5 } },
     { selector: "node.recent", style: { opacity: 1 } },
+    { selector: 'node[type = "hypothesis"]', style: { "underlay-opacity": 0.35, "underlay-padding": 12, "border-width": 2, "border-style": "dashed", "border-color": "#ffffff", "transition-property": "opacity, background-color, underlay-opacity" } },
     { selector: "node.new", style: { opacity: 1, "underlay-opacity": 0.3, "underlay-padding": 10, "border-width": 2, "border-color": "#ffffff" } },
     { selector: "node.proposed", style: { opacity: 1, "underlay-opacity": 0.2, "underlay-padding": 8 } },
+    { selector: 'node[type = "hypothesis"].proposed', style: { "underlay-opacity": 0.35, "underlay-padding": 12 } },
     { selector: "node.confirmed", style: { opacity: 1, "background-color": "#3ddc84", "underlay-color": "#3ddc84", "underlay-opacity": 0.18, "underlay-padding": 8 } },
     { selector: "node.rejected", style: { opacity: 0.22 } },
     { selector: "node.linked", style: { opacity: 0.95 } },
@@ -225,6 +249,9 @@ function graphStyle() {
     { selector: "edge.rejecting", style: { "line-color": "#ff5c5c", opacity: 0.35 } },
     { selector: "edge.hidden", style: { display: "none" } },
     { selector: "edge.decided", style: { "line-color": "#3ddc84", "line-style": "solid", width: 3.5, opacity: 1 } },
+    { selector: "node.dimmed", style: { opacity: 0.08, "text-opacity": 0, "text-outline-opacity": 0, "underlay-opacity": 0, "overlay-opacity": 0 } },
+    { selector: "edge.dimmed", style: { opacity: 0.05 } },
+    { selector: "edge.story-proposed", style: { opacity: 1, width: 2 } },
   ];
 }
 
@@ -331,6 +358,122 @@ function scheduleRelease(delay) {
   state.focusTimer = setTimeout(() => {
     if (state.activeRuns.size === 0) releaseView();
   }, delay);
+}
+
+function pulseProposedHypotheses() {
+  const cy = state.cy;
+  if (!cy) return;
+  state.hypothesisPulseHigh = !state.hypothesisPulseHigh;
+  const opacity = state.hypothesisPulseHigh ? HYPOTHESIS_PULSE_HIGH : HYPOTHESIS_PULSE_LOW;
+  cy.batch(() => {
+    cy.nodes('[type = "hypothesis"]').forEach((node) => {
+      const undecided = node.hasClass("proposed") && !node.data("props")?.decision;
+      if (undecided && !node.hasClass("pulsing") && !node.hasClass("dimmed")) node.style("underlay-opacity", opacity);
+      else node.removeStyle("underlay-opacity");
+    });
+  });
+}
+
+function onNodeTapped(node) {
+  if (!FOCUS_ANCHOR_TYPES.includes(node.data("type"))) return;
+  if (state.activeRuns.size > 0) return;
+  const id = node.id();
+  if (state.focusAnchorId === id) return exitFocus();
+  if (state.focusAnchorId) return exitFocus({ release: false, done: () => enterFocus(state.cy.getElementById(id)) });
+  enterFocus(node);
+}
+
+function storyFor(anchor) {
+  const cases = anchor.neighborhood("node").filter((n) => n.data("type") === "case" && !n.hasClass("hidden"));
+  const shared = cases
+    .neighborhood("node")
+    .filter((n) => SHARED_ATTRIBUTE_TYPES.includes(n.data("type")) && !n.hasClass("hidden") && n.neighborhood("node").intersection(cases).length >= 2);
+  const nodes = anchor.union(cases).union(shared);
+  const edges = nodes.connectedEdges().filter((e) => !e.hasClass("hidden") && nodes.contains(e.source()) && nodes.contains(e.target()));
+  return { anchor, cases, shared, nodes, edges };
+}
+
+function ringPositions(center, nodes, radius, angleFor) {
+  const list = nodes.toArray();
+  return list.map((node, i) => {
+    const angle = angleFor ? angleFor(node, i) : -Math.PI / 2 + (2 * Math.PI * i) / list.length;
+    return { node, angle, to: { x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius } };
+  });
+}
+
+function meanAngleOf(node, caseAngles) {
+  const angles = node.neighborhood("node").filter((n) => caseAngles.has(n.id())).map((n) => caseAngles.get(n.id()));
+  const x = angles.reduce((sum, a) => sum + Math.cos(a), 0);
+  const y = angles.reduce((sum, a) => sum + Math.sin(a), 0);
+  return Math.atan2(y, x);
+}
+
+function storyTargets(story) {
+  const center = { ...story.anchor.position() };
+  const caseRing = ringPositions(center, story.cases, FOCUS_CASE_RADIUS);
+  const caseAngles = new Map(caseRing.map(({ node, angle }) => [node.id(), angle]));
+  const attributeRing = ringPositions(center, story.shared, FOCUS_ATTRIBUTE_RADIUS, (node) => meanAngleOf(node, caseAngles));
+  return [...caseRing, ...attributeRing].map(({ node, to }) => ({ node, to }));
+}
+
+function pushAwayFrom(anchor, nodes) {
+  const center = anchor.position();
+  return nodes.toArray().flatMap((node, i) => {
+    const pos = node.position();
+    const dx = pos.x - center.x;
+    const dy = pos.y - center.y;
+    const distance = Math.hypot(dx, dy);
+    if (distance >= FOCUS_CLEAR_RADIUS) return [];
+    const angle = distance < 1 ? i * 2.399963 : Math.atan2(dy, dx);
+    return [{ node, to: { x: center.x + Math.cos(angle) * FOCUS_PUSH_RADIUS, y: center.y + Math.sin(angle) * FOCUS_PUSH_RADIUS } }];
+  });
+}
+
+function boundsOf(points) {
+  const xs = points.map((p) => p.x);
+  const ys = points.map((p) => p.y);
+  const x1 = Math.min(...xs);
+  const y1 = Math.min(...ys);
+  return { x1, y1, w: Math.max(...xs) - x1, h: Math.max(...ys) - y1 };
+}
+
+function enterFocus(anchor) {
+  const cy = state.cy;
+  if (anchor.empty() || state.focusAnchorId) return;
+  clearTimeout(state.focusTimer);
+  cy.stop();
+  const story = storyFor(anchor);
+  const visible = cy.nodes().not(".hidden");
+  state.focusAnchorId = anchor.id();
+  state.focusRestore = new Map(cy.nodes().map((n) => [n.id(), { ...n.position() }]));
+  state.focusView = { pan: { ...cy.pan() }, zoom: cy.zoom() };
+  const placed = storyTargets(story);
+  const pushed = pushAwayFrom(anchor, visible.not(story.nodes));
+  const dimmedNodes = visible.not(story.nodes);
+  cy.batch(() => {
+    dimmedNodes.addClass("dimmed");
+    cy.edges().not(story.edges).addClass("dimmed");
+    story.edges.filter('[rel = "SUPPORTED_BY"], [rel = "PROPOSES_LINK"], .hypothesis').addClass("story-proposed");
+  });
+  tweenPositions([...placed, ...pushed], FOCUS_LAYOUT_MS);
+  const points = [anchor.position(), ...placed.map(({ to }) => to)];
+  animateView(viewportFor(boundsOf(points), FOCUS_PADDING, MAX_FOCUS_ZOOM), FOCUS_CAMERA_MS);
+}
+
+function exitFocus(options = {}) {
+  const cy = state.cy;
+  const restore = state.focusRestore;
+  if (!state.focusAnchorId) return;
+  state.focusAnchorId = null;
+  state.focusRestore = null;
+  state.focusView = null;
+  cy.elements().removeClass("dimmed story-proposed");
+  const targets = [...restore].map(([id, to]) => ({ node: cy.getElementById(id), to })).filter(({ node }) => node.nonempty());
+  const finish = () => {
+    if (options.release !== false && state.activeRuns.size === 0) releaseView();
+    if (options.done) options.done();
+  };
+  tweenPositions(targets, FOCUS_LAYOUT_MS, finish);
 }
 
 function focusOn(eles) {
@@ -459,6 +602,7 @@ function needsChoreography(edge) {
 }
 
 function choreograph(freshEdges) {
+  if (state.focusAnchorId) return;
   const edges = freshEdges.filter((e) => !e.hasClass("hidden") && !e.source().hasClass("hidden") && !e.target().hasClass("hidden") && needsChoreography(e));
   if (edges.empty()) return;
   state.pendingEdges = state.pendingEdges ? state.pendingEdges.union(edges) : edges;
@@ -509,6 +653,7 @@ function boundarySprings(hood) {
 }
 
 function relaxTargets(hood) {
+  if (state.focusAnchorId) return [];
   const nodes = hood.nodes().toArray();
   const pinned = new Set(nodes.filter(isHub).map((n) => n.id()));
   const pos = new Map(nodes.map((n) => [n.id(), { ...n.position() }]));
@@ -589,6 +734,10 @@ function offsetFrom(center, at, distance, seed) {
 }
 
 function shortenStretched(edges, done) {
+  if (state.focusAnchorId) {
+    if (done) done();
+    return;
+  }
   const pulls = new Map();
   edges.filter((e) => !e.removed() && edgeLength(e) > MAX_FRESH_EDGE).forEach((edge) => {
     const ends = [edge.source(), edge.target()].sort((a, b) => Number(isHub(a)) - Number(isHub(b)) || a.degree(false) - b.degree(false));
@@ -1628,6 +1777,7 @@ function onRunStarted(evt) {
   state.bulk = null;
   renderProgress();
   state.runs.set(evt.run_id, { startedAt: Date.parse(evt.ts) || Date.now(), wallStart: Date.now(), caseId: data.case_id, firstProposalAt: null, finished: false, candidates: [], bulk: data.bulk === true });
+  exitFocus();
   state.activeRuns.add(evt.run_id);
   updateRunButtons();
   state.cy.nodes(".recent, .linked").removeClass("recent linked");
@@ -1684,6 +1834,10 @@ function onVerdict(evt) {
 
 function onDecision(evt) {
   const data = evt.data || {};
+  if (state.focusAnchorId && state.focusAnchorId === data.hypothesis_id) {
+    exitFocus({ release: false, done: () => onDecision(evt) });
+    return;
+  }
   if (state.hypotheses.get(data.hypothesis_id)?.decision === data.decision) return;
   recordDecision(data);
   applyDelta(data.nodes || [], data.edges || [], { skipSeries: data.decision === "accept" });
