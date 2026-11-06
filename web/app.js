@@ -117,6 +117,7 @@ const state = {
   sessionCaseIds: new Set(),
   caseMedia: new Map(),
   eventCount: 0,
+  replayedKeys: new Set(),
   showRejected: false,
   currentRunId: null,
   clockTimer: null,
@@ -2637,6 +2638,11 @@ async function startLive() {
     loadGraph(graph);
     state.score = await api("/api/score").catch(() => null);
     refreshMetrics();
+    const audit = await api("/api/audit").catch(() => null);
+    if (audit?.entries?.length) {
+      replayConsole(audit.entries);
+      audit.entries.forEach((entry) => state.replayedKeys.add(eventKey(entry)));
+    }
   } catch (err) {
     el("graph-empty").textContent = "Graph unavailable";
     showError(`Could not load /api/graph: ${err.message}. Add ?mock=1 to the URL to run without the backend.`);
@@ -2730,6 +2736,10 @@ async function startStatic() {
 
 const RECONNECT_DELAY_MS = 2000;
 
+function eventKey(evt) {
+  return `${evt.ts}|${evt.type}|${evt.run_id}`;
+}
+
 function connectEvents() {
   const source = new EventSource("/api/events");
   let dropped = false;
@@ -2754,6 +2764,7 @@ function connectEvents() {
       consoleLine({ agent: "intake", ts: new Date().toISOString(), message: `Unreadable event: ${err.message}` }, "error");
       return;
     }
+    if (state.replayedKeys.delete(eventKey(evt))) return;
     try {
       handleEvent(evt);
     } catch (err) {
