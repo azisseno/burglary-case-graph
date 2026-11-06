@@ -1776,7 +1776,7 @@ function handleEvent(evt) {
       onRunError(evt);
       break;
     default:
-      consoleLine(evt, "info", eventDetail(evt));
+      logEvent(evt);
   }
 }
 
@@ -1796,7 +1796,7 @@ function onRunStarted(evt) {
   setStage("intake");
   startClock(evt.run_id);
   hideError();
-  consoleLine(evt, "milestone");
+  logEvent(evt);
 }
 
 function onBuildNodes(evt) {
@@ -1810,13 +1810,13 @@ function onBuildNodes(evt) {
   const bulkBuilding = Boolean(state.bulk && state.bulk.building);
   if (!bulkBuilding) startPulsing(fresh);
   if (!bulkBuilding && added.nonempty()) focusSoon(added.filter('[type = "case"]').nonempty() ? added.filter('[type = "case"]') : added);
-  consoleLine(evt, "milestone");
+  logEvent(evt);
 }
 
 function onHypothesis(evt) {
   const data = evt.data || {};
   const node = data.hypothesis || data.node;
-  if (!node) return consoleLine(evt, "info");
+  if (!node) return logEvent(evt);
   node.props = { ...(node.props || {}), rationale: node.props?.rationale || data.rationale, confidence: node.props?.confidence ?? data.confidence, run_id: node.props?.run_id || evt.run_id };
   const added = applyDelta([node], data.edges || []);
   const proposed = added.filter(".proposed");
@@ -1829,7 +1829,7 @@ function onHypothesis(evt) {
   if (run && !run.firstProposalAt) run.firstProposalAt = Date.parse(evt.ts) || Date.now();
   renderHypotheses();
   refreshMetrics();
-  consoleLine(evt, "milestone", data.rationale || node.props.rationale || "");
+  logEvent(evt);
 }
 
 function onVerdict(evt) {
@@ -1839,7 +1839,7 @@ function onVerdict(evt) {
   const node = state.cy.getElementById(data.hypothesis_id);
   if (node.nonempty()) node.data("props", { ...node.data("props"), critic_verdict: data.verdict });
   renderHypotheses();
-  consoleLine(evt, "milestone", (data.reasons || []).map((r) => `• ${r}`).join("\n"));
+  logEvent(evt);
 }
 
 function onDecision(evt) {
@@ -1873,7 +1873,7 @@ function onDecision(evt) {
   applyVisibility();
   renderHypotheses();
   refreshMetrics();
-  consoleLine(evt, "milestone", data.reason || "");
+  logEvent(evt);
 }
 
 function pullConfirmedCluster(hypNode) {
@@ -1902,7 +1902,7 @@ function onCaseStarted(evt) {
   if (data.case_id) state.sessionCaseIds.add(data.case_id);
   const run = state.runs.get(evt.run_id);
   if (run && state.bulk) run.bulk = true;
-  consoleLine(evt, "info");
+  logEvent(evt);
 }
 
 function onCaseFinished(evt) {
@@ -1913,7 +1913,7 @@ function onCaseFinished(evt) {
     renderProgress();
     if (state.bulk.sinceLayout >= BULK_RELAYOUT_EVERY_CASES) bulkRelayout();
   }
-  consoleLine(evt, "info");
+  logEvent(evt);
   refreshMetrics();
 }
 
@@ -1970,23 +1970,22 @@ function renderProgress() {
   box.textContent = `${state.bulk.finished.size} of ${state.bulk.total} cases`;
 }
 
-function onFinderClusters(evt) {
-  const data = evt.data || {};
-  endBulkBuilding();
-  const clusters = asList(data.clusters);
-  const lines = clusters.map((c, i) => {
+function clusterLines(data) {
+  return asList(data.clusters).map((c, i) => {
     const ids = asList(c.case_ids || c.cases || c);
     return `cluster ${i + 1}: ${ids.length} cases, ${ids.map(caseName).join(", ")}`;
   });
-  consoleLine(evt, "milestone", lines.join("\n"));
+}
+
+function onFinderClusters(evt) {
+  endBulkBuilding();
+  logEvent(evt);
 }
 
 function onFinderFinished(evt) {
-  const data = evt.data || {};
   if (state.bulk) state.bulk.active = false;
   endBulkBuilding();
-  const droppedCount = Array.isArray(data.dropped) ? data.dropped.length : Number(data.dropped) || 0;
-  consoleLine(evt, "milestone", droppedCount ? `dropped ${droppedCount} smaller clusters over the cap of 12` : "");
+  logEvent(evt);
   applyVisibility();
   renderHypotheses();
   refreshMetrics();
@@ -1996,7 +1995,7 @@ function onScoreUpdated(evt) {
   const data = evt.data || {};
   state.score = data.score || data;
   renderMetrics(currentMetrics());
-  consoleLine(evt, "info", evt.message ? "" : scoreText(state.score));
+  logEvent(evt);
 }
 
 function scoreText(score) {
@@ -2016,7 +2015,7 @@ function onRunFinished(evt) {
   }
   renderHypotheses();
   refreshMetrics();
-  consoleLine(evt, "milestone", data.hypotheses === 0 ? "No hypotheses proposed" : "");
+  logEvent(evt);
   if (state.bulk && state.bulk.runId === evt.run_id) {
     state.bulk.active = false;
     endBulkBuilding();
@@ -2033,7 +2032,7 @@ function onGaps(evt) {
   const h = state.hypotheses.get(data.hypothesis_id);
   if (h) h.gaps = { missing: asList(data.missing), next: asList(data.next_steps) };
   renderHypotheses();
-  consoleLine(evt, "milestone", eventDetail(evt));
+  logEvent(evt);
 }
 
 function updateRunButtons() {
@@ -2042,12 +2041,53 @@ function updateRunButtons() {
   el("add-case").disabled = busy;
 }
 
+function consoleEntry(evt) {
+  const data = evt.data || {};
+  switch (evt.type) {
+    case "run.started":
+    case "build.nodes":
+      return ["milestone", ""];
+    case "link.hypothesis": {
+      const node = data.hypothesis || data.node;
+      return node ? ["milestone", data.rationale || node.props?.rationale || ""] : ["info", ""];
+    }
+    case "critic.verdict":
+      return ["milestone", (data.reasons || []).map((r) => `• ${r}`).join("\n")];
+    case "decision.recorded":
+      return ["milestone", data.reason || ""];
+    case "gap.next_steps":
+      return ["milestone", eventDetail(evt)];
+    case "run.case_started":
+    case "run.case_finished":
+      return ["info", ""];
+    case "finder.clusters":
+      return ["milestone", clusterLines(data).join("\n")];
+    case "finder.finished": {
+      const dropped = Array.isArray(data.dropped) ? data.dropped.length : Number(data.dropped) || 0;
+      return ["milestone", dropped ? `dropped ${dropped} smaller clusters over the cap of 12` : ""];
+    }
+    case "score.updated":
+      return ["info", evt.message ? "" : scoreText(data.score || data)];
+    case "run.finished":
+      return ["milestone", data.hypotheses === 0 ? "No hypotheses proposed" : ""];
+    case "run.error":
+      return ["error", data.step ? `step: ${data.step}` : ""];
+    default:
+      return ["info", eventDetail(evt)];
+  }
+}
+
+function logEvent(evt) {
+  const [level, detail] = consoleEntry(evt);
+  consoleLine(evt, level, detail);
+}
+
 function onRunError(evt) {
   const data = evt.data || {};
   const stageForStep = STAGE_BY_STEP[data.step];
   if (stageForStep) markStage(stageForStep, "failed");
   showError(`Run error at ${data.step || "unknown step"}: ${data.message || evt.message || "no detail"}`);
-  consoleLine(evt, "error", data.step ? `step: ${data.step}` : "");
+  logEvent(evt);
 }
 
 function eventDetail(evt) {
@@ -2072,8 +2112,7 @@ function eventDetail(evt) {
   }
 }
 
-function consoleLine(evt, level = "info", detail = "") {
-  const list = el("console");
+function buildConsoleLine(evt, level, detail) {
   const li = document.createElement("li");
   li.className = `lvl-${level}`;
   if (evt.agent === "detective") li.classList.add("human");
@@ -2097,7 +2136,12 @@ function consoleLine(evt, level = "info", detail = "") {
     d.textContent = displayId(detail);
     li.append(d);
   }
-  list.append(li);
+  return li;
+}
+
+function consoleLine(evt, level = "info", detail = "") {
+  const list = el("console");
+  list.append(buildConsoleLine(evt, level, detail));
   while (list.children.length > CONSOLE_LIMIT) list.removeChild(list.firstChild);
   list.scrollTop = list.scrollHeight;
 }
@@ -2480,6 +2524,30 @@ function enterStaticMode() {
   el("console-count").textContent = "";
 }
 
+function replayConsole(entries) {
+  const ordered = [...entries].sort((a, b) => (Date.parse(a.ts) || 0) - (Date.parse(b.ts) || 0));
+  const fragment = document.createDocumentFragment();
+  ordered.slice(-CONSOLE_LIMIT).forEach((evt) => fragment.append(buildConsoleLine(evt, ...consoleEntry(evt))));
+  const list = el("console");
+  list.replaceChildren(fragment);
+  list.scrollTop = list.scrollHeight;
+  state.eventCount = ordered.length;
+  el("console-count").textContent = `${ordered.length} events`;
+  showRecordedProgress(ordered);
+  markStagesDone();
+  setStage("review");
+}
+
+function showRecordedProgress(ordered) {
+  const started = ordered.filter((evt) => evt.type === "run.case_started");
+  if (!started.length) return;
+  const last = started[started.length - 1];
+  const finished = new Set(ordered.filter((evt) => evt.type === "run.case_finished" && evt.run_id === last.run_id).map((evt) => evt.data?.case_id));
+  const box = el("run-progress");
+  box.hidden = false;
+  box.textContent = `${finished.size} of ${last.data?.total || finished.size} cases`;
+}
+
 async function startStatic() {
   try {
     const graph = await api("/api/graph");
@@ -2487,6 +2555,8 @@ async function startStatic() {
     loadGraph(graph);
     state.score = await api("/api/score").catch(() => null);
     refreshMetrics();
+    const audit = await api("/api/audit").catch(() => null);
+    if (audit?.entries?.length) replayConsole(audit.entries);
   } catch (err) {
     el("graph-empty").textContent = "Graph unavailable";
     showError(`Could not load the static graph: ${err.message}`);
