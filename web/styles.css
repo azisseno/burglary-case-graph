@@ -315,20 +315,22 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
   border-left: 3px solid var(--hypothesis);
   border-radius: var(--radius);
   background: var(--panel-2);
-  padding: 10px 12px;
-  display: flex; flex-direction: column; gap: 8px;
+  padding: 8px 10px;
+  display: flex; flex-direction: column; gap: 5px;
   animation: line-in 0.3s ease-out;
+  flex: none;
 }
+.hyp.patched { animation: none; }
 .hyp[data-decision="accept"] { border-left-color: var(--confirmed); }
 .hyp[data-decision="reject"] { border-left-color: var(--dim); opacity: 0.6; }
 .hyp[data-decision="none"] { border-left-color: var(--dim); }
 .hyp[data-decision="reject"] .hyp-id { text-decoration: line-through; color: var(--danger); }
 .hyp[data-decision="more"] { border-left-color: var(--case); }
-.hyp-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.hyp-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 8px; }
 .hyp-id { font-family: var(--display); font-size: 18px; font-weight: 700; letter-spacing: 0.04em; color: var(--hypothesis); }
 .hyp[data-decision="accept"] .hyp-id { color: var(--confirmed); }
-.hyp-conf { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-.hyp-cases { display: flex; flex-wrap: wrap; gap: 4px; }
+.hyp-conf { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.hyp-cases { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
 .chip {
   font-family: var(--mono);
   font-size: 10.5px;
@@ -341,27 +343,33 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
 }
 .chip:hover { border-color: var(--case); }
 .chip.new { border-color: var(--case); color: var(--case); }
-.hyp-rationale { font-size: 12.5px; color: var(--text); margin: 0; }
+.hyp-rationale { font-size: 12px; line-height: 1.35; color: var(--text); margin: 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+.hyp.open .hyp-rationale { display: block; overflow: visible; }
+.hyp:not(.open) .hyp-reason, .hyp:not(.open) .hyp-more, .hyp:not(.open) .verdict .would { display: none; }
+.hyp-toggle { margin-left: auto; background: none; border: 0; padding: 0; color: var(--case); font-size: 11px; cursor: pointer; }
+.hyp-toggle:hover { text-decoration: underline; }
 .hyp-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin-bottom: 3px; }
 .hyp-evidence { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; font-size: 11.5px; }
 .hyp-evidence li { display: flex; flex-wrap: wrap; gap: 2px 6px; align-items: baseline; }
 .hyp-evidence .ev-type { font-family: var(--mono); font-size: 10px; color: var(--muted); min-width: 60px; }
 .hyp-evidence .ev-prov { color: var(--dim); font-size: 10.5px; margin-left: auto; font-family: var(--mono); }
 
-.verdict { padding: 6px 8px; border-radius: 4px; background: var(--ink); font-size: 12px; display: flex; flex-direction: column; gap: 3px; }
+.verdict { padding: 4px 8px; border-radius: 4px; background: var(--ink); font-size: 12px; display: flex; flex-direction: column; gap: 3px; }
 .verdict-head { display: flex; gap: 8px; align-items: baseline; }
 .verdict-tag { font-family: var(--display); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
 .verdict[data-verdict="holds"] .verdict-tag { color: var(--case); }
 .verdict[data-verdict="weak"] .verdict-tag { color: var(--hypothesis); }
 .verdict[data-verdict="refuted"] .verdict-tag { color: var(--danger); }
 .verdict[data-verdict="pending"] .verdict-tag { color: var(--dim); }
-.verdict ul { margin: 0; padding-left: 14px; color: var(--muted); font-size: 11.5px; }
+.verdict ul { margin: 0; padding: 0; list-style: none; color: var(--muted); font-size: 11.5px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.verdict ul li::before { content: "\2022  "; }
+.hyp.open .verdict ul { display: block; overflow: visible; }
 .verdict .would { color: var(--dim); font-size: 11px; }
 
-.hyp-decide { display: flex; flex-direction: column; gap: 6px; }
+.hyp-decide { display: flex; flex-direction: column; gap: 4px; }
 .hyp-reason { width: 100%; padding: 5px 7px; background: var(--ink); border: 1px solid var(--line); border-radius: 4px; color: var(--text); font-size: 12px; }
 .hyp-actions { display: flex; gap: 6px; }
-.hyp-actions .btn { flex: 1; padding: 6px 4px; font-size: 12.5px; }
+.hyp-actions .btn { flex: 1; padding: 4px; font-size: 12.5px; }
 .btn-accept { border-color: var(--confirmed); color: var(--confirmed); }
 .btn-accept:hover { background: var(--confirmed); color: var(--ink); }
 .btn-reject { border-color: var(--danger); color: var(--danger); }
@@ -398,9 +406,9 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
 .console .console-photo.small { width: 48px; }
 .console .console-photo img { width: 100%; height: auto; display: block; }
 
-.hyp-photos { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 2px; }
+.hyp-photos { display: flex; gap: 4px; flex-wrap: nowrap; overflow: hidden; }
 .hyp-photos:empty { display: none; }
-.hyp-photos a { display: block; width: 72px; height: 48px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--ink); }
+.hyp-photos a { display: block; flex: none; width: 44px; height: 30px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--ink); }
 .hyp-photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .edge-list, .source-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; }
 .edge-list li { display: grid; grid-template-columns: auto 1fr auto; gap: 6px; align-items: baseline; }
@@ -422,7 +430,7 @@ body.has-banner .board { height: calc(100% - var(--topbar) - 38px); }
   background: var(--ink);
 }
 .metric { display: flex; flex-direction: column; align-items: center; gap: 1px; }
-.metric-value { font-family: var(--display); font-size: 24px; font-weight: 700; line-height: 1; color: var(--text); }
+.metric-value { font-family: var(--display); font-size: 24px; font-weight: 700; line-height: 1; color: var(--text); white-space: nowrap; }
 .metric-label { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); text-align: center; }
 
 @media (max-width: 1180px) {

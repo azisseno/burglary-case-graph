@@ -106,10 +106,10 @@ def test_demo_run_event_sequence(client):
     assert types == [
         "run.started", "intake.file", "intake.file", "intake.file",
         "observe.photo", "observe.photo", "extract.text", "build.nodes",
-        "link.candidates", "link.hypothesis", "critic.verdict", "run.finished",
+        "link.candidates", "link.hypothesis", "critic.verdict", "run.finished", "score.updated",
     ]
     entries = client.get("/api/audit").json()["entries"]
-    finished = entries[-1]
+    finished = next(e for e in entries if e["type"] == "run.finished")
     assert finished["data"]["hypotheses"] == 1
     build = next(e for e in entries if e["type"] == "build.nodes")
     case = next(n for n in build["data"]["nodes"] if n["type"] == "case")
@@ -207,7 +207,7 @@ def test_linker_failure_uses_fallback(client, monkeypatch):
     hypothesis = next(e for e in entries if e["type"] == "link.hypothesis")
     assert hypothesis["data"]["fallback"] is True
     assert hypothesis["data"]["hypothesis"]["props"]["fallback"] is True
-    assert types[-2:] == ["critic.verdict", "run.finished"]
+    assert types[-3:] == ["critic.verdict", "run.finished", "score.updated"]
 
 
 def test_photo_failure_continues(client, fake_claude, monkeypatch):
@@ -223,7 +223,7 @@ def test_photo_failure_continues(client, fake_claude, monkeypatch):
     types = audit_types(client, started["run_id"])
     assert types.count("run.error") == 2
     assert "observe.photo" not in types
-    assert types[-1] == "run.finished"
+    assert types[-2:] == ["run.finished", "score.updated"]
 
 
 def test_decoy_has_no_candidates_and_finishes_empty(client, monkeypatch):
@@ -242,7 +242,7 @@ def test_decoy_has_no_candidates_and_finishes_empty(client, monkeypatch):
     pipeline = client.app.state.pipeline
     assert not [c for c in tools.cluster_candidates(pipeline.graph, "case:NEW-001") if c["score"] > agents.FALLBACK_SCORE_THRESHOLD]
     entries = [e for e in client.get("/api/audit").json()["entries"] if e["run_id"] == started["run_id"]]
-    assert entries[-1]["data"]["hypotheses"] == 0
+    assert entries[-2]["data"]["hypotheses"] == 0
     assert "run.error" not in [e["type"] for e in entries]
     assert client.get("/api/cases/NEW-001").json()["node"]["status"] == "existing"
 
@@ -252,13 +252,13 @@ def test_linker_that_proposes_nothing_skips_fallback(client, monkeypatch):
     started = run_demo(client)
     entries = [e for e in client.get("/api/audit").json()["entries"] if e["run_id"] == started["run_id"]]
     assert "link.hypothesis" not in [e["type"] for e in entries]
-    assert entries[-1]["data"]["hypotheses"] == 0
+    assert entries[-2]["data"]["hypotheses"] == 0
 
 
 def test_case_with_pending_hypothesis_becomes_existing_and_is_a_candidate(client):
     run_demo(client)
     entries = client.get("/api/audit").json()["entries"]
-    finished = entries[-1]
+    finished = entries[-2]
     assert finished["type"] == "run.finished"
     assert finished["data"]["nodes"][0]["id"] == "case:NEW-001"
     assert finished["data"]["nodes"][0]["status"] == "existing"
@@ -303,7 +303,7 @@ def test_real_linker_path_end_to_end(real_linker_client, monkeypatch):
     types = [e["type"] for e in entries]
     assert "link.tool_call" in types
     assert types.count("link.hypothesis") == 1
-    assert types[-2:] == ["critic.verdict", "run.finished"]
+    assert types[-3:] == ["critic.verdict", "run.finished", "score.updated"]
     hypothesis = next(e for e in entries if e["type"] == "link.hypothesis")["data"]["hypothesis"]
     assert any(e["id"] == hypothesis["id"] for e in client.get("/api/hypotheses").json())
     assert all(e["data"]["tool"] != "propose_hypothesis" or "rejected" not in e["data"]["summary"]
@@ -351,8 +351,28 @@ def test_upload_names_are_sanitized_and_unique(client):
 
 def test_pluralised_finish_message(client):
     run_demo(client)
-    finished = client.get("/api/audit").json()["entries"][-1]
+    entries = client.get("/api/audit").json()["entries"]
+    finished = next(e for e in entries if e["type"] == "run.finished")
     assert finished["message"].endswith("with 1 hypothesis")
+
+
+def test_single_case_run_emits_score_after_finishing(client):
+    started = run_demo(client)
+    entries = [e for e in client.get("/api/audit").json()["entries"] if e["run_id"] == started["run_id"]]
+    types = [e["type"] for e in entries]
+    assert types[-2:] == ["run.finished", "score.updated"]
+    assert entries[-1]["data"] == client.get("/api/score").json()
+
+
+def test_decision_message_names_series_when_no_reason(client):
+    run_demo(client)
+    hyp_id = client.get("/api/hypotheses").json()[0]["id"]
+    client.post(f"/api/hypotheses/{hyp_id}/decision", json={"decision": "accept", "reason": ""})
+    client.app.state.pipeline.join()
+    entries = client.get("/api/audit").json()["entries"]
+    message = next(e for e in entries if e["type"] == "decision.recorded")["message"]
+    assert message.startswith("Accepted ")
+    assert "no reason" not in message
 
 
 def test_upload_endpoint_accepts_files_and_fields(client):

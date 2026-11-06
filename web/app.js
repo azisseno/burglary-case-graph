@@ -66,6 +66,7 @@ const LABEL_ZOOM_THRESHOLD = 0.8;
 const HUB_DEGREE = 10;
 const MAX_FRESH_EDGE = 110;
 const SHORT_EDGE = 60;
+const FAN_RADIUS = 1.6;
 const IDLE_FOCUS_DELAY_MS = 120;
 const CLOSE_ENOUGH = 75;
 const RELAX_ITERATIONS = 160;
@@ -89,6 +90,7 @@ const state = {
   activeRuns: new Set(),
   noLinks: [],
   drafts: new Map(),
+  expanded: new Set(),
   submitting: false,
   hypotheses: new Map(),
   runs: new Map(),
@@ -191,6 +193,7 @@ function graphStyle() {
     { selector: 'node[type = "series"]', style: { "font-size": 11, "font-family": "Barlow Condensed, sans-serif", "font-weight": 600, "text-max-width": 150 } },
     { selector: 'node[type = "case"], node[type = "series"], node[type = "hypothesis"]', style: { "min-zoomed-font-size": 0 } },
     { selector: "node.faint", style: { "text-opacity": 0, "text-outline-opacity": 0 } },
+    { selector: 'node.faint[type = "time_window"]', style: { width: 14, height: 10 } },
     { selector: "node.existing", style: { opacity: 0.5 } },
     { selector: "node.recent", style: { opacity: 1 } },
     { selector: "node.new", style: { opacity: 1, "underlay-opacity": 0.3, "underlay-padding": 10, "border-width": 2, "border-color": "#ffffff" } },
@@ -635,14 +638,20 @@ function pullSeriesTogether(seriesNodes, hypothesisNode) {
     });
     members
       .neighborhood("node")
-      .filter((n) => !isHub(n) && n.data("type") !== "series" && n.data("type") !== "case" && !n.hasClass("hidden"))
+      .filter((n) => !isHub(n) && !["series", "case", "hypothesis"].includes(n.data("type")) && !n.hasClass("hidden"))
       .forEach((n) => {
         const touching = n.neighborhood('node[type = "case"]').filter((c) => members.contains(c));
         if (touching.length < 2 || moves.has(n.id())) return;
         const sum = touching.reduce((acc, c) => ({ x: acc.x + targets.get(c.id()).x, y: acc.y + targets.get(c.id()).y }), { x: 0, y: 0 });
         queue(n, { x: sum.x / touching.length, y: sum.y / touching.length });
       });
-    if (hypothesisNode && !hypothesisNode.removed() && !moves.has(hypothesisNode.id())) queue(hypothesisNode, { x: center.x, y: center.y - SHORT_EDGE });
+    if (hypothesisNode && !hypothesisNode.removed()) {
+      const fan = members.connectedEdges('[rel = "PROPOSES_LINK"]').connectedNodes("node.confirmed[type = \"hypothesis\"]").union(hypothesisNode).sort((a, b) => a.id().localeCompare(b.id()));
+      fan.forEach((node, i) => {
+        const angle = -Math.PI / 2 + (2 * Math.PI * i) / fan.length;
+        if (!moves.has(node.id())) queue(node, { x: center.x + Math.cos(angle) * SHORT_EDGE * FAN_RADIUS, y: center.y + Math.sin(angle) * SHORT_EDGE * FAN_RADIUS });
+      });
+    }
   });
   if (moves.size === 0) return;
   queueLayoutJob(() => {
@@ -936,19 +945,66 @@ function renderHypotheses() {
       : '<p class="empty">No hypotheses yet. Drop a folder of reports to begin.</p>';
     return;
   }
-  state.drafts = new Map(
-    [...container.querySelectorAll(".hyp")].map((card) => [card.dataset.id, card.querySelector(".hyp-reason")?.value || ""])
-  );
-  const focused = document.activeElement?.closest?.(".hyp")?.dataset.id;
-  const noLinkCards = [...state.noLinks].reverse().map(noLinkCard);
-  container.replaceChildren(...noLinkCards, ...list.map(hypothesisCard));
-  if (focused) {
-    const reason = container.querySelector(`.hyp[data-id="${CSS.escape(focused)}"] .hyp-reason`);
-    if (reason) {
-      reason.focus();
-      reason.setSelectionRange(reason.value.length, reason.value.length);
-    }
+  const anchor = scrollAnchor(container);
+  [...container.children].filter((child) => !child.dataset.id).forEach((child) => child.remove());
+  const existing = new Map([...container.children].map((card) => [card.dataset.id, card]));
+  const wanted = [
+    ...[...state.noLinks].reverse().map((entry) => ({ id: `none:${entry.runId}`, sig: JSON.stringify(entry.candidates.slice(0, 3)), build: () => noLinkCard(entry) })),
+    ...list.map((h) => ({ id: h.id, sig: cardSignature(h), build: () => hypothesisCard(h) })),
+  ];
+  const fresh = [];
+  wanted.forEach(({ id, sig, build }) => {
+    const current = existing.get(id);
+    existing.delete(id);
+    if (current?.dataset.sig === sig) return;
+    if (current) patchCard(current, build(), sig);
+    else fresh.push(stamp(build(), sig));
+  });
+  existing.forEach((card) => card.remove());
+  container.prepend(...fresh);
+  restoreScroll(container, anchor);
+}
+
+function stamp(card, sig) {
+  card.dataset.sig = sig;
+  return card;
+}
+
+function patchCard(current, card, sig) {
+  const id = current.dataset.id;
+  const draft = current.querySelector(".hyp-reason");
+  if (draft) state.drafts.set(id, draft.value);
+  const hadFocus = current.contains(document.activeElement);
+  card.dataset.sig = sig;
+  card.classList.add("patched");
+  current.replaceWith(card);
+  const reason = card.querySelector(".hyp-reason");
+  if (hadFocus && reason) {
+    reason.focus();
+    reason.setSelectionRange(reason.value.length, reason.value.length);
   }
+}
+
+function cardSignature(h) {
+  const isNew = h.caseIds.map((caseId) => state.sessionCaseIds.has(caseId));
+  return JSON.stringify([h, isNew, hypothesisEvidence(h)]);
+}
+
+function scrollAnchor(container) {
+  if (container.scrollTop <= 2) return null;
+  const top = container.getBoundingClientRect().top;
+  const card = [...container.children].find((child) => child.getBoundingClientRect().bottom > top);
+  return { scrollTop: container.scrollTop, id: card?.dataset.id, offset: card ? card.getBoundingClientRect().top - top : 0 };
+}
+
+function restoreScroll(container, anchor) {
+  if (!anchor) return;
+  const card = [...container.children].find((child) => child.dataset.id === anchor.id);
+  if (!card) {
+    container.scrollTop = anchor.scrollTop;
+    return;
+  }
+  container.scrollTop += card.getBoundingClientRect().top - container.getBoundingClientRect().top - anchor.offset;
 }
 
 function isBelowFloor(h) {
@@ -996,18 +1052,44 @@ function hypothesisCard(h) {
   card.dataset.id = h.id;
   if (h.decision) card.dataset.decision = h.decision;
   if (h.belowFloor) card.dataset.belowFloor = "true";
-  card.append(hypothesisHead(h), hypothesisCases(h), hypothesisPhotos(h));
+  if (state.expanded.has(h.id)) card.classList.add("open");
+  const cases = hypothesisCases(h);
+  cases.append(expandToggle(h));
+  card.append(hypothesisHead(h));
+  if (h.decision && h.decision !== "more") card.append(decidedLine(h));
+  else card.append(decisionControls(h));
+  card.append(cases, hypothesisPhotos(h));
   if (h.rationale) {
     const p = document.createElement("p");
     p.className = "hyp-rationale";
     p.textContent = h.rationale;
     card.append(p);
   }
-  card.append(hypothesisEvidenceList(h), verdictBlock(h.verdict));
-  if (h.decision && h.decision !== "more") card.append(decidedLine(h));
-  else card.append(decisionControls(h));
-  if (h.gaps) card.append(gapsBlock(h.gaps));
+  card.append(verdictBlock(h.verdict));
+  const more = document.createElement("div");
+  more.className = "hyp-more";
+  more.append(hypothesisEvidenceList(h));
+  if (h.gaps) more.append(gapsBlock(h.gaps));
+  card.append(more);
   return card;
+}
+
+function expandToggle(h) {
+  const toggle = document.createElement("button");
+  toggle.type = "button";
+  toggle.className = "hyp-toggle";
+  const sync = (open) => {
+    toggle.textContent = open ? "Show less" : h.gaps ? "Show more, next steps" : "Show more";
+    toggle.setAttribute("aria-expanded", String(open));
+  };
+  sync(state.expanded.has(h.id));
+  toggle.addEventListener("click", () => {
+    const open = toggle.closest(".hyp").classList.toggle("open");
+    if (open) state.expanded.add(h.id);
+    else state.expanded.delete(h.id);
+    sync(open);
+  });
+  return toggle;
 }
 
 function confidenceBand(confidence) {
@@ -1179,14 +1261,14 @@ function decisionControls(h) {
     btn.addEventListener("click", () => submitDecision(h.id, decision, reason.value.trim(), actions));
     return btn;
   };
-  actions.append(make("Accept", "accept", "btn-accept"), make("Reject", "reject", "btn-reject"), make("More", "more", "btn-more"));
+  actions.append(make("Accept", "accept", "btn-accept"), make("Reject", "reject", "btn-reject"), make("Ask for more", "more", "btn-more"));
   if (h.decision === "more") {
     const note = document.createElement("span");
     note.className = "hyp-decided";
     note.textContent = h.decisionReason ? `More evidence requested: ${h.decisionReason}` : "More evidence requested";
     wrap.append(note);
   }
-  wrap.append(reason, actions);
+  wrap.append(actions, reason);
   return wrap;
 }
 
@@ -1217,7 +1299,7 @@ async function submitDecision(id, decision, reason, actions) {
         run_id: state.hypotheses.get(id)?.runId,
         ts: new Date().toISOString(),
         agent: "detective",
-        message: `${id.replace(/^hyp:/, "")} ${decision}${reason ? `: ${reason}` : ""}`,
+        message: decisionMessage(id.replace(/^hyp:/, ""), decision, reason),
         data: { hypothesis_id: id, decision, reason, nodes: delta.nodes, edges: delta.edges },
       });
     }
@@ -1225,6 +1307,12 @@ async function submitDecision(id, decision, reason, actions) {
     showError(`Decision on ${id} failed: ${err.message}`);
     actions.querySelectorAll("button").forEach((b) => (b.disabled = false));
   }
+}
+
+function decisionMessage(label, decision, reason, series) {
+  if (reason) return `${label} ${decision}: ${reason}`;
+  const word = { accept: "Accepted", reject: "Rejected", more: "More evidence requested" }[decision] || decision;
+  return `${word} ${series || label}`;
 }
 
 function recordDecision(data) {
@@ -2244,7 +2332,7 @@ function currentMetrics() {
   const score = state.score;
   return {
     ...local,
-    agree: score ? `${score.proposed_agreeing ?? 0} of ${score.proposed_total ?? 0} proposed` : "-",
+    agree: score ? `${score.proposed_agreeing ?? 0} of ${score.proposed_total ?? 0}` : "-",
   };
 }
 
@@ -2253,16 +2341,16 @@ function localMetrics() {
   const accepted = hyps.filter((h) => h.decision === "accept");
   return {
     cases: state.cy.nodes('[type = "case"]').length,
-    proposed: hyps.length,
-    accepted: accepted.length,
+    open: hyps.length - accepted.length,
+    series: state.cy.nodes('[type = "series"]').length,
     covered: new Set(accepted.flatMap((h) => h.caseIds)).size,
   };
 }
 
 function renderMetrics(m) {
   el("m-cases").textContent = m.cases;
-  el("m-proposed").textContent = m.proposed;
-  el("m-accepted").textContent = m.accepted;
+  el("m-open").textContent = m.open;
+  el("m-series").textContent = m.series;
   el("m-covered").textContent = m.covered;
   el("m-agree").textContent = m.agree;
 }
@@ -2342,7 +2430,7 @@ function applyBulkMockDecision(id, decision, reason) {
     nodes.push({ id: seriesId, type: "series", label: `Series ${id.replace(/^H-/, "")}`, status: "confirmed", props: { ground_truth_status: "linked_by_police" } });
     h.caseIds.forEach((caseId) => edges.push({ id: `e-${seriesId}-${caseId}`, source: caseId, target: seriesId, rel: "PART_OF_SERIES", kind: "confirmed", confidence: 1 }));
   }
-  handleEvent({ type: "decision.recorded", run_id: MOCK_BULK_RUN, ts: new Date().toISOString(), agent: "detective", message: `${id} ${decision}${reason ? `: ${reason}` : ""}`, data: { hypothesis_id: id, decision, reason, nodes, edges } });
+  handleEvent({ type: "decision.recorded", run_id: MOCK_BULK_RUN, ts: new Date().toISOString(), agent: "detective", message: decisionMessage(id, decision, reason, confirmed ? nodes[1].label : ""), data: { hypothesis_id: id, decision, reason, nodes, edges } });
   handleEvent({ type: "score.updated", run_id: MOCK_BULK_RUN, ts: new Date().toISOString(), agent: "detective", message: "score updated", data: mockScore() });
 }
 

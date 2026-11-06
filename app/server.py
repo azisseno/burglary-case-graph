@@ -168,6 +168,17 @@ def summarize_tool_result(name, result):
     return "ok"
 
 
+DECISION_WORDS = {"accept": "Accepted", "reject": "Rejected", "more": "More evidence requested"}
+
+
+def decision_message(label, decision, reason, nodes):
+    if reason:
+        return f"{label} {decision}: {reason}"
+    series = next((n["label"] for n in nodes if n["type"] == "series"), None)
+    word = DECISION_WORDS.get(decision, decision)
+    return f"{word} {series}" if series else f"{word} {label}"
+
+
 class Pipeline:
     def __init__(self, graph, runs_dir, cases_dir, demo_dir, api_base, folders_dir=None):
         self.graph = graph
@@ -332,6 +343,7 @@ class Pipeline:
             noun = "hypothesis" if count == 1 else "hypotheses"
             self.event("run.finished", run_id, "intake", f"Run finished in {seconds}s with {count} {noun}",
                        {"case_id": case_id, "seconds": seconds, "hypotheses": count, "nodes": nodes})
+            self.emit_score(run_id)
 
     def report_error(self, run_id, agent, step, label, error, case_id=None):
         run_dir = self.runs_dir / run_id
@@ -493,7 +505,7 @@ class Pipeline:
                 case = self.graph.nodes[case_id]
                 if case["status"] == "new":
                     nodes.append(self.graph.set_status(case_id, "existing"))
-        self.event("decision.recorded", run_id, "detective", f"{hypothesis['label']} {decision}: {reason or 'no reason given'}",
+        self.event("decision.recorded", run_id, "detective", decision_message(hypothesis["label"], decision, reason, nodes),
                    {"hypothesis_id": hyp_id, "decision": decision, "reason": reason, "nodes": nodes, "edges": delta["edges"]})
         self.save()
         self.emit_score(run_id)
