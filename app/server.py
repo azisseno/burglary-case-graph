@@ -480,6 +480,13 @@ def create_app(root=ROOT, graph=None, api_base=DEFAULT_API_BASE, runs_dir=None):
         resolved = candidate.resolve()
         return resolved.is_file() and resolved.is_relative_to(base.resolve())
 
+    @app.get("/api/media/{series}/_series/{file}")
+    def get_series_media(series: str, file: str):
+        candidate = cases_dir / series / "photos" / file
+        if not inside(cases_dir, candidate):
+            raise HTTPException(404, "media not found")
+        return FileResponse(candidate)
+
     @app.get("/api/media/{series}/{incident}/{file}")
     def get_media(series: str, incident: str, file: str):
         series_dir = cases_dir / series

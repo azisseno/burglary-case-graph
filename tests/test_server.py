@@ -424,6 +424,19 @@ def test_media_routes(client):
     assert client.get("/api/uploads/run-none/nothing.jpg").status_code == 404
 
 
+def test_series_media_route(client):
+    series = client.app.state.pipeline.graph.nodes["series:renton-crash-and-grab-2023"]
+    media = series["props"]["media"]
+    assert media and all(m["kind"] == "image" for m in media)
+    assert media[0]["publisher"].startswith("Renton Police Department")
+    name = media[0]["path"].split("/")[-1]
+    response = client.get(f"/api/media/renton-crash-and-grab-2023/_series/{name}")
+    assert response.status_code == 200
+    assert response.content
+    assert client.get("/api/media/renton-crash-and-grab-2023/_series/nothing.jpg").status_code == 404
+    assert client.get("/api/media/renton-crash-and-grab-2023/_series/..%2Fseries.json").status_code == 404
+
+
 def test_page_and_assets(client):
     assert "<html" in client.get("/").text.lower()
     assert client.get("/app.js").status_code == 200

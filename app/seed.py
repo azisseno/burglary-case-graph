@@ -88,6 +88,24 @@ def add_case(graph, record, status="existing", default_provenance="record", area
     return {"nodes": delta_nodes, "edges": delta_edges}
 
 
+SERIES_PHOTO_SUFFIXES = {".jpg", ".jpeg", ".png"}
+
+
+def series_media(series_dir):
+    photos_dir = series_dir / "photos"
+    if not photos_dir.is_dir():
+        return []
+    publishers = {}
+    sources = photos_dir / "sources.txt"
+    if sources.exists():
+        for line in sources.read_text().splitlines():
+            fields = line.split("\t")
+            if len(fields) >= 3 and fields[2].strip():
+                publishers[fields[0].strip()] = fields[2].strip()
+    files = sorted(p for p in photos_dir.iterdir() if p.suffix.lower() in SERIES_PHOTO_SUFFIXES)
+    return [{"path": f"photos/{p.name}", "kind": "image", "publisher": publishers.get(p.name)} for p in files]
+
+
 def load_series(series_dir):
     series = json.loads((series_dir / "series.json").read_text())
     records = []
@@ -113,6 +131,7 @@ def build_graph(cases_dir=CASES_DIR, held_out=HELD_OUT):
                 "period": series.get("period"),
                 "outcome": series.get("outcome"),
                 "notes": series.get("ground_truth", {}).get("notes"),
+                "media": series_media(series_dir),
             }, sources=[s.get("url") for s in series.get("sources", []) if s.get("url")])
         for record in records:
             if record["id"] in held:

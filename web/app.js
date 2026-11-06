@@ -66,6 +66,7 @@ const state = {
   hypotheses: new Map(),
   runs: new Map(),
   sessionCaseIds: new Set(),
+  caseMedia: new Map(),
   eventCount: 0,
   showRejected: false,
   currentRunId: null,
@@ -563,7 +564,7 @@ function hypothesisCard(h) {
   card.className = "hyp";
   card.dataset.id = h.id;
   if (h.decision) card.dataset.decision = h.decision;
-  card.append(hypothesisHead(h), hypothesisCases(h));
+  card.append(hypothesisHead(h), hypothesisCases(h), hypothesisPhotos(h));
   if (h.rationale) {
     const p = document.createElement("p");
     p.className = "hyp-rationale";
@@ -604,6 +605,25 @@ function hypothesisCases(h) {
     wrap.append(chip);
   });
   return wrap;
+}
+
+function hypothesisPhotos(h) {
+  const row = document.createElement("div");
+  row.className = "hyp-photos";
+  if (MOCK) return row;
+  h.caseIds.filter((caseId) => state.sessionCaseIds.has(caseId)).forEach((caseId) => {
+    caseMedia(caseId).then((media) => {
+      media.filter(isImageMedia).forEach((m) => row.append(imageLink(m.url, m.kind || "photo")));
+    });
+  });
+  return row;
+}
+
+function caseMedia(caseId) {
+  if (!state.caseMedia.has(caseId)) {
+    state.caseMedia.set(caseId, api(`/api/cases/${encodeURIComponent(caseId)}`).then((detail) => (detail.media || []).filter((m) => m.url)).catch(() => []));
+  }
+  return state.caseMedia.get(caseId);
 }
 
 function hypothesisEvidenceList(h) {
@@ -881,13 +901,22 @@ function thumbnails(node, media) {
       a.className = "thumb-file";
       a.textContent = (m.path || "file").split("/").pop();
     }
-    wrap.append(a);
+    if (!m.publisher) return wrap.append(a);
+    const figure = document.createElement("figure");
+    const caption = document.createElement("figcaption");
+    caption.textContent = m.publisher;
+    figure.append(a, caption);
+    wrap.append(figure);
   });
   return wrap;
 }
 
 function isImageMedia(media) {
   return media.kind === "image" || (media.kind !== "text" && media.kind !== "document" && /\.(jpe?g|png|gif|webp)$/i.test(media.path || ""));
+}
+
+function bareId(id) {
+  return id.replace(/^[a-z_]+:/, "");
 }
 
 function mediaUrl(node, media) {
@@ -897,10 +926,11 @@ function mediaUrl(node, media) {
   const props = node.data("props") || {};
   const file = media.path.split("/").pop();
   if (MOCK) {
-    return props.series_id ? `../data/cases/${props.series_id}/${node.id()}/${media.path}` : null;
+    return props.series_id ? `../data/cases/${props.series_id}/${bareId(node.id())}/${media.path}` : null;
   }
   if (props.run_id) return `/api/uploads/${props.run_id}/${file}`;
-  if (props.series_id) return `/api/media/${props.series_id}/${node.id()}/${file}`;
+  if (node.data("type") === "series") return `/api/media/${bareId(node.id())}/_series/${file}`;
+  if (props.series_id) return `/api/media/${props.series_id}/${bareId(node.id())}/${file}`;
   return null;
 }
 
@@ -1201,6 +1231,8 @@ function consoleLine(evt, level = "info", detail = "") {
   m.className = "m";
   m.textContent = displayId(evt.message || evt.type);
   li.append(t, a, m);
+  const photo = eventPhoto(evt);
+  if (photo) li.append(photo);
   if (detail && !(evt.message && evt.message.includes(detail))) {
     const d = document.createElement("span");
     d.className = "detail";
@@ -1210,6 +1242,30 @@ function consoleLine(evt, level = "info", detail = "") {
   list.append(li);
   while (list.children.length > CONSOLE_LIMIT) list.removeChild(list.firstChild);
   list.scrollTop = list.scrollHeight;
+}
+
+function eventPhoto(evt) {
+  if (MOCK || !evt.run_id) return null;
+  const data = evt.data || {};
+  const isIntakeImage = evt.type === "intake.file" && data.kind === "image";
+  const file = isIntakeImage ? data.name : evt.type === "observe.photo" ? data.file : null;
+  if (!file) return null;
+  const link = imageLink(`/api/uploads/${encodeURIComponent(evt.run_id)}/${encodeURIComponent(file)}`, file);
+  link.classList.add("console-photo", isIntakeImage ? "small" : "full");
+  return link;
+}
+
+function imageLink(url, alt) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener";
+  const img = document.createElement("img");
+  img.src = url;
+  img.alt = alt;
+  img.loading = "lazy";
+  a.append(img);
+  return a;
 }
 
 function clockTime(ts) {
