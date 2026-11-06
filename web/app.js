@@ -450,8 +450,13 @@ function cyBatchReset(targets) {
   state.cy.batch(() => targets.forEach(({ node, from }) => node.position(from)));
 }
 
+function needsChoreography(edge) {
+  const length = edgeLength(edge);
+  return length > CLOSE_ENOUGH || length < SHORT_EDGE;
+}
+
 function choreograph(freshEdges) {
-  const edges = freshEdges.filter((e) => !e.hasClass("hidden") && !e.source().hasClass("hidden") && !e.target().hasClass("hidden") && edgeLength(e) > CLOSE_ENOUGH);
+  const edges = freshEdges.filter((e) => !e.hasClass("hidden") && !e.source().hasClass("hidden") && !e.target().hasClass("hidden") && needsChoreography(e));
   if (edges.empty()) return;
   state.pendingEdges = state.pendingEdges ? state.pendingEdges.union(edges) : edges;
   if (!state.layoutRunning) runChoreography();
